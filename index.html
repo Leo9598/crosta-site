@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crosta Kitchen Bakery</title>
+    <meta name="description" content="Crosta Kitchen Bakery - Premium artisan breads and pastries.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">Crosta Kitchen Bakery</div>
+        <nav>
+            <a href="#menu" data-i18n="navMenu">Menu</a>
+            <a href="#reservations" data-i18n="navReservations">Reservations</a>
+            <a href="#about" data-i18n="navAbout">About Us</a>
+            <a href="#contact" data-i18n="navContact">Contact</a>
+        </nav>
+        <div class="language-switcher">
+            <button onclick="setLanguage('en')" class="lang-btn active" id="btn-en">EN</button>
+            <button onclick="setLanguage('ro')" class="lang-btn" id="btn-ro">RO</button>
+            <button onclick="setLanguage('ru')" class="lang-btn" id="btn-ru">RU</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <img src="hero.jpg" alt="Crosta Kitchen Bakery Interior" class="hero-image">
+            <div class="hero-content">
+                <h1 data-i18n="heroTitle">A Premium Dining Experience</h1>
+                <p data-i18n="heroSubtitle">Experience the finest culinary creations in an elegant atmosphere.</p>
+                <a href="#menu" class="cta-button" data-i18n="heroCta">Explore Menu</a>
+            </div>
+        </section>
+
+        <section id="menu" class="menu-section">
+            <h2 class="section-title" data-i18n="menuTitle">Our Signature Menu</h2>
+            <div id="dynamic-menu" class="dynamic-menu-container"></div>
+            
+            <div class="menu-footnotes">
+                <h4 class="footnotes-title">Сноски / Условные обозначения</h4>
+                <ul>
+                    <li data-i18n="note1">We are happy to serve breakfast from 9:00 to 21:00</li>
+                    <li data-i18n="note2">Main menu is served from 12:00 to 23:00</li>
+                    <li data-i18n="note3">🌶️ — spicy or piquant</li>
+                    <li data-i18n="note4">🐟 — caution: fish bones</li>
+                    <li data-i18n="note5">🧄 — contains garlic</li>
+                    <li data-i18n="note6">⏱️ — preparation takes more than 25 minutes</li>
+                    <li data-i18n="note7">If you have allergies or dietary preferences, please let us know</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="reservations" class="reservations-section">
+            <div class="reservations-content">
+                <h2 class="section-title" data-i18n="resTitle">Make a Reservation</h2>
+                <p data-i18n="resSubtitle" class="res-subtitle">Book your table to enjoy an unforgettable dining experience.</p>
+                <form class="reservation-form" onsubmit="event.preventDefault(); alert('Reservation feature coming soon!');">
+                    <div class="form-group">
+                        <label for="res-name" data-i18n="resName">Name</label>
+                        <input type="text" id="res-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="res-date" data-i18n="resDate">Date</label>
+                        <input type="date" id="res-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="res-time" data-i18n="resTime">Time</label>
+                        <select id="res-time" required>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                            <option value="21:00">21:00</option>
+                            <option value="22:00">22:00</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="res-guests" data-i18n="resGuests">Guests</label>
+                        <input type="number" id="res-guests" min="1" max="20" required>
+                    </div>
+                    <button type="submit" class="cta-button res-submit" data-i18n="resSubmit">Book Table</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="about-content">
+                <h2 class="section-title" data-i18n="aboutTitle">Our Story</h2>
+                <p data-i18n="aboutDesc">At Crosta Kitchen Bakery, we believe in creating memorable dining experiences. We source the finest ingredients to bring you exquisite dishes crafted with passion and culinary expertise.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="footer">
+        <div class="footer-content">
+            <h3 data-i18n="footerTitle">Visit Us</h3>
+            <p data-i18n="footerAddress">Chișinău MD, Strada Miron Costin 13/7, MD-2000</p>
+            <p data-i18n="footerHours">Open Daily: 8:00 - 22:00</p>
+        </div>
+        <div class="footer-bottom">
+            &copy; <span id="year"></span> Crosta Kitchen Bakery. <span data-i18n="footerRights">All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
