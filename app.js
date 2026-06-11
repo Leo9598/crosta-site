@@ -349,8 +349,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Clear the form
                     resForm.reset();
                 } else {
-                    console.error('Failed to send reservation');
-                    alert('There was an error sending your reservation. Please try again later.');
+                    const errorData = await response.json();
+                    console.error('Failed to send reservation:', errorData);
+                    alert(`Error from server: ${errorData.error || errorData.message || 'Unknown error'}`);
                 }
             } catch (error) {
                 console.error('Error:', error);
