@@ -1,0 +1,12 @@
+{
+  "name": "crosta-site",
+  "version": "1.0.0",
+  "description": "Crosta Site with Vercel API",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.13"
+  }
+}

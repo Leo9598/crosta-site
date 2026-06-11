@@ -40,7 +40,7 @@
             <div id="dynamic-menu" class="dynamic-menu-container"></div>
             
             <div class="menu-footnotes">
-                <h4 class="footnotes-title">Сноски / Условные обозначения</h4>
+                <h4 class="footnotes-title" data-i18n="footnotesTitle">Сноски / Условные обозначения</h4>
                 <ul>
                     <li data-i18n="note1">We are happy to serve breakfast from 9:00 to 21:00</li>
                     <li data-i18n="note2">Main menu is served from 12:00 to 23:00</li>
@@ -57,7 +57,7 @@
             <div class="reservations-content">
                 <h2 class="section-title" data-i18n="resTitle">Make a Reservation</h2>
                 <p data-i18n="resSubtitle" class="res-subtitle">Book your table to enjoy an unforgettable dining experience.</p>
-                <form class="reservation-form" onsubmit="event.preventDefault(); alert('Reservation feature coming soon!');">
+                <form class="reservation-form" id="reservation-form">
                     <div class="form-group">
                         <label for="res-name" data-i18n="resName">Name</label>
                         <input type="text" id="res-name" required>
@@ -113,6 +113,16 @@
             &copy; <span id="year"></span> Crosta Kitchen Bakery. <span data-i18n="footerRights">All rights reserved.</span>
         </div>
     </footer>
+
+    <!-- Reservation Success Modal -->
+    <div id="res-success-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">✨</div>
+            <h3 data-i18n="resSuccessTitle">Reservation Confirmed!</h3>
+            <p data-i18n="resSuccessMsg">Thank you for choosing Crosta. We look forward to serving you.</p>
+            <button class="cta-button modal-close" onclick="closeModal()" data-i18n="resSuccessClose">Close</button>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>

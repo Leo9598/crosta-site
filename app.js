@@ -150,6 +150,7 @@ const translations = {
         footerRights: "All rights reserved.",
         
         // Footnotes
+        footnotesTitle: "Footnotes / Legend",
         note1: "We are happy to serve breakfast from 9:00 to 21:00",
         note2: "Main menu is served from 12:00 to 23:00",
         note3: "🌶️ — spicy or piquant",
@@ -157,7 +158,12 @@ const translations = {
         note5: "🧄 — contains garlic",
         note6: "⏱️ — preparation takes more than 25 minutes",
         note7: "If you have allergies or dietary preferences, please let us know",
-        currency: "MDL"
+        currency: "MDL",
+        
+        // Modal
+        resSuccessTitle: "Reservation Confirmed!",
+        resSuccessMsg: "Thank you for choosing Crosta. We look forward to serving you.",
+        resSuccessClose: "Close"
     },
     ro: {
         navMenu: "Meniu",
@@ -183,6 +189,7 @@ const translations = {
         footerRights: "Toate drepturile rezervate.",
         
         // Footnotes
+        footnotesTitle: "Note / Legendă",
         note1: "Ne bucurăm să vă servim micul dejun de la 9:00 la 21:00",
         note2: "Meniul principal este servit de la 12:00 la 23:00",
         note3: "🌶️ — picant sau condimentat",
@@ -190,7 +197,12 @@ const translations = {
         note5: "🧄 — conține usturoi",
         note6: "⏱️ — prepararea durează mai mult de 25 minute",
         note7: "Dacă aveți alergii sau preferințe alimentare, vă rugăm să ne anunțați",
-        currency: "MDL"
+        currency: "MDL",
+        
+        // Modal
+        resSuccessTitle: "Rezervare Confirmată!",
+        resSuccessMsg: "Vă mulțumim că ați ales Crosta. Vă așteptăm cu drag.",
+        resSuccessClose: "Închide"
     },
     ru: {
         navMenu: "Меню",
@@ -216,6 +228,7 @@ const translations = {
         footerRights: "Все права защищены.",
         
         // Footnotes
+        footnotesTitle: "Сноски / Условные обозначения",
         note1: "Мы рады кормить Вас завтраками с 9.00 до 21.00",
         note2: "Основное меню подается с 12.00 до 23.00",
         note3: "🌶️ — острое либо пикантное",
@@ -223,7 +236,12 @@ const translations = {
         note5: "🧄 — чеснок входит в состав",
         note6: "⏱️ — готовится дольше 25 минут",
         note7: "Если у Вас есть аллергии или другие пищевые предпочтения просим сообщить нам об этом",
-        currency: "MDL"
+        currency: "MDL",
+        
+        // Modal
+        resSuccessTitle: "Бронирование подтверждено!",
+        resSuccessMsg: "Спасибо, что выбрали Crosta. Ждем вас с нетерпением.",
+        resSuccessClose: "Закрыть"
     }
 };
 
@@ -301,4 +319,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check for saved language or default to 'en'
     const savedLang = localStorage.getItem('preferredLang') || 'en';
     setLanguage(savedLang);
+
+    // Reservation Form Handling
+    const resForm = document.getElementById('reservation-form');
+    if (resForm) {
+        resForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = resForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            const name = document.getElementById('res-name').value;
+            const date = document.getElementById('res-date').value;
+            const time = document.getElementById('res-time').value;
+            const guests = document.getElementById('res-guests').value;
+
+            try {
+                const response = await fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, date, time, guests })
+                });
+
+                if (response.ok) {
+                    // Show modal
+                    document.getElementById('res-success-modal').style.display = 'flex';
+                    // Clear the form
+                    resForm.reset();
+                } else {
+                    console.error('Failed to send reservation');
+                    alert('There was an error sending your reservation. Please try again later.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Network error. Please try again.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
 });
+
+function closeModal() {
+    document.getElementById('res-success-modal').style.display = 'none';
+}
