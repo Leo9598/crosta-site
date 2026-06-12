@@ -398,8 +398,8 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                // Optional: unobserve if you only want it to animate once
-                // observer.unobserve(entry.target);
+            } else {
+                entry.target.classList.remove('active');
             }
         });
     }, observerOptions);
