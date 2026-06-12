@@ -114,6 +114,15 @@
         </div>
     </footer>
 
+    <!-- Image Modal -->
+    <div id="image-modal" class="modal-overlay" onclick="closeImageModal()">
+        <div class="modal-image-content" onclick="event.stopPropagation()">
+            <span class="close-image" onclick="closeImageModal()">&times;</span>
+            <img id="modal-image-element" src="" alt="Meal">
+            <h3 id="modal-image-title"></h3>
+        </div>
+    </div>
+
     <!-- Reservation Success Modal -->
     <div id="res-success-modal" class="modal-overlay">
         <div class="modal-content">

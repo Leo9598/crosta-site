@@ -5,7 +5,7 @@ const menuData = [
             {
                 name: { en: "Egg Dishes", ro: "Preparate din ouă", ru: "Блюда из яиц" },
                 items: [
-                    { name: { en: "Poached egg on bread with avocado, lightly salted salmon, young peas", ro: "Ou poșat pe pâine cu avocado, somon ușor sărat, mazăre verde", ru: "Пашот на хлебе с авокадо, малосольной семгой, молодым горошком" }, price: 110 },
+                    { name: { en: "Poached egg on bread with avocado, lightly salted salmon, young peas", ro: "Ou poșat pe pâine cu avocado, somon ușor sărat, mazăre verde", ru: "Пашот на хлебе с авокадо, малосольной семгой, молодым горошком" }, price: 110, image: 'poached-egg.jpg' },
                     { name: { en: "Shakshuka with poached egg and goat cheese", ro: "Shakshuka cu ou poșat și brânză de capră", ru: "Шакшука с пашот и козьим сыром" }, price: 75 },
                     { name: { en: "Souffle omelette with baguette", ro: "Omletă sufleu cu baghetă", ru: "Омлет суфле с багетом" }, price: 55 },
                     { name: { en: "Scramble on sweet potato", ro: "Scramble pe cartof dulce", ru: "Скрэмбл на батате" }, price: 55 },
@@ -260,8 +260,10 @@ function renderMenu(lang) {
                 html += `<h4 class="subcategory-title">${sub.name[lang]}</h4>`;
                 html += `<ul class="menu-list">`;
                 sub.items.forEach(item => {
+                    const imageClass = item.image ? ' has-image' : '';
+                    const clickAttr = item.image ? ` onclick="openImageModal('${item.image}', '${item.name[lang].replace(/'/g, "\\'")}')"` : '';
                     html += `
-                        <li class="menu-item">
+                        <li class="menu-item${imageClass}"${clickAttr}>
                             <span class="item-name">${item.name[lang]}</span>
                             <span class="item-dots"></span>
                             <span class="item-price">${item.price} <span class="currency">${translations[lang].currency}</span></span>
@@ -273,8 +275,10 @@ function renderMenu(lang) {
         } else if (cat.items) {
             html += `<ul class="menu-list">`;
             cat.items.forEach(item => {
+                const imageClass = item.image ? ' has-image' : '';
+                const clickAttr = item.image ? ` onclick="openImageModal('${item.image}', '${item.name[lang].replace(/'/g, "\\'")}')"` : '';
                 html += `
-                    <li class="menu-item">
+                    <li class="menu-item${imageClass}"${clickAttr}>
                         <span class="item-name">${item.name[lang]}</span>
                         <span class="item-dots"></span>
                         <span class="item-price">${item.price} <span class="currency">${translations[lang].currency}</span></span>
@@ -418,4 +422,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function closeModal() {
     document.getElementById('res-success-modal').style.display = 'none';
+}
+
+function openImageModal(imgSrc, title) {
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-image-element');
+    const modalTitle = document.getElementById('modal-image-title');
+    
+    modalImg.src = imgSrc;
+    modalTitle.textContent = title;
+    modal.style.display = 'flex';
+}
+
+function closeImageModal() {
+    document.getElementById('image-modal').style.display = 'none';
 }
