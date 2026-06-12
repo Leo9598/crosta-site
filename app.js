@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Scroll Reveal Animations
     const observerOptions = {
-        threshold: 0.1,
+        threshold: 0.02,
         rootMargin: "0px 0px -50px 0px"
     };
 
@@ -436,4 +436,8 @@ function openImageModal(imgSrc, title) {
 
 function closeImageModal() {
     document.getElementById('image-modal').style.display = 'none';
+}
+
+function toggleMobileMenu() {
+    document.querySelector('.navbar').classList.toggle('nav-open');
 }

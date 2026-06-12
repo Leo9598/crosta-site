@@ -128,6 +128,10 @@ body {
     border-color: var(--color-primary);
 }
 
+.mobile-toggle {
+    display: none;
+}
+
 /* Hero Section */
 .hero {
     position: relative;
@@ -537,9 +541,52 @@ section {
 
 @media (max-width: 768px) {
     .navbar {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 1rem 1.5rem;
+        gap: 1rem;
+    }
+    
+    .navbar nav {
+        display: none;
+        width: 100%;
         flex-direction: column;
-        padding: 1.5rem;
         gap: 1.5rem;
+        padding: 1rem 0;
+        text-align: center;
+        order: 3;
+    }
+    
+    .navbar.nav-open {
+        background: rgba(10, 10, 10, 0.95);
+    }
+    
+    .navbar.nav-open nav {
+        display: flex;
+    }
+    
+    .language-switcher {
+        order: 1;
+        margin-left: auto;
+    }
+    
+    .mobile-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 21px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        order: 2;
+    }
+    
+    .mobile-toggle span {
+        width: 100%;
+        height: 2px;
+        background-color: var(--color-primary);
+        transition: all 0.3s ease;
     }
     
     .hero-content h1 {
