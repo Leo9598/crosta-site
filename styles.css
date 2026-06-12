@@ -141,7 +141,6 @@ body {
     justify-content: center;
     text-align: center;
     overflow: hidden;
-    background-color: var(--color-bg);
 }
 
 .hero-image {
