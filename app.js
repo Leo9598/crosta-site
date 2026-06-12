@@ -1,3 +1,5 @@
+let currentMenuFilter = 'All';
+
 const menuData = [
     {
         category: { en: "Breakfasts", ro: "Mic Dejun", ru: "Завтраки" },
@@ -143,11 +145,12 @@ const translations = {
         resGuests: "Guests",
         resSubmit: "Book Table",
         aboutTitle: "Our Story",
-        aboutDesc: "At Crosta Kitchen, we believe in creating memorable dining experiences. We source the finest ingredients to bring you exquisite dishes crafted with passion and culinary expertise.",
+        aboutDesc: "At Crosta Kitchen Bakery, we believe in creating memorable dining experiences. We source the finest ingredients to bring you exquisite dishes crafted with passion and culinary expertise.",
         footerTitle: "Visit Us",
         footerAddress: "Chișinău MD, Strada Miron Costin 13/7, MD-2000",
         footerHours: "Open Daily: 8:00 - 22:00",
         footerRights: "All rights reserved.",
+        allFilter: "All",
         
         // Footnotes
         footnotesTitle: "Footnotes / Legend",
@@ -182,11 +185,12 @@ const translations = {
         resGuests: "Număr de persoane",
         resSubmit: "Rezervă Masa",
         aboutTitle: "Povestea Noastră",
-        aboutDesc: "La Crosta Kitchen, credem în crearea unor experiențe culinare memorabile. Folosim cele mai bune ingrediente pentru a vă oferi mâncăruri rafinate, create cu pasiune și expertiză.",
+        aboutDesc: "La Crosta Kitchen Bakery, credem în crearea unor experiențe culinare memorabile. Folosim cele mai bune ingrediente pentru a vă oferi preparate rafinate, create cu pasiune și expertiză culinară.",
         footerTitle: "Vizitează-ne",
         footerAddress: "Chișinău MD, Strada Miron Costin 13/7, MD-2000",
         footerHours: "Deschis Zilnic: 8:00 - 22:00",
         footerRights: "Toate drepturile rezervate.",
+        allFilter: "Toate",
         
         // Footnotes
         footnotesTitle: "Note / Legendă",
@@ -226,6 +230,7 @@ const translations = {
         footerAddress: "Chișinău MD, Strada Miron Costin 13/7, MD-2000",
         footerHours: "Открыто Ежедневно: 8:00 - 22:00",
         footerRights: "Все права защищены.",
+        allFilter: "Все",
         
         // Footnotes
         footnotesTitle: "Сноски / Условные обозначения",
@@ -245,13 +250,34 @@ const translations = {
     }
 };
 
+function setMenuFilter(filterName) {
+    currentMenuFilter = filterName;
+    const savedLang = localStorage.getItem('preferredLang') || 'en';
+    renderMenu(savedLang);
+}
+
 function renderMenu(lang) {
     const menuContainer = document.getElementById('dynamic-menu');
+    const filtersContainer = document.getElementById('menu-filters');
     if (!menuContainer) return;
+    
+    if (filtersContainer) {
+        let filtersHtml = `<button class="filter-btn ${currentMenuFilter === 'All' ? 'active' : ''}" onclick="setMenuFilter('All')">${translations[lang].allFilter || 'All'}</button>`;
+        menuData.forEach(cat => {
+            const catKey = cat.category.en;
+            const catName = cat.category[lang];
+            const isActive = currentMenuFilter === catKey ? 'active' : '';
+            filtersHtml += `<button class="filter-btn ${isActive}" onclick="setMenuFilter('${catKey.replace(/'/g, "\\'")}')">${catName}</button>`;
+        });
+        filtersContainer.innerHTML = filtersHtml;
+    }
     
     let html = '';
     
     menuData.forEach(cat => {
+        const catKey = cat.category.en;
+        if (currentMenuFilter !== 'All' && currentMenuFilter !== catKey) return;
+        
         html += `<div class="menu-category">`;
         html += `<h3 class="category-title">${cat.category[lang]}</h3>`;
         
