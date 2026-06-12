@@ -1,16 +1,16 @@
 :root {
-    --color-bg: #0A0A0A;
-    --color-surface: #141414;
-    --color-surface-light: #1F1F1F;
-    --color-primary: #C49B55; /* Elegant Bronze/Gold */
-    --color-text: #EAEAEA;
-    --color-text-muted: #A0A0A0;
+    --color-bg: #050505; /* Deep Obsidian Black */
+    --color-surface: rgba(20, 20, 20, 0.4);
+    --color-surface-light: rgba(30, 30, 30, 0.6);
+    --color-primary: #D4AF37; /* Champagne Gold */
+    --color-text: #F0F0F0;
+    --color-text-muted: #888888;
     
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Inter', sans-serif;
     
-    --transition-fast: 0.2s ease;
-    --transition-slow: 0.5s ease;
+    --transition-fast: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    --transition-slow: 0.7s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 * {
@@ -141,6 +141,7 @@ body {
     justify-content: center;
     text-align: center;
     overflow: hidden;
+    background-color: var(--color-bg);
 }
 
 .hero-image {
@@ -148,11 +149,12 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 120%; /* Extra height for parallax */
     object-fit: cover;
     z-index: -2;
-    transform: scale(1.05);
-    animation: slowZoom 20s infinite alternate linear;
+    transform: translateY(0);
+    /* Parallax is handled mostly by smooth transform or background-attachment if it was a bg image */
+    will-change: transform;
 }
 
 .hero-overlay {
@@ -161,7 +163,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.7) 60%, var(--color-bg) 100%);
+    background: linear-gradient(to bottom, rgba(5,5,5,0.4) 0%, rgba(5,5,5,0.7) 60%, var(--color-bg) 100%);
     z-index: -1;
 }
 
@@ -175,13 +177,14 @@ body {
 
 .hero-content h1 {
     font-family: var(--font-heading);
-    font-size: 5rem;
-    font-weight: 400;
+    font-size: 6.5rem;
+    font-weight: 300;
+    font-style: italic;
     line-height: 1.1;
     margin-bottom: 1.5rem;
     letter-spacing: 2px;
     color: #FFFFFF;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
 }
 
 .hero-content p {
@@ -231,18 +234,19 @@ body {
 
 /* Sections */
 section {
-    padding: 8rem 2rem;
+    padding: 10rem 2rem;
 }
 
 .section-title {
     font-family: var(--font-heading);
-    font-size: 3.5rem;
-    font-weight: 400;
+    font-size: 4.5rem;
+    font-weight: 300;
     font-style: italic;
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 5rem;
     color: var(--color-primary);
     position: relative;
+    letter-spacing: 1px;
 }
 
 .section-title::after {
@@ -323,10 +327,18 @@ section {
 .menu-item {
     display: flex;
     align-items: baseline;
-    padding: 0.8rem 1rem;
+    padding: 1rem;
     border-radius: 8px;
-    transition: all var(--transition-fast);
     border: 1px solid transparent;
+    opacity: 0;
+    transform: translateY(20px);
+    transition-property: opacity, transform, background, border-color;
+    transition-duration: 0.8s, 0.8s, var(--transition-fast), var(--transition-fast);
+}
+
+.reveal.active .menu-item {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .menu-item:hover {
@@ -413,9 +425,18 @@ section {
 }
 
 .reservation-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background: rgba(20, 20, 20, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 4rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
 }
 
 .form-group {
@@ -469,8 +490,15 @@ section {
 }
 
 .about-content {
-    max-width: 700px;
+    max-width: 800px;
     margin: 0 auto;
+    text-align: center;
+    background: rgba(20, 20, 20, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 5rem 3rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .about-content p {
@@ -656,17 +684,19 @@ section {
 
 /* Image Modal Styles */
 .modal-image-content {
-    background: rgba(20, 20, 20, 0.95);
-    border: 1px solid rgba(196, 155, 85, 0.3);
-    border-radius: 12px;
-    padding: 1rem;
+    background: rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    padding: 1.5rem;
     text-align: center;
     max-width: 90vw;
     max-height: 90vh;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9);
     position: relative;
     transform: scale(0.9);
-    animation: zoomInModal 0.3s forwards ease-out;
+    animation: zoomInModal 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 .modal-image-content img {

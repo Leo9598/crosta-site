@@ -259,11 +259,11 @@ function renderMenu(lang) {
             cat.subcategories.forEach(sub => {
                 html += `<h4 class="subcategory-title">${sub.name[lang]}</h4>`;
                 html += `<ul class="menu-list">`;
-                sub.items.forEach(item => {
+                sub.items.forEach((item, index) => {
                     const imageClass = item.image ? ' has-image' : '';
                     const clickAttr = item.image ? ` onclick="openImageModal('${item.image}', '${item.name[lang].replace(/'/g, "\\'")}')"` : '';
                     html += `
-                        <li class="menu-item${imageClass}"${clickAttr}>
+                        <li class="menu-item${imageClass}"${clickAttr} style="transition-delay: ${index * 0.05}s">
                             <span class="item-name">${item.name[lang]}</span>
                             <span class="item-dots"></span>
                             <span class="item-price">${item.price} <span class="currency">${translations[lang].currency}</span></span>
@@ -274,11 +274,11 @@ function renderMenu(lang) {
             });
         } else if (cat.items) {
             html += `<ul class="menu-list">`;
-            cat.items.forEach(item => {
+            cat.items.forEach((item, index) => {
                 const imageClass = item.image ? ' has-image' : '';
                 const clickAttr = item.image ? ` onclick="openImageModal('${item.image}', '${item.name[lang].replace(/'/g, "\\'")}')"` : '';
                 html += `
-                    <li class="menu-item${imageClass}"${clickAttr}>
+                    <li class="menu-item${imageClass}"${clickAttr} style="transition-delay: ${index * 0.05}s">
                         <span class="item-name">${item.name[lang]}</span>
                         <span class="item-dots"></span>
                         <span class="item-price">${item.price} <span class="currency">${translations[lang].currency}</span></span>
@@ -337,6 +337,12 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
+        }
+        
+        // Parallax Hero Image
+        const heroImage = document.querySelector('.hero-image');
+        if (heroImage) {
+            heroImage.style.transform = `translateY(${window.scrollY * 0.4}px)`;
         }
         
         // Active link spy
