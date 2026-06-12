@@ -76,7 +76,8 @@ body {
     transition: color var(--transition-fast);
 }
 
-.navbar nav a:hover {
+.navbar nav a:hover,
+.navbar nav a.active {
     color: var(--color-primary);
 }
 
@@ -92,8 +93,14 @@ body {
     transition: width var(--transition-fast);
 }
 
-.navbar nav a:hover::after {
+.navbar nav a:hover::after,
+.navbar nav a.active::after {
     width: 100%;
+}
+
+.navbar nav a:active {
+    transform: scale(0.95);
+    color: #fff;
 }
 
 .language-switcher {

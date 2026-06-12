@@ -320,14 +320,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('preferredLang') || 'en';
     setLanguage(savedLang);
 
-    // Navbar scroll effect
+    // Navbar scroll effect and active link spy
     const navbar = document.querySelector('.navbar');
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.navbar nav a');
+    
     window.addEventListener('scroll', () => {
+        let current = '';
+        
+        // Navbar glass effect
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
+        
+        // Active link spy
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (scrollY >= (sectionTop - 200)) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
     });
 
     // Scroll Reveal Animations
