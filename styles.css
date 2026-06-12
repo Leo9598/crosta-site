@@ -406,15 +406,15 @@ section {
 }
 
 .reservations-content {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
-    background: rgba(20, 20, 20, 0.6);
+    background: rgba(20, 20, 20, 0.4);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    padding: 4rem 3rem;
+    padding: 5rem 4rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
 }
 
 .res-subtitle {
@@ -424,18 +424,10 @@ section {
 }
 
 .reservation-form {
-    max-width: 700px;
-    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
-    background: rgba(20, 20, 20, 0.4);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    padding: 4rem;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    width: 100%;
 }
 
 .form-group {
@@ -479,6 +471,7 @@ section {
     margin-top: 1rem;
     width: 100%;
     cursor: pointer;
+    grid-column: 1 / -1;
 }
 
 /* About Section */
@@ -626,6 +619,14 @@ section {
     
     section {
         padding: 5rem 1.5rem;
+    }
+    
+    .reservation-form {
+        grid-template-columns: 1fr;
+    }
+    
+    .reservations-content {
+        padding: 3rem 1.5rem;
     }
 }
 
