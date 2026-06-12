@@ -6,7 +6,7 @@ const menuData = [
                 name: { en: "Egg Dishes", ro: "Preparate din ouă", ru: "Блюда из яиц" },
                 items: [
                     { name: { en: "Poached egg on bread with avocado, lightly salted salmon, young peas", ro: "Ou poșat pe pâine cu avocado, somon ușor sărat, mazăre verde", ru: "Пашот на хлебе с авокадо, малосольной семгой, молодым горошком" }, price: 110, image: 'poached-egg.jpg' },
-                    { name: { en: "Shakshuka with poached egg and goat cheese", ro: "Shakshuka cu ou poșat și brânză de capră", ru: "Шакшука с пашот и козьим сыром" }, price: 75 },
+                    { name: { en: "Shakshuka with poached egg and goat cheese", ro: "Shakshuka cu ou poșat și brânză de capră", ru: "Шакшука с пашот и козьим сыром" }, price: 75, image: 'shakshuka.jpg' },
                     { name: { en: "Souffle omelette with baguette", ro: "Omletă sufleu cu baghetă", ru: "Омлет суфле с багетом" }, price: 55 },
                     { name: { en: "Scramble on sweet potato", ro: "Scramble pe cartof dulce", ru: "Скрэмбл на батате" }, price: 55 },
                     { name: { en: "Scramble on bread with avocado, salmon and red caviar", ro: "Scramble pe pâine cu avocado, somon și icre roșii", ru: "Скрэмбл на хлебе, с авокадо, семгой и красной икрой" }, price: 120 },
