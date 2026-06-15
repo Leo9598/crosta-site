@@ -570,6 +570,26 @@ section {
     letter-spacing: 1px;
 }
 
+/* Map Container */
+.map-container {
+    max-width: 1000px;
+    margin: 4rem auto 0;
+    padding: 0 2rem;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.map-container iframe {
+    border-radius: 16px;
+    filter: invert(90%) hue-rotate(180deg) contrast(100%);
+    opacity: 0.85;
+    transition: all var(--transition-slow);
+}
+
+.map-container iframe:hover {
+    opacity: 1;
+}
+
 /* Animations */
 @keyframes fadeInUp {
     to {
