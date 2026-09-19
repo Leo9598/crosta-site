@@ -124,6 +124,12 @@ const menuData = [
             { name: { en: "Baked mackerel with young potatoes", ro: "Macrou copt cu cartofi noi", ru: "Скумбрия запеченная с молодым картофелем" }, price: 110 },
             { name: { en: "Fish with polenta", ro: "Pește cu mămăligă (polenta)", ru: "Рыба с палентой" }, price: 120 }
         ]
+    },
+    {
+        category: { en: "Desserts", ro: "Deserturi", ru: "Десерты" },
+        items: [
+            { name: { en: "Baklava Tashkent", ro: "Baclava Tașkent", ru: "Пахлава Ташкент" }, price: 150 }
+        ]
     }
 ];
 
