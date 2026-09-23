@@ -128,6 +128,7 @@ const menuData = [
     {
         category: { en: "Desserts", ro: "Deserturi", ru: "Десерты" },
         items: [
+            { name: { en: "Napoleon", ro: "Napoleon", ru: "Наполеон" }, price: 110 },
             { name: { en: "Baklava Tashkent", ro: "Baclava Tașkent", ru: "Пахлава Ташкент" }, price: 150 }
         ]
     }
