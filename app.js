@@ -259,7 +259,7 @@ const translations = {
 
 function setMenuFilter(filterName) {
     currentMenuFilter = filterName;
-    const savedLang = localStorage.getItem('preferredLang') || 'en';
+    const savedLang = localStorage.getItem('preferredLang') || 'ro';
     renderMenu(savedLang);
 }
 
@@ -295,9 +295,13 @@ function renderMenu(lang) {
                 sub.items.forEach((item, index) => {
                     const imageClass = item.image ? ' has-image' : '';
                     const clickAttr = item.image ? ` onclick="openImageModal('${item.image}', '${item.name[lang].replace(/'/g, "\\'")}')"` : '';
+                    const photoBadge = item.image ? `<span class="photo-badge">📷</span>` : '';
                     html += `
-                        <li class="menu-item${imageClass}"${clickAttr} style="transition-delay: ${index * 0.05}s">
-                            <span class="item-name">${item.name[lang]}</span>
+                        <li class="menu-item${imageClass}"${clickAttr} style="transition-delay: ${index * 0.04}s">
+                            <div class="item-info">
+                                <span class="item-name">${item.name[lang]}</span>
+                                ${photoBadge}
+                            </div>
                             <span class="item-dots"></span>
                             <span class="item-price">${item.price} <span class="currency">${translations[lang].currency}</span></span>
                         </li>
@@ -310,9 +314,13 @@ function renderMenu(lang) {
             cat.items.forEach((item, index) => {
                 const imageClass = item.image ? ' has-image' : '';
                 const clickAttr = item.image ? ` onclick="openImageModal('${item.image}', '${item.name[lang].replace(/'/g, "\\'")}')"` : '';
+                const photoBadge = item.image ? `<span class="photo-badge">📷</span>` : '';
                 html += `
-                    <li class="menu-item${imageClass}"${clickAttr} style="transition-delay: ${index * 0.05}s">
-                        <span class="item-name">${item.name[lang]}</span>
+                    <li class="menu-item${imageClass}"${clickAttr} style="transition-delay: ${index * 0.04}s">
+                        <div class="item-info">
+                            <span class="item-name">${item.name[lang]}</span>
+                            ${photoBadge}
+                        </div>
                         <span class="item-dots"></span>
                         <span class="item-price">${item.price} <span class="currency">${translations[lang].currency}</span></span>
                     </li>
@@ -336,13 +344,17 @@ function setLanguage(lang) {
         }
     });
     
+    // Update HTML lang attribute
+    document.documentElement.lang = lang;
+
     renderMenu(lang);
 
     // Update active button
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.remove('active');
     });
-    document.getElementById(`btn-${lang}`).classList.add('active');
+    const activeBtn = document.getElementById(`btn-${lang}`);
+    if (activeBtn) activeBtn.classList.add('active');
     
     // Save preference to localStorage
     localStorage.setItem('preferredLang', lang);
@@ -351,11 +363,31 @@ function setLanguage(lang) {
 // Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
     // Set current year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    // Check for saved language or default to 'en'
-    const savedLang = localStorage.getItem('preferredLang') || 'en';
+    // Check for saved language or default to 'ro'
+    const savedLang = localStorage.getItem('preferredLang') || 'ro';
     setLanguage(savedLang);
+
+    // Close mobile menu when clicking nav links
+    const navbar = document.querySelector('.navbar');
+    const navLinks = document.querySelectorAll('.navbar nav a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (navbar) navbar.classList.remove('nav-open');
+        });
+    });
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+            closeImageModal();
+            if (navbar) navbar.classList.remove('nav-open');
+        }
+    });
+
 
     // Navbar scroll effect and active link spy
     const navbar = document.querySelector('.navbar');
