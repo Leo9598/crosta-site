@@ -9,8 +9,16 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static frontend files
-app.use(express.static(__dirname));
+// Serve static frontend files with fresh cache headers
+app.use(express.static(__dirname, {
+  setHeaders: (res, filepath) => {
+    if (filepath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    } else if (filepath.endsWith('.js') || filepath.endsWith('.css')) {
+      res.setHeader('Cache-Control', 'public, max-age=300, must-revalidate');
+    }
+  }
+}));
 
 // Reservation email endpoint
 app.post('/api/send-email', async (req, res) => {
