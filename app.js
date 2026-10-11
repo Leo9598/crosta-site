@@ -373,6 +373,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close mobile menu when clicking nav links
     const navbar = document.querySelector('.navbar');
     const navLinks = document.querySelectorAll('.navbar nav a');
+    const sections = document.querySelectorAll('section');
+
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             if (navbar) navbar.classList.remove('nav-open');
@@ -388,12 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
     // Navbar scroll effect and active link spy
-    const navbar = document.querySelector('.navbar');
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.navbar nav a');
-    
     window.addEventListener('scroll', () => {
         let current = '';
         
