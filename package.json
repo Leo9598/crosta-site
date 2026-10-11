@@ -4,9 +4,13 @@
   "description": "Crosta Site with Vercel API",
   "main": "index.html",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "nodemailer": "^6.9.13"
   }
 }
+
