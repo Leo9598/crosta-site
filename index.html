@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crosta Kitchen Bakery</title>
     <meta name="description" content="Crosta Kitchen Bakery - Brutărie artizanală și preparate rafinate în Chișinău.">
-    <link rel="stylesheet" href="styles.css?v=2.0">
+    <link rel="stylesheet" href="styles.css?v=3.0">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -14,6 +14,7 @@
         <nav id="main-nav">
             <a href="#menu" data-i18n="navMenu">Meniu</a>
             <a href="#reservations" data-i18n="navReservations">Rezervări</a>
+            <a href="#reviews" data-i18n="navReviews">Recenzii</a>
             <a href="#about" data-i18n="navAbout">Despre Noi</a>
             <a href="#contact" data-i18n="navContact">Contact</a>
         </nav>
@@ -103,6 +104,102 @@
             </div>
         </section>
 
+        <section id="reviews" class="reviews-section reveal">
+            <div class="reviews-container">
+                <div class="reviews-header text-center">
+                    <span class="reviews-badge" data-i18n="reviewsBadge">✦ Experiențe Autentice</span>
+                    <h2 class="section-title" data-i18n="reviewsTitle">Ce Spun Oaspeții Noștri</h2>
+                    <p class="reviews-subtitle" data-i18n="reviewsSubtitle">Păreri sincere despre preparatele noastre, atmosfera caldă, deserturile artizanale și serviciul dedicat.</p>
+                </div>
+
+                <!-- Rating Overview Card -->
+                <div class="reviews-overview-card">
+                    <div class="overview-score-box">
+                        <div class="score-number" id="reviews-avg-score">4.9</div>
+                        <div class="score-stars">★★★★★</div>
+                        <div class="score-count" id="reviews-count-text"><span data-i18n="scoreBasedOn">Bazat pe</span> <span id="reviews-total-count">0</span> <span data-i18n="scoreReviewsWord">recenzii</span></div>
+                    </div>
+
+                    <div class="category-ratings-bars">
+                        <div class="cat-bar-item">
+                            <div class="cat-bar-label">
+                                <span><span class="cat-icon">🍽️</span> <span data-i18n="catFood">Mâncare</span></span>
+                                <strong id="score-food">4.9</strong>
+                            </div>
+                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-food" style="width: 98%"></div></div>
+                        </div>
+                        <div class="cat-bar-item">
+                            <div class="cat-bar-label">
+                                <span><span class="cat-icon">🏛️</span> <span data-i18n="catInterior">Interior & Design</span></span>
+                                <strong id="score-interior">4.9</strong>
+                            </div>
+                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-interior" style="width: 98%"></div></div>
+                        </div>
+                        <div class="cat-bar-item">
+                            <div class="cat-bar-label">
+                                <span><span class="cat-icon">🛎️</span> <span data-i18n="catService">Serviciu & Ospitalitate</span></span>
+                                <strong id="score-service">4.8</strong>
+                            </div>
+                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-service" style="width: 96%"></div></div>
+                        </div>
+                        <div class="cat-bar-item">
+                            <div class="cat-bar-label">
+                                <span><span class="cat-icon">🥐</span> <span data-i18n="catBakery">Cafea & Patiserie</span></span>
+                                <strong id="score-bakery">5.0</strong>
+                            </div>
+                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-bakery" style="width: 100%"></div></div>
+                        </div>
+                        <div class="cat-bar-item">
+                            <div class="cat-bar-label">
+                                <span><span class="cat-icon">✨</span> <span data-i18n="catAtmosphere">Atmosferă & Vibrație</span></span>
+                                <strong id="score-atmosphere">4.9</strong>
+                            </div>
+                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-atmosphere" style="width: 98%"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="overview-action">
+                        <button type="button" class="cta-button write-review-btn" onclick="openReviewModal()">
+                            <span class="btn-icon">✍️</span> <span data-i18n="writeReviewBtn">Lasă o Recenzie</span>
+                        </button>
+                        <div class="action-note" data-i18n="reviewWelcome">Părerea ta ne inspiră în fiecare zi</div>
+                    </div>
+                </div>
+
+                <!-- Reviews Filter Pills -->
+                <div class="reviews-filter-bar" id="reviews-filter-bar">
+                    <button type="button" class="review-filter-btn active" data-filter="all" onclick="filterReviews('all')">
+                        <span data-i18n="filterAll">Toate</span> (<span id="filter-count-all">0</span>)
+                    </button>
+                    <button type="button" class="review-filter-btn" data-filter="food" onclick="filterReviews('food')">
+                        🍽️ <span data-i18n="catFood">Mâncare</span> (<span id="filter-count-food">0</span>)
+                    </button>
+                    <button type="button" class="review-filter-btn" data-filter="interior" onclick="filterReviews('interior')">
+                        🏛️ <span data-i18n="catInterior">Interior</span> (<span id="filter-count-interior">0</span>)
+                    </button>
+                    <button type="button" class="review-filter-btn" data-filter="service" onclick="filterReviews('service')">
+                        🛎️ <span data-i18n="catService">Serviciu</span> (<span id="filter-count-service">0</span>)
+                    </button>
+                    <button type="button" class="review-filter-btn" data-filter="bakery" onclick="filterReviews('bakery')">
+                        🥐 <span data-i18n="catBakery">Patiserie & Cafea</span> (<span id="filter-count-bakery">0</span>)
+                    </button>
+                    <button type="button" class="review-filter-btn" data-filter="atmosphere" onclick="filterReviews('atmosphere')">
+                        ✨ <span data-i18n="catAtmosphere">Atmosferă</span> (<span id="filter-count-atmosphere">0</span>)
+                    </button>
+                </div>
+
+                <!-- Reviews Grid -->
+                <div class="reviews-grid" id="reviews-grid"></div>
+
+                <!-- Load More / Toggle Button -->
+                <div class="reviews-pagination" id="reviews-pagination" style="display: none;">
+                    <button type="button" class="secondary-btn" id="load-more-reviews-btn" onclick="toggleShowAllReviews()">
+                        <span id="load-more-text" data-i18n="loadMoreReviews">Vezi mai multe recenzii</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
         <section id="about" class="about-section reveal">
             <div class="about-content">
                 <h2 class="section-title" data-i18n="aboutTitle">Povestea Noastră</h2>
@@ -153,6 +250,127 @@
         </div>
     </div>
 
-    <script src="app.js?v=2.0"></script>
+    <!-- Add Review Modal -->
+    <div id="review-modal" class="modal-overlay" onclick="closeReviewModal()">
+        <div class="modal-content review-modal-content" onclick="event.stopPropagation()">
+            <span class="close-image" onclick="closeReviewModal()">&times;</span>
+            <div class="modal-icon">✍️</div>
+            <h3 data-i18n="modalReviewTitle">Împărtășește Experiența Ta</h3>
+            <p class="modal-subtitle" data-i18n="modalReviewSubtitle">Feedback-ul tău ne ajută să păstrăm cele mai înalte standarde culinare și de ospitalitate.</p>
+            
+            <form id="review-form" class="review-form">
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="review-name" data-i18n="reviewFormName">Numele Tău *</label>
+                        <input type="text" id="review-name" placeholder="Ex: Alexandru Popa" required>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="review-email" data-i18n="reviewFormEmail">Email (opțional)</label>
+                        <input type="email" id="review-email" placeholder="alex@example.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="reviewFormCategory">Ce aspect dorești să evaluezi în principal? *</label>
+                    <div class="category-selector-pills" id="category-selector">
+                        <button type="button" class="cat-pill active" data-cat="food" onclick="selectReviewCategory('food')">
+                            🍽️ <span data-i18n="catFood">Mâncare</span>
+                        </button>
+                        <button type="button" class="cat-pill" data-cat="interior" onclick="selectReviewCategory('interior')">
+                            🏛️ <span data-i18n="catInterior">Interior</span>
+                        </button>
+                        <button type="button" class="cat-pill" data-cat="service" onclick="selectReviewCategory('service')">
+                            🛎️ <span data-i18n="catService">Serviciu</span>
+                        </button>
+                        <button type="button" class="cat-pill" data-cat="bakery" onclick="selectReviewCategory('bakery')">
+                            🥐 <span data-i18n="catBakery">Patiserie & Cafea</span>
+                        </button>
+                        <button type="button" class="cat-pill" data-cat="atmosphere" onclick="selectReviewCategory('atmosphere')">
+                            ✨ <span data-i18n="catAtmosphere">Atmosferă</span>
+                        </button>
+                    </div>
+                    <input type="hidden" id="review-category-value" value="food">
+                </div>
+
+                <div class="form-group rating-group">
+                    <label data-i18n="reviewFormRating">Notă Generală *</label>
+                    <div class="interactive-star-rating" id="review-stars-group">
+                        <div class="stars-row" id="stars-row">
+                            <span class="star-btn" data-star="1">★</span>
+                            <span class="star-btn" data-star="2">★</span>
+                            <span class="star-btn" data-star="3">★</span>
+                            <span class="star-btn" data-star="4">★</span>
+                            <span class="star-btn active" data-star="5">★</span>
+                        </div>
+                        <span class="rating-label" id="rating-label-text">5 / 5 — Excelent</span>
+                    </div>
+                    <input type="hidden" id="review-rating-value" value="5">
+                </div>
+
+                <!-- Individual aspect ratings (optional toggle) -->
+                <div class="aspect-ratings-box">
+                    <div class="aspect-ratings-title" data-i18n="aspectRatingsTitle">Evaluare pe categorii (opțional)</div>
+                    <div class="aspect-ratings-grid">
+                        <div class="aspect-row">
+                            <span class="aspect-name"><span class="cat-icon">🍽️</span> <span data-i18n="catFood">Mâncare</span></span>
+                            <div class="mini-stars" data-aspect="food">
+                                <span class="mini-star active" data-val="1">★</span>
+                                <span class="mini-star active" data-val="2">★</span>
+                                <span class="mini-star active" data-val="3">★</span>
+                                <span class="mini-star active" data-val="4">★</span>
+                                <span class="mini-star active" data-val="5">★</span>
+                            </div>
+                        </div>
+                        <div class="aspect-row">
+                            <span class="aspect-name"><span class="cat-icon">🏛️</span> <span data-i18n="catInterior">Interior</span></span>
+                            <div class="mini-stars" data-aspect="interior">
+                                <span class="mini-star active" data-val="1">★</span>
+                                <span class="mini-star active" data-val="2">★</span>
+                                <span class="mini-star active" data-val="3">★</span>
+                                <span class="mini-star active" data-val="4">★</span>
+                                <span class="mini-star active" data-val="5">★</span>
+                            </div>
+                        </div>
+                        <div class="aspect-row">
+                            <span class="aspect-name"><span class="cat-icon">🛎️</span> <span data-i18n="catService">Serviciu</span></span>
+                            <div class="mini-stars" data-aspect="service">
+                                <span class="mini-star active" data-val="1">★</span>
+                                <span class="mini-star active" data-val="2">★</span>
+                                <span class="mini-star active" data-val="3">★</span>
+                                <span class="mini-star active" data-val="4">★</span>
+                                <span class="mini-star active" data-val="5">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="review-text" data-i18n="reviewFormText">Mesajul / Impresia Ta *</label>
+                    <textarea id="review-text" rows="4" placeholder="Ce ți-a plăcut cel mai mult la preparate, ambianță sau serviciu?" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="review-highlight" data-i18n="reviewFormHighlight">Ce preparat sau detaliu recomanzi altora? (opțional)</label>
+                    <input type="text" id="review-highlight" placeholder="Ex: Shakshuka cu brânză de capră, Pâine artizanală">
+                </div>
+
+                <button type="submit" class="cta-button res-submit" id="review-submit-btn">
+                    <span data-i18n="reviewFormSubmit">Publică Recenzia</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Review Success Modal -->
+    <div id="review-success-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">🌟</div>
+            <h3 data-i18n="reviewSuccessTitle">Recenzie Înregistrată!</h3>
+            <p data-i18n="reviewSuccessMsg">Îți mulțumim din suflet pentru feedback și pentru că ne ajuți să devenim mai buni în fiecare zi.</p>
+            <button type="button" class="cta-button modal-close" onclick="closeReviewSuccessModal()" data-i18n="resSuccessClose">Închide</button>
+        </div>
+    </div>
+
+    <script src="app.js?v=3.0"></script>
 </body>
 </html>
