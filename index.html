@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crosta Kitchen Bakery</title>
-    <meta name="description" content="Crosta Kitchen Bakery - Brutărie artizanală și preparate rafinate în Chișinău.">
-    <link rel="stylesheet" href="styles.css?v=3.0">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Crosta Kitchen Bakery | Brutărie Artizanală & Bistro Chișinău</title>
+    <meta name="description" content="Crosta Kitchen Bakery - Brutărie artizanală cu maia, mic dejun toute la journée, preparate rafinate și cafea de specialitate pe Strada Miron Costin 13/7, Chișinău.">
+    <link rel="stylesheet" href="styles.css?v=4.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="navbar">
-        <div class="logo">Crosta Kitchen Bakery</div>
+    <header class="navbar" id="site-header">
+        <a href="#" class="logo">
+            <span class="logo-main">CROSTA</span>
+            <span class="logo-sub">KITCHEN BAKERY</span>
+        </a>
         <nav id="main-nav">
             <a href="#menu" data-i18n="navMenu">Meniu</a>
+            <a href="#signature-highlights" data-i18n="navHighlights">Specialități</a>
             <a href="#reservations" data-i18n="navReservations">Rezervări</a>
             <a href="#reviews" data-i18n="navReviews">Recenzii</a>
             <a href="#about" data-i18n="navAbout">Despre Noi</a>
@@ -24,6 +30,7 @@
                 <button onclick="setLanguage('en')" class="lang-btn" id="btn-en">EN</button>
                 <button onclick="setLanguage('ru')" class="lang-btn" id="btn-ru">RU</button>
             </div>
+            <a href="#reservations" class="header-cta-btn" data-i18n="headerBookBtn">Rezervă o Masă</a>
             <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Deschide meniul de navigare">
                 <span></span>
                 <span></span>
@@ -33,50 +40,121 @@
     </header>
 
     <main>
+        <!-- Hero Section -->
         <section class="hero">
             <div class="hero-overlay"></div>
             <img src="hero.jpg" alt="Crosta Kitchen Bakery Interior" class="hero-image">
             <div class="hero-content">
+                <div class="hero-brand-pill">
+                    <span class="hero-dot"></span>
+                    <span data-i18n="heroPillTop">Brutărie & Bucătărie Artizanală • Chișinău</span>
+                </div>
                 <h1 data-i18n="heroTitle">O Experiență Culinară Premium</h1>
-                <p data-i18n="heroSubtitle">Descoperiți cele mai fine creații culinare într-o atmosferă elegantă.</p>
-                <a href="#menu" class="cta-button" data-i18n="heroCta">Explorează Meniul</a>
+                <p data-i18n="heroSubtitle">Panificație cu maia dospită lent 72 de ore, mic dejun servit toată ziua și preparate gastronomice rafinate într-o atmosferă luminoasă și călduroasă.</p>
+                <div class="hero-actions">
+                    <a href="#menu" class="cta-button" data-i18n="heroCta">Explorează Meniul</a>
+                    <a href="#reservations" class="cta-button cta-secondary" data-i18n="heroResCta">Rezervă o Masă</a>
+                </div>
+
+                <div class="hero-badges">
+                    <span class="hero-badge-item">🌾 <span data-i18n="heroPill1">Aluat cu Maia 72h</span></span>
+                    <span class="hero-badge-item">🍳 <span data-i18n="heroPill2">Mic Dejun 9:00 - 21:00</span></span>
+                    <span class="hero-badge-item">☕ <span data-i18n="heroPill3">Cafea de Specialitate</span></span>
+                    <a href="#reviews" class="hero-badge-item rating-item">
+                        <span class="hero-badge-stars">★ 4.8</span>
+                        <span data-i18n="heroPillRating">Rating Excelent</span>
+                    </a>
+                </div>
             </div>
         </section>
 
+        <!-- Menu Section -->
         <section id="menu" class="menu-section reveal">
-            <h2 class="section-title" data-i18n="menuTitle">Meniul Nostru Semnătură</h2>
+            <div class="menu-header text-center">
+                <span class="menu-badge" data-i18n="menuBadge">✦ Gastronomie & Panificație Artizanală</span>
+                <h2 class="section-title" data-i18n="menuTitle">Meniul Nostru Semnătură</h2>
+                <p class="menu-subtitle" data-i18n="menuSubtitle">Rețete create cu ingrediente curate de la ferme partenere, aluat dospit lent cu maia și pasiune pentru arome pure.</p>
+            </div>
+
+            <!-- Signature Highlights Section -->
+            <div class="signature-highlights-container" id="signature-highlights">
+                <div class="signature-highlights-header">
+                    <div>
+                        <h3 class="highlights-heading" data-i18n="signatureHighlightsTitle">✨ Specialitățile Bucătarului & Brutăriei</h3>
+                        <p class="highlights-subheading" data-i18n="signatureHighlightsSub">Cele mai iubite creații ale oaspeților noștri, ilustrate cu fotografii autentice</p>
+                    </div>
+                </div>
+                <div class="signature-cards-grid" id="signature-cards-grid">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </div>
+
+            <!-- Menu Search & Filter Controls -->
+            <div class="menu-controls-wrapper">
+                <div class="menu-search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="menu-search-input" placeholder="Caută un preparat sau ingredient (ex: somon, shakshuka, burrata)..." data-i18n-placeholder="searchPlaceholder" oninput="handleMenuSearch(this.value)">
+                    <button type="button" class="search-clear-btn" id="search-clear-btn" onclick="clearMenuSearch()" style="display: none;" title="Șterge căutarea">&times;</button>
+                </div>
+
+                <div class="dietary-tags-bar" id="dietary-tags-bar">
+                    <button type="button" class="dietary-btn active" data-dietary="all" onclick="setDietaryFilter('all')">
+                        <span data-i18n="filterAllDietary">Toate Preparatele</span>
+                    </button>
+                    <button type="button" class="dietary-btn" data-dietary="signature" onclick="setDietaryFilter('signature')">
+                        ⭐ <span data-i18n="tagSignature">Semnătură</span>
+                    </button>
+                    <button type="button" class="dietary-btn" data-dietary="vegetarian" onclick="setDietaryFilter('vegetarian')">
+                        🌱 <span data-i18n="tagVegetarian">Vegetarian</span>
+                    </button>
+                    <button type="button" class="dietary-btn" data-dietary="fish" onclick="setDietaryFilter('fish')">
+                        🐟 <span data-i18n="tagFish">Pește & Fructe de mare</span>
+                    </button>
+                    <button type="button" class="dietary-btn" data-dietary="photo" onclick="setDietaryFilter('photo')">
+                        📷 <span data-i18n="tagWithPhotos">Cu Fotografii</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Category Filter Tabs -->
             <div id="menu-filters" class="menu-filters"></div>
+
+            <!-- Dynamic Menu Items List -->
             <div id="dynamic-menu" class="dynamic-menu-container"></div>
             
             <div class="menu-footnotes">
-                <h4 class="footnotes-title" data-i18n="footnotesTitle">Note / Legendă</h4>
-                <ul>
-                    <li data-i18n="note1">Ne bucurăm să vă servim micul dejun de la 9:00 la 21:00</li>
-                    <li data-i18n="note2">Meniul principal este servit de la 12:00 la 23:00</li>
-                    <li data-i18n="note3">🌶️ — picant sau condimentat</li>
-                    <li data-i18n="note4">🐟 — atenție: oase de pește</li>
-                    <li data-i18n="note5">🧄 — conține usturoi</li>
+                <h4 class="footnotes-title" data-i18n="footnotesTitle">Note & Legendă Meniu</h4>
+                <ul class="footnotes-grid">
+                    <li data-i18n="note1">🍳 Ne bucurăm să vă servim micul dejun de la 9:00 la 21:00</li>
+                    <li data-i18n="note2">🍽️ Meniul principal este servit de la 12:00 la 23:00</li>
+                    <li data-i18n="note3">🌶️ — preparat picant sau condimentat</li>
+                    <li data-i18n="note4">🐟 — atenție: poate conține oase de pește</li>
+                    <li data-i18n="note5">🧄 — conține usturoi proaspăt</li>
                     <li data-i18n="note6">⏱️ — prepararea durează mai mult de 25 minute</li>
-                    <li data-i18n="note7">Dacă aveți alergii sau preferințe alimentare, vă rugăm să ne anunțați</li>
+                    <li data-i18n="note7">🌱 Dacă aveți alergii sau preferințe alimentare, vă rugăm să ne anunțați</li>
                 </ul>
             </div>
         </section>
 
+        <!-- Reservations Section -->
         <section id="reservations" class="reservations-section reveal">
             <div class="reservations-content">
+                <div class="res-badge-wrap text-center">
+                    <span class="res-badge" data-i18n="resBadge">✦ Ospitalitate Dedicată</span>
+                </div>
                 <h2 class="section-title" data-i18n="resTitle">Faceți o Rezervare</h2>
-                <p data-i18n="resSubtitle" class="res-subtitle">Rezervați o masă pentru a vă bucura de o experiență culinară de neuitat.</p>
+                <p data-i18n="resSubtitle" class="res-subtitle">Rezervați o masă pentru a vă bucura de o experiență culinară de neuitat într-o ambianță caldă și luminoasă.</p>
                 <form class="reservation-form" id="reservation-form">
                     <div class="form-group">
-                        <label for="res-name" data-i18n="resName">Nume</label>
+                        <label for="res-name" data-i18n="resName">Nume și Prenume *</label>
                         <input type="text" id="res-name" placeholder="Ex: Alexandru Popa" required>
                     </div>
                     <div class="form-group">
-                        <label for="res-date" data-i18n="resDate">Data</label>
+                        <label for="res-date" data-i18n="resDate">Data Rezervării *</label>
                         <input type="date" id="res-date" required>
                     </div>
                     <div class="form-group">
-                        <label for="res-time" data-i18n="resTime">Ora</label>
+                        <label for="res-time" data-i18n="resTime">Ora Sosirii *</label>
                         <select id="res-time" required>
                             <option value="08:00">08:00</option>
                             <option value="09:00">09:00</option>
@@ -96,14 +174,15 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="res-guests" data-i18n="resGuests">Număr de persoane</label>
-                        <input type="number" id="res-guests" min="1" max="20" value="2" required>
+                        <label for="res-guests" data-i18n="resGuests">Număr de persoane *</label>
+                        <input type="number" id="res-guests" min="1" max="25" value="2" required>
                     </div>
-                    <button type="submit" class="cta-button res-submit" data-i18n="resSubmit">Rezervă Masa</button>
+                    <button type="submit" class="cta-button res-submit" data-i18n="resSubmit">Confirmă Rezervarea</button>
                 </form>
             </div>
         </section>
 
+        <!-- Reviews Section with 4.8 Rating -->
         <section id="reviews" class="reviews-section reveal">
             <div class="reviews-container">
                 <div class="reviews-header text-center">
@@ -112,49 +191,61 @@
                     <p class="reviews-subtitle" data-i18n="reviewsSubtitle">Păreri sincere despre preparatele noastre, atmosfera caldă, deserturile artizanale și serviciul dedicat.</p>
                 </div>
 
-                <!-- Rating Overview Card -->
+                <!-- Rating Overview Card: 4.8 Rating -->
                 <div class="reviews-overview-card">
                     <div class="overview-score-box">
-                        <div class="score-number" id="reviews-avg-score">4.9</div>
-                        <div class="score-stars">★★★★★</div>
-                        <div class="score-count" id="reviews-count-text"><span data-i18n="scoreBasedOn">Bazat pe</span> <span id="reviews-total-count">0</span> <span data-i18n="scoreReviewsWord">recenzii</span></div>
+                        <div class="score-number-wrap">
+                            <span class="score-number" id="reviews-avg-score">4.8</span>
+                            <span class="score-out-of">/ 5.0</span>
+                        </div>
+                        <div class="score-stars-visual" id="reviews-stars-visual" aria-label="Rating 4.8 din 5">
+                            <span class="star-gold">★</span>
+                            <span class="star-gold">★</span>
+                            <span class="star-gold">★</span>
+                            <span class="star-gold">★</span>
+                            <span class="star-partial" style="--fill: 80%">★</span>
+                        </div>
+                        <div class="score-sentiment-badge" data-i18n="scoreSentiment">Excelent</div>
+                        <div class="score-count" id="reviews-count-text">
+                            <span data-i18n="scoreBasedOn">Bazat pe</span> <span id="reviews-total-count">8</span> <span data-i18n="scoreReviewsWord">recenzii</span>
+                        </div>
                     </div>
 
                     <div class="category-ratings-bars">
                         <div class="cat-bar-item">
                             <div class="cat-bar-label">
                                 <span><span class="cat-icon">🍽️</span> <span data-i18n="catFood">Mâncare</span></span>
-                                <strong id="score-food">4.9</strong>
+                                <strong id="score-food">4.8</strong>
                             </div>
-                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-food" style="width: 98%"></div></div>
+                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-food" style="width: 96%"></div></div>
                         </div>
                         <div class="cat-bar-item">
                             <div class="cat-bar-label">
                                 <span><span class="cat-icon">🏛️</span> <span data-i18n="catInterior">Interior & Design</span></span>
-                                <strong id="score-interior">4.9</strong>
+                                <strong id="score-interior">4.8</strong>
                             </div>
-                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-interior" style="width: 98%"></div></div>
+                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-interior" style="width: 96%"></div></div>
                         </div>
                         <div class="cat-bar-item">
                             <div class="cat-bar-label">
                                 <span><span class="cat-icon">🛎️</span> <span data-i18n="catService">Serviciu & Ospitalitate</span></span>
-                                <strong id="score-service">4.8</strong>
+                                <strong id="score-service">4.7</strong>
                             </div>
-                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-service" style="width: 96%"></div></div>
+                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-service" style="width: 94%"></div></div>
                         </div>
                         <div class="cat-bar-item">
                             <div class="cat-bar-label">
-                                <span><span class="cat-icon">🥐</span> <span data-i18n="catBakery">Cafea & Patiserie</span></span>
-                                <strong id="score-bakery">5.0</strong>
+                                <span><span class="cat-icon">🥐</span> <span data-i18n="catBakery">Patiserie & Cafea</span></span>
+                                <strong id="score-bakery">4.9</strong>
                             </div>
-                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-bakery" style="width: 100%"></div></div>
+                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-bakery" style="width: 98%"></div></div>
                         </div>
                         <div class="cat-bar-item">
                             <div class="cat-bar-label">
                                 <span><span class="cat-icon">✨</span> <span data-i18n="catAtmosphere">Atmosferă & Vibrație</span></span>
-                                <strong id="score-atmosphere">4.9</strong>
+                                <strong id="score-atmosphere">4.8</strong>
                             </div>
-                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-atmosphere" style="width: 98%"></div></div>
+                            <div class="cat-bar-track"><div class="cat-bar-fill" id="bar-atmosphere" style="width: 96%"></div></div>
                         </div>
                     </div>
 
@@ -169,22 +260,22 @@
                 <!-- Reviews Filter Pills -->
                 <div class="reviews-filter-bar" id="reviews-filter-bar">
                     <button type="button" class="review-filter-btn active" data-filter="all" onclick="filterReviews('all')">
-                        <span data-i18n="filterAll">Toate</span> (<span id="filter-count-all">0</span>)
+                        <span data-i18n="filterAll">Toate</span> (<span id="filter-count-all">8</span>)
                     </button>
                     <button type="button" class="review-filter-btn" data-filter="food" onclick="filterReviews('food')">
-                        🍽️ <span data-i18n="catFood">Mâncare</span> (<span id="filter-count-food">0</span>)
+                        🍽️ <span data-i18n="catFood">Mâncare</span> (<span id="filter-count-food">3</span>)
                     </button>
                     <button type="button" class="review-filter-btn" data-filter="interior" onclick="filterReviews('interior')">
-                        🏛️ <span data-i18n="catInterior">Interior</span> (<span id="filter-count-interior">0</span>)
+                        🏛️ <span data-i18n="catInterior">Interior</span> (<span id="filter-count-interior">2</span>)
                     </button>
                     <button type="button" class="review-filter-btn" data-filter="service" onclick="filterReviews('service')">
-                        🛎️ <span data-i18n="catService">Serviciu</span> (<span id="filter-count-service">0</span>)
+                        🛎️ <span data-i18n="catService">Serviciu</span> (<span id="filter-count-service">1</span>)
                     </button>
                     <button type="button" class="review-filter-btn" data-filter="bakery" onclick="filterReviews('bakery')">
-                        🥐 <span data-i18n="catBakery">Patiserie & Cafea</span> (<span id="filter-count-bakery">0</span>)
+                        🥐 <span data-i18n="catBakery">Patiserie & Cafea</span> (<span id="filter-count-bakery">1</span>)
                     </button>
                     <button type="button" class="review-filter-btn" data-filter="atmosphere" onclick="filterReviews('atmosphere')">
-                        ✨ <span data-i18n="catAtmosphere">Atmosferă</span> (<span id="filter-count-atmosphere">0</span>)
+                        ✨ <span data-i18n="catAtmosphere">Atmosferă</span> (<span id="filter-count-atmosphere">1</span>)
                     </button>
                 </div>
 
@@ -200,19 +291,64 @@
             </div>
         </section>
 
+        <!-- About Section -->
         <section id="about" class="about-section reveal">
-            <div class="about-content">
-                <h2 class="section-title" data-i18n="aboutTitle">Povestea Noastră</h2>
-                <p data-i18n="aboutDesc">La Crosta Kitchen Bakery, credem în crearea unor experiențe culinare memorabile. Folosim cele mai bune ingrediente pentru a vă oferi preparate rafinate, create cu pasiune și expertiză culinară.</p>
+            <div class="about-container">
+                <div class="about-header text-center">
+                    <span class="about-badge" data-i18n="aboutBadge">✦ Pasiune & Tradiție</span>
+                    <h2 class="section-title" data-i18n="aboutTitle">Povestea Noastră</h2>
+                    <p class="about-subtitle" data-i18n="aboutDesc">La Crosta Kitchen Bakery, credem în crearea unor experiențe culinare memorabile. Folosim ingrediente pure pentru a vă oferi preparate rafinate, create cu pasiune și expertiză culinară.</p>
+                </div>
+
+                <div class="about-pillars-grid">
+                    <div class="about-pillar-card">
+                        <div class="pillar-icon">🥖</div>
+                        <h3 data-i18n="pillar1Title">Panificație cu Maia 72h</h3>
+                        <p data-i18n="pillar1Desc">Pâine și baghete artizanale dospite lent până la 72 de ore cu maia sălbatică vie, pentru o coajă crocantă, miez aerat și digestibilitate ușoară.</p>
+                    </div>
+                    <div class="about-pillar-card">
+                        <div class="pillar-icon">🌿</div>
+                        <h3 data-i18n="pillar2Title">Ingrediente Curate & Locale</h3>
+                        <p data-i18n="pillar2Desc">Colaborăm direct cu mici fermieri locali pentru brânzeturi de fermă, somon de calitate, legume proaspăt recoltate și unt autentic.</p>
+                    </div>
+                    <div class="about-pillar-card">
+                        <div class="pillar-icon">☕</div>
+                        <h3 data-i18n="pillar3Title">Cafea de Origine & Ambianță</h3>
+                        <p data-i18n="pillar3Desc">Un spațiu primitor cu design scandinav pe Strada Miron Costin, arome calde de patiserie proaspătă și cafea de specialitate proaspăt prăjită.</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
+    <!-- Footer -->
     <footer id="contact" class="footer">
         <div class="footer-content">
-            <h3 data-i18n="footerTitle">Vizitează-ne</h3>
-            <p data-i18n="footerAddress"><a href="https://maps.google.com/maps?q=Strada%20Miron%20Costin%2013/7,%20Chisinau" target="_blank" rel="noopener" class="footer-link">Chișinău MD, Strada Miron Costin 13/7, MD-2000</a></p>
-            <p data-i18n="footerHours">Deschis Zilnic: 8:00 - 22:00</p>
+            <div class="footer-brand">
+                <div class="footer-logo">CROSTA KITCHEN BAKERY</div>
+                <p class="footer-tagline" data-i18n="footerTagline">Brutărie artizanală, bucătărie rafinată și cafea de specialitate.</p>
+                <div class="footer-status-pill">
+                    <span class="status-indicator"></span>
+                    <span data-i18n="footerOpenStatus">Deschis Zilnic: 8:00 - 22:00</span>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h3 data-i18n="footerTitle">Locație & Adresă</h3>
+                <p data-i18n="footerAddress">
+                    <a href="https://maps.google.com/maps?q=Strada%20Miron%20Costin%2013/7,%20Chisinau" target="_blank" rel="noopener" class="footer-link">
+                        📍 Chișinău MD, Strada Miron Costin 13/7, MD-2000
+                    </a>
+                </p>
+                <p class="footer-note" data-i18n="footerAddressNote">Parcare comodă în fața restaurantului</p>
+            </div>
+
+            <div class="footer-col">
+                <h3 data-i18n="footerHoursTitle">Program</h3>
+                <p data-i18n="footerBreakfastHours">🍳 Mic Dejun: 9:00 - 21:00</p>
+                <p data-i18n="footerMainHours">🍽️ Meniu Principal: 12:00 - 23:00</p>
+                <p data-i18n="footerBakeryHours">🥖 Patiserie & Cafea: de la 8:00</p>
+            </div>
         </div>
 
         <div class="map-container">
@@ -222,7 +358,8 @@
                 height="320" 
                 style="border:0;" 
                 allowfullscreen="" 
-                loading="lazy">
+                loading="lazy"
+                title="Locația Crosta Kitchen Bakery pe Google Maps">
             </iframe>
         </div>
 
@@ -231,7 +368,36 @@
         </div>
     </footer>
 
-    <!-- Image Modal -->
+    <!-- Dish Details Modal -->
+    <div id="dish-modal" class="modal-overlay" onclick="closeDishModal()">
+        <div class="modal-content dish-modal-content" onclick="event.stopPropagation()">
+            <span class="close-image" onclick="closeDishModal()">&times;</span>
+            <div class="dish-modal-media" id="dish-modal-media">
+                <img id="dish-modal-image" src="" alt="Preparat Crosta">
+            </div>
+            <div class="dish-modal-body">
+                <div class="dish-modal-tags" id="dish-modal-tags"></div>
+                <div class="dish-modal-header">
+                    <h3 id="dish-modal-title"></h3>
+                    <div class="dish-modal-price-wrap">
+                        <span id="dish-modal-price" class="dish-modal-price"></span>
+                        <span id="dish-modal-weight" class="dish-modal-weight"></span>
+                    </div>
+                </div>
+                <p class="dish-modal-description" id="dish-modal-description"></p>
+                <div class="dish-modal-allergens" id="dish-modal-allergens-wrap">
+                    <span class="allergens-label" data-i18n="dishModalAllergens">Ingrediente & Note:</span>
+                    <span id="dish-modal-allergens"></span>
+                </div>
+                <div class="dish-modal-footer">
+                    <a href="#reservations" class="cta-button" onclick="reserveForDish()" data-i18n="reserveThisDish">Rezervă o Masă pentru Acest Preparat</a>
+                    <button type="button" class="secondary-btn" onclick="closeDishModal()" data-i18n="resSuccessClose">Închide</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Preview Modal -->
     <div id="image-modal" class="modal-overlay" onclick="closeImageModal()">
         <div class="modal-image-content" onclick="event.stopPropagation()">
             <span class="close-image" onclick="closeImageModal()">&times;</span>
@@ -307,7 +473,7 @@
                     <input type="hidden" id="review-rating-value" value="5">
                 </div>
 
-                <!-- Individual aspect ratings (optional toggle) -->
+                <!-- Aspect breakdown -->
                 <div class="aspect-ratings-box">
                     <div class="aspect-ratings-title" data-i18n="aspectRatingsTitle">Evaluare pe categorii (opțional)</div>
                     <div class="aspect-ratings-grid">
@@ -351,7 +517,7 @@
 
                 <div class="form-group">
                     <label for="review-highlight" data-i18n="reviewFormHighlight">Ce preparat sau detaliu recomanzi altora? (opțional)</label>
-                    <input type="text" id="review-highlight" placeholder="Ex: Shakshuka cu brânză de capră, Pâine artizanală">
+                    <input type="text" id="review-highlight" placeholder="Ex: Shakshuka cu brânză de capră, Burrata, Pâine artizanală">
                 </div>
 
                 <button type="submit" class="cta-button res-submit" id="review-submit-btn">
@@ -371,6 +537,14 @@
         </div>
     </div>
 
-    <script src="app.js?v=3.0"></script>
+    <!-- Floating Back to Top Button -->
+    <button type="button" id="back-to-top-btn" class="back-to-top-btn" onclick="scrollToTop()" aria-label="Înapoi sus">
+        ↑
+    </button>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js?v=4.0"></script>
 </body>
 </html>

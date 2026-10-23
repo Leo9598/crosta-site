@@ -1,262 +1,846 @@
 let currentMenuFilter = 'All';
+let currentDietaryFilter = 'all';
+let currentMenuSearchQuery = '';
+
+// High-resolution signature photos
+const signatureDishes = [
+    {
+        id: "sig-poached-egg",
+        name: {
+            ro: "Ou poșat cu avocado, somon & mazăre verde",
+            en: "Poached egg with avocado, cured salmon & young peas",
+            ru: "Пашот с авокадо, малосольным лососем и горошком"
+        },
+        category: { ro: "Mic Dejun", en: "Breakfasts", ru: "Завтраки" },
+        price: 110,
+        weight: "320g",
+        image: "poached-egg.jpg",
+        badge: { ro: "⭐ Semnătură", en: "⭐ Signature", ru: "⭐ Фирменное" },
+        tags: ["signature", "fish"],
+        description: {
+            ro: "Pâine artizanală cu maia rumenită pe vatră, avocado cremos hass, somon marinat delicat în casă, două ouă poșate bio și mazăre verde dulce.",
+            en: "Artisanal toasted sourdough, creamy hass avocado, house-cured salmon, two organic poached eggs, and tender young green peas.",
+            ru: "Подрумяненный ремесленный тартин, нежный авокадо хасс, слабосоленый лосось собственного посола, два яйца пашот и молодой зеленый горошек."
+        },
+        allergens: {
+            ro: "Gluten (grâu), Ouă, Pește, Semințe de susan",
+            en: "Gluten (wheat), Eggs, Fish, Sesame seeds",
+            ru: "Глютен (пшеница), Яйца, Рыба, Семена кунжута"
+        }
+    },
+    {
+        id: "sig-shakshuka",
+        name: {
+            ro: "Shakshuka artizanală cu brânză de capră",
+            en: "Artisanal Shakshuka with goat cheese",
+            ru: "Шакшука с пашот и козьим сыром"
+        },
+        category: { ro: "Mic Dejun", en: "Breakfasts", ru: "Завтраки" },
+        price: 75,
+        weight: "380g",
+        image: "shakshuka.jpg",
+        badge: { ro: "🌿 Vegetarian", en: "🌿 Vegetarian", ru: "🌿 Вегетарианское" },
+        tags: ["signature", "vegetarian"],
+        description: {
+            ro: "Sos catifelat din roșii coapte, ardei gras dulce, usturoi copt și chimion oriental, cu ouă poșate moi, brânză fină de capră și pâine caldă cu maia.",
+            en: "Rich stewed tomato sauce with sweet peppers, roasted garlic and aromatic cumin, soft poached eggs, crumbled goat cheese, and warm sourdough.",
+            ru: "Густой пряный соус из печеных томатов, сладкого перца, чеснока и кумина, нежные яйца пашот, козий сыр и теплая домашняя чиабатта."
+        },
+        allergens: {
+            ro: "Ouă, Lactoză (brânză de capră), Gluten",
+            en: "Eggs, Lactose (goat cheese), Gluten",
+            ru: "Яйца, Лактоза (козий сыр), Глютен"
+        }
+    },
+    {
+        id: "sig-burrata",
+        name: {
+            ro: "Burrata cremoasă cu roșii dulci & lipie caldă",
+            en: "Creamy Burrata with heirloom tomatoes & warm pita",
+            ru: "Буратта с томатами и теплой домашней питой"
+        },
+        category: { ro: "Gustări", en: "Appetizers", ru: "Закуски" },
+        price: 105,
+        weight: "340g",
+        image: "burrata.jpg",
+        badge: { ro: "⭐ Semnătură", en: "⭐ Signature", ru: "⭐ Фирменное" },
+        tags: ["signature", "vegetarian"],
+        description: {
+            ro: "Burrata proaspătă cu inimă cremoasă, roșii cherry coapte la cuptor, busuioc proaspăt, glazură balsamică, ulei extravirgin și lipie artizanală caldă.",
+            en: "Fresh Italian burrata with a creamy stracciatella heart, roasted heirloom cherry tomatoes, fresh basil, aged balsamic, extra virgin olive oil, and hot pita.",
+            ru: "Нежнейшая кремовая буратта, сладкие печеные томаты черри, свежий базилик, бальзамическая глазурь, оливковое масло и горячая домашняя пита."
+        },
+        allergens: {
+            ro: "Lactoză (lapte de bivoliță/vacă), Gluten",
+            en: "Lactose (dairy), Gluten",
+            ru: "Лактоза (молочные продукты), Глютен"
+        }
+    },
+    {
+        id: "sig-beef-cheeks",
+        name: {
+            ro: "Fălci de vită la cuptor cu piure mătăsos",
+            en: "Slow-braised beef cheeks with velvety mash",
+            ru: "Томленые говяжьи щечки с нежным пюре"
+        },
+        category: { ro: "Feluri principale", en: "Hot Dishes with Side", ru: "Горячие блюда с гарниром" },
+        price: 120,
+        weight: "380g",
+        image: "beef-cheeks.jpg",
+        badge: { ro: "🔥 La Cuptor 8h", en: "🔥 Slow Cooked 8h", ru: "🔥 Томление 8 часов" },
+        tags: ["signature"],
+        description: {
+            ro: "Fălci de vită fragede gătite lent timp de 8 ore în reducție bogată de vin roșu și cimbru proaspăt, servite pe un pat de piure catifelat de cartofi cu unt.",
+            en: "Tender beef cheeks braised for 8 hours in a rich red wine reduction and fresh thyme, served atop velvety butter-whipped potato mash.",
+            ru: "Тающие во рту говяжьи щечки, томленные 8 часов в соусе из сухого красного вина и тимьяна, на подушке из сливочного картофельного пюре."
+        },
+        allergens: {
+            ro: "Lactoză (unt, lapte), Sulfiți (reducție de vin)",
+            en: "Lactose (butter, milk), Sulfites (wine reduction)",
+            ru: "Лактоза (сливочное масло, молоко), Сульфиты (винный соус)"
+        }
+    },
+    {
+        id: "sig-omelette",
+        name: {
+            ro: "Omletă sufleu aerată cu baghetă artizanală",
+            en: "Fluffy Souffle omelette with crisp baguette",
+            ru: "Воздушный омлет-суфле с французским багетом"
+        },
+        category: { ro: "Mic Dejun", en: "Breakfasts", ru: "Завтраки" },
+        price: 55,
+        weight: "260g",
+        image: "omelette.jpg",
+        badge: { ro: "🍳 Specialitate", en: "🍳 Specialty", ru: "🍳 Фирменное" },
+        tags: ["signature", "vegetarian"],
+        description: {
+            ro: "Omletă bătută spumă și gătită delicat ca un sufleu, cu textură ușoară și cremoasă, servită cu baghetă franțuzească crocantă și unt aromat de casă.",
+            en: "Whipped cloud-like souffle omelette gently baked to a golden finish, served with crispy French artisanal baguette and house compound butter.",
+            ru: "Взбитый пышный омлет, запеченный до воздушной текстуры суфле, подается с хрустящим багетом и домашним сливочным маслом с травами."
+        },
+        allergens: {
+            ro: "Ouă, Lactoză, Gluten",
+            en: "Eggs, Lactose, Gluten",
+            ru: "Яйца, Лактоза, Глютен"
+        }
+    },
+    {
+        id: "sig-pastry-coffee",
+        name: {
+            ro: "Croissant franțuzesc cu unt & Cappuccino artizanal",
+            en: "French butter croissant & artisanal Cappuccino",
+            ru: "Французский круассан и авторский капучино"
+        },
+        category: { ro: "Brutărie & Cafea", en: "Bakery & Coffee", ru: "Выпечка и кофе" },
+        price: 65,
+        weight: "220g",
+        image: "pastry-coffee.jpg",
+        badge: { ro: "🥐 100% Unt", en: "🥐 Pure Butter", ru: "🥐 100% Масло" },
+        tags: ["signature", "bakery"],
+        description: {
+            ro: "Croissant clasic franțuzesc rulat manual cu 100% unt veritabil, având coaja aurie și sfărâmicioasă, însoțit de un cappuccino cremos preparat din boabe de cafea de specialitate.",
+            en: "Handcrafted classic French croissant made with 100% pure butter, golden crisp layers, paired with our velvety specialty-grade cappuccino.",
+            ru: "Классический слоеный круассан ручной лепки на 100% натуральном сливочном масле в паре с нежным капучино из свежеобжаренной спешелти арабики."
+        },
+        allergens: {
+            ro: "Gluten, Lactoză",
+            en: "Gluten, Lactose",
+            ru: "Глютен, Лактоза"
+        }
+    },
+    {
+        id: "sig-napoleon",
+        name: {
+            ro: "Napoleon clasic cu cremă de vanilie Bourbon",
+            en: "Classic Napoleon with Bourbon vanilla cream",
+            ru: "Классический Наполеон с кремом из бурбонской ванили"
+        },
+        category: { ro: "Deserturi", en: "Desserts", ru: "Десерты" },
+        price: 110,
+        weight: "190g",
+        image: "napoleon.jpg",
+        badge: { ro: "🍰 Artizanal", en: "🍰 Artisanal", ru: "🍰 Авторский" },
+        tags: ["signature", "bakery"],
+        description: {
+            ro: "Foi fine caramelizate la cuptor, cremă fină de vanilie naturală de Bourbon, zmeură proaspătă și un voal delicat de zahăr pudră.",
+            en: "Caramelized crisp puff pastry sheets layered with velvety real Bourbon vanilla bean cream chantilly, fresh raspberries, and powdered sugar.",
+            ru: "Хрустящие карамелизированные коржи, нежнейший заварной крем с натуральной бурбонской ванилью, свежая малина и сахарная пудра."
+        },
+        allergens: {
+            ro: "Gluten, Lactoză, Ouă",
+            en: "Gluten, Lactose, Eggs",
+            ru: "Глютен, Лактоза, Яйца"
+        }
+    }
+];
 
 const menuData = [
     {
         category: { en: "Breakfasts", ro: "Mic Dejun", ru: "Завтраки" },
+        icon: "🍳",
         subcategories: [
             {
                 name: { en: "Egg Dishes", ro: "Preparate din ouă", ru: "Блюда из яиц" },
                 items: [
-                    { name: { en: "Poached egg on bread with avocado, lightly salted salmon, young peas", ro: "Ou poșat pe pâine cu avocado, somon ușor sărat, mazăre verde", ru: "Пашот на хлебе с авокадо, малосольной семгой, молодым горошком" }, price: 110, image: 'poached-egg.jpg' },
-                    { name: { en: "Shakshuka with poached egg and goat cheese", ro: "Shakshuka cu ou poșat și brânză de capră", ru: "Шакшука с пашот и козьим сыром" }, price: 75, image: 'shakshuka.jpg' },
-                    { name: { en: "Souffle omelette with baguette", ro: "Omletă sufleu cu baghetă", ru: "Омлет суфле с багетом" }, price: 55, image: 'omelette.jpg' },
-                    { name: { en: "Scramble on sweet potato", ro: "Scramble pe cartof dulce", ru: "Скрэмбл на батате" }, price: 55 },
-                    { name: { en: "Scramble on bread with avocado, salmon and red caviar", ro: "Scramble pe pâine cu avocado, somon și icre roșii", ru: "Скрэмбл на хлебе, с авокадо, семгой и красной икрой" }, price: 120 },
-                    { name: { en: "Fried eggs with bacon, tomato and feta", ro: "Ouă ochiuri cu bacon, roșii și telemea", ru: "Глазунья с беконом, помидором и брынзой" }, price: 55 }
+                    { 
+                        id: "item-poached-egg",
+                        name: { en: "Poached egg on bread with avocado, lightly salted salmon, young peas", ro: "Ou poșat pe pâine cu avocado, somon ușor sărat, mazăre verde", ru: "Пашот на хлебе с авокадо, малосольной семгой, молодым горошком" }, 
+                        price: 110, 
+                        weight: "320g",
+                        tags: ["signature", "fish"],
+                        image: 'poached-egg.jpg',
+                        description: {
+                            ro: "Pâine artizanală rumenită pe vatră, avocado cremos hass, somon marinat delicat în casă și mazăre verde tânără.",
+                            en: "Toasted artisanal sourdough, creamy hass avocado, house-cured salmon, and sweet green peas.",
+                            ru: "Подрумяненный ремесленный тартин, авокадо хасс, слабосоленый лосось и зеленый горошек."
+                        }
+                    },
+                    { 
+                        id: "item-shakshuka",
+                        name: { en: "Shakshuka with poached egg and goat cheese", ro: "Shakshuka cu ou poșat și brânză de capră", ru: "Шакшука с пашот и козьим сыром" }, 
+                        price: 75, 
+                        weight: "380g",
+                        tags: ["signature", "vegetarian"],
+                        image: 'shakshuka.jpg',
+                        description: {
+                            ro: "Sos de roșii coapte cu ardei dulce, chimion, ouă poșate, brânză fină de capră și pâine caldă.",
+                            en: "Baked tomato sauce with peppers, cumin, poached eggs, goat cheese, and warm bread.",
+                            ru: "Соус из печеных томатов, сладкого перца, кумина, яйца пашот и козий сыр."
+                        }
+                    },
+                    { 
+                        id: "item-omelette",
+                        name: { en: "Souffle omelette with baguette", ro: "Omletă sufleu cu baghetă", ru: "Омлет суфле с багетом" }, 
+                        price: 55, 
+                        weight: "260g",
+                        tags: ["signature", "vegetarian"],
+                        image: 'omelette.jpg',
+                        description: {
+                            ro: "Omletă aerată și extrem de pufoasă, servită cu baghetă caldă franțuzească și unt aromat.",
+                            en: "Fluffy whipped souffle omelette served with warm baguette and herb butter.",
+                            ru: "Воздушный омлет-суфле с теплым французским багетом и сливочным маслом."
+                        }
+                    },
+                    { 
+                        id: "item-scramble-potato",
+                        name: { en: "Scramble on sweet potato", ro: "Scramble pe cartof dulce", ru: "Скрэмбл на батате" }, 
+                        price: 55, 
+                        weight: "280g",
+                        tags: ["vegetarian"],
+                        description: {
+                            ro: "Ouă scramble cremoase pe felie de cartof dulce copt la cuptor cu verdețuri proaspete.",
+                            en: "Creamy scrambled eggs served on roasted sweet potato slice with fresh herbs.",
+                            ru: "Нежный скрэмбл на запеченном батате с ароматными травами."
+                        }
+                    },
+                    { 
+                        id: "item-scramble-caviar",
+                        name: { en: "Scramble on bread with avocado, salmon and red caviar", ro: "Scramble pe pâine cu avocado, somon și icre roșii", ru: "Скрэмбл на хлебе, с авокадо, семгой и красной икрой" }, 
+                        price: 120, 
+                        weight: "330g",
+                        tags: ["signature", "fish"],
+                        description: {
+                            ro: "Ouă scramble fine pe pâine cu maia, somon delicat, cremă de avocado și icre roșii de somon.",
+                            en: "Silky scrambled eggs on sourdough with cured salmon, avocado, and red caviar.",
+                            ru: "Шелковистый скрэмбл на тартине с лососем, авокадо и красной икрой."
+                        }
+                    },
+                    { 
+                        id: "item-fried-eggs",
+                        name: { en: "Fried eggs with bacon, tomato and feta", ro: "Ouă ochiuri cu bacon, roșii și telemea", ru: "Глазунья с беконом, помидором и брынзой" }, 
+                        price: 55, 
+                        weight: "290g",
+                        tags: [],
+                        description: {
+                            ro: "Ouă ochiuri rumenite, bacon crocant de casă, roșii dulci la grătar și brânză telemea.",
+                            en: "Sunny side eggs with crisp bacon, seared tomatoes, and regional feta cheese.",
+                            ru: "Глазунья с хрустящим беконом, сочными помидорами и домашней брынзой."
+                        }
+                    }
                 ]
             },
             {
                 name: { en: "Back to the Future", ro: "Înapoi în viitor", ru: "Назад в будущее" },
                 items: [
-                    { name: { en: "School sandwich", ro: "Sandviș școlar", ru: "Школьный бутерброд" }, price: 60 },
-                    { name: { en: "Rustic cottage cheese", ro: "Brânză de vaci de țară", ru: "Сельский творог" }, price: 55 },
-                    { name: { en: "Donuts with condensed milk", ro: "Gogoși cu lapte condensat", ru: "Пончики со сгущенкой" }, price: 45 }
+                    { 
+                        id: "item-school-sandwich",
+                        name: { en: "School sandwich", ro: "Sandviș școlar artizanal", ru: "Школьный бутерброд" }, 
+                        price: 60, 
+                        weight: "220g",
+                        tags: [],
+                        description: {
+                            ro: "Pâine cu unt aromat, șuncă fragedă de calitate, cașcaval maturat și castraveți murați crocanți.",
+                            en: "Classic comfort sandwich with quality ham, aged cheese, butter, and crisp pickles.",
+                            ru: "Ностальгический бутерброд с ветчиной, выдержанным сыром и хрустящим огурцом."
+                        }
+                    },
+                    { 
+                        id: "item-cottage-cheese",
+                        name: { en: "Rustic cottage cheese with honey & berries", ro: "Brânză de vaci de țară cu miere și fructe", ru: "Сельский творог" }, 
+                        price: 55, 
+                        weight: "240g",
+                        tags: ["vegetarian"],
+                        description: {
+                            ro: "Brânză proaspătă de vaci de fermă, miere de tei crudă și fructe de pădure proaspete.",
+                            en: "Farm-fresh cottage cheese with raw linden honey and seasonal fresh berries.",
+                            ru: "Свежий фермерский творог с натуральным медом и лесными ягодами."
+                        }
+                    },
+                    { 
+                        id: "item-donuts",
+                        name: { en: "Warm donuts with condensed milk", ro: "Gogoși calde cu lapte condensat", ru: "Пончики со сгущенкой" }, 
+                        price: 45, 
+                        weight: "200g",
+                        tags: ["vegetarian"],
+                        description: {
+                            ro: "Gogoși pufoase proaspăt prăjite, presărate cu zahăr pudră și lapte condensat caramelizat.",
+                            en: "Warm fluffy donuts dusted with powdered sugar and caramelized condensed milk.",
+                            ru: "Горячие воздушные пончики в сахарной пудре со сгущенным молоком."
+                        }
+                    }
                 ]
             },
             {
-                name: { en: "Your Favorites", ro: "Preferatele tale", ru: "Ваши любимые" },
+                name: { en: "Your Favorites", ro: "Preferatele oaspeților", ru: "Ваши любимые" },
                 items: [
-                    { name: { en: "Syrniki with sour cream and berry sauce", ro: "Papanași cu smântână și sos de fructe de pădure", ru: "Сырники со сметаной и ягодным соусом" }, price: 50 },
-                    { name: { en: "Crepes with cottage cheese", ro: "Clătite cu brânză de vaci", ru: "Блины с творогом" }, price: 55 },
-                    { name: { en: "Crepes with meat", ro: "Clătite cu carne", ru: "Блины с мясом" }, price: 65 }
+                    { 
+                        id: "item-syrniki",
+                        name: { en: "Syrniki with sour cream and berry sauce", ro: "Syrniki (Papanași) cu smântână și fructe de pădure", ru: "Сырники со сметаной и ягодным соусом" }, 
+                        price: 50, 
+                        weight: "250g",
+                        tags: ["signature", "vegetarian"],
+                        description: {
+                            ro: "Papanași din brânză fină de vaci rumeniți auriu, serviți cu smântână grasă și coulis de fructe.",
+                            en: "Golden cottage cheese syrniki pancakes with rich sour cream and forest berry coulis.",
+                            ru: "Золотистые нежные сырники из фермерского творога со сметаной и ягодным соусом."
+                        }
+                    },
+                    { 
+                        id: "item-crepes-cheese",
+                        name: { en: "Crepes with cottage cheese and vanilla", ro: "Clătite fine cu brânză de vaci și vanilie", ru: "Блины с творогом" }, 
+                        price: 55, 
+                        weight: "260g",
+                        tags: ["vegetarian"],
+                        description: {
+                            ro: "Clătite franțuzești subțiri umplute cu brânză dulce de vaci și esență de vanilie.",
+                            en: "Delicate thin crepes filled with sweet vanilla cottage cheese cream.",
+                            ru: "Тонкие домашние блинчики со сладкой творожной начинкой и ванилью."
+                        }
+                    },
+                    { 
+                        id: "item-crepes-meat",
+                        name: { en: "Crepes with braised minced meat", ro: "Clătite cu carne fragedă", ru: "Блины с мясом" }, 
+                        price: 65, 
+                        weight: "270g",
+                        tags: [],
+                        description: {
+                            ro: "Clătite aurii umplute cu carne tocată de vițel și pui, ceapă caramelizată și smântână.",
+                            en: "Golden crepes stuffed with savory braised minced meat and sweet onions.",
+                            ru: "Сытные блинчики с начинкой из томленого мясного фарша и лука."
+                        }
+                    }
                 ]
             },
             {
-                name: { en: "For Vegans' Joy", ro: "Bucuria veganilor", ru: "На радость веганам" },
+                name: { en: "For Vegans' Joy", ro: "Opțiuni Vegane & Sănătoase", ru: "На радость веганам" },
                 items: [
-                    { name: { en: "Acai bowl", ro: "Bol Acai", ru: "Асаи боул" }, price: 170 },
-                    { name: { en: "Oatmeal", ro: "Terci de ovăz", ru: "Каша овсяная" }, price: 40 }
+                    { 
+                        id: "item-acai-bowl",
+                        name: { en: "Acai bowl with granola and coconut", ro: "Bol Acai cu granola artizanală și fructe", ru: "Асаи боул" }, 
+                        price: 170, 
+                        weight: "340g",
+                        tags: ["vegetarian"],
+                        description: {
+                            ro: "Smoothie bowl răcoros din fructe pure de acai, granola crocantă fără gluten, fulgi de cocos și banane.",
+                            en: "Refreshing frozen acai bowl topped with house granola, coconut flakes, and fresh fruit.",
+                            ru: "Освежающий асаи боул с домашней гранолой, кокосовыми чипсами и фруктами."
+                        }
+                    },
+                    { 
+                        id: "item-oatmeal",
+                        name: { en: "Oatmeal with almond milk & berries", ro: "Terci cremos de ovăz cu lapte vegetal", ru: "Каша овсяная" }, 
+                        price: 40, 
+                        weight: "280g",
+                        tags: ["vegetarian"],
+                        description: {
+                            ro: "Fulgii de ovăz preparați lent cu lapte de migdale, scorțișoară Ceylon și mere caramelizate.",
+                            en: "Creamy oatmeal gently cooked with almond milk, Ceylon cinnamon, and caramelized apples.",
+                            ru: "Нежная овсяная каша на миндальном молоке с корицей и яблоками."
+                        }
+                    }
                 ]
             }
         ]
     },
     {
+        category: { en: "Bakery & Coffee", ro: "Brutărie & Cafea", ru: "Выпечка и кофе" },
+        icon: "🥐",
+        items: [
+            {
+                id: "item-croissant-butter",
+                name: { en: "French pure butter Croissant", ro: "Croissant franțuzesc cu 100% unt", ru: "Французский круассан на сливочном масле" },
+                price: 35,
+                weight: "85g",
+                tags: ["signature", "bakery"],
+                image: "pastry-coffee.jpg",
+                description: {
+                    ro: "Croissant laminat manual cu unt de Normandia, crustă fină crocantă și miez aerat.",
+                    en: "Handmade laminated croissant with pure Normandy butter and golden flaky crust.",
+                    ru: "Классический круассан ручной лепки на сливочном масле с хрустящей корочкой."
+                }
+            },
+            {
+                id: "item-pain-chocolat",
+                name: { en: "Pain au Chocolat with Belgian dark chocolate", ro: "Pain au Chocolat cu ciocolată belgiană", ru: "Пен-о-шоколя с бельгийским шоколадом" },
+                price: 42,
+                weight: "95g",
+                tags: ["bakery"],
+                description: {
+                    ro: "Aluat foietat franțuzesc rumenit, umplut cu două batoane generoase de ciocolată neagră belgiană 70%.",
+                    en: "Flaky puff pastry wrapped around two sticks of rich 70% dark Belgian chocolate.",
+                    ru: "Хрустящая слоеная выпечка с начинкой из двух палочек темного бельгийского шоколада."
+                }
+            },
+            {
+                id: "item-sourdough-loaf",
+                name: { en: "Artisanal Sourdough Bread Loaf (72h)", ro: "Pâine artizanală cu maia sălbatică 72h (întreagă)", ru: "Тартин на дикой закваске 72ч" },
+                price: 45,
+                weight: "650g",
+                tags: ["signature", "bakery"],
+                description: {
+                    ro: "Pâine dospită lent 72 de ore din făină măcinată pe piatră și maia naturală vie, coaptă pe vatră încinsă.",
+                    en: "Rustic stone-milled sourdough loaf slowly fermented for 72 hours, baked on hot hearth stone.",
+                    ru: "Деревенский хлеб на дикой закваске 72-часового брожения с глубоким вкусом и хрустящей корочкой."
+                }
+            },
+            {
+                id: "item-cappuccino-art",
+                name: { en: "Specialty Cappuccino / Flat White", ro: "Cappuccino / Flat White de Specialitate", ru: "Спешелти капучино / флэт уайт" },
+                price: 38,
+                weight: "200ml",
+                tags: ["signature"],
+                description: {
+                    ro: "Espresso dublu din cafea de origine Etiopia Yirgacheffe, lapte proaspăt texturat mătăsos.",
+                    en: "Double shot espresso of single origin Ethiopia beans with velvety textured milk.",
+                    ru: "Двойной эспрессо из моносорта Эфиопии с бархатистой молочной пенкой."
+                }
+            },
+            {
+                id: "item-matcha-latte",
+                name: { en: "Ceremonial Grade Matcha Latte", ro: "Matcha Latte Ceremonial", ru: "Матча латте церемониальный" },
+                price: 52,
+                weight: "250ml",
+                tags: ["vegetarian"],
+                description: {
+                    ro: "Pudră fină de ceai verde matcha din Uji, Japonia, preparată cu lapte cremos de ovăz.",
+                    en: "Ceremonial green tea matcha from Uji, Japan, whisked with creamy oat milk.",
+                    ru: "Церемониальный зеленый чай матча из Японии на нежном овсяном молоке."
+                }
+            }
+        ]
+    },
+    {
         category: { en: "Appetizers", ro: "Gustări", ru: "Закуски" },
+        icon: "🧀",
         subcategories: [
             {
                 name: { en: "Farm Cheeses", ro: "Brânzeturi de fermă", ru: "Фермерские сыры" },
                 items: [
-                    { name: { en: "Stracciatella with baked pepper and ciabatta", ro: "Stracciatella cu ardei copt și ciabatta", ru: "Страчателла с печеным перцем и чиабаттой" }, price: 110 },
-                    { name: { en: "Bruschetta with cow cottage cheese and baked vegetables", ro: "Bruschete cu brânză de vaci și legume coapte", ru: "Брускетта с коровьим творогом и печеными овощами" }, price: 75 },
-                    { name: { en: "Burrata with tomatoes and pita", ro: "Burrata cu roșii și lipie", ru: "Буратта с томатами и питой" }, price: 105 },
-                    { name: { en: "Three cheeses and prosciutto", ro: "Trei brânzeturi și prosciutto", ru: "Три сыра и прошуто" }, price: 125 }
-                ]
-            },
-            {
-                name: { en: "Brought from Home", ro: "Aduse de acasă", ru: "Принесли из дома" },
-                items: [
-                    { name: { en: "Fried zucchini with garlic", ro: "Dovlecei prăjiți cu usturoi", ru: "Кабачки жареные с чесноком" }, price: 45 },
-                    { name: { en: "Zucchini fritters with bacon", ro: "Clătite de dovlecei cu bacon", ru: "Деруны из кабачка с беконом" }, price: 60 },
-                    { name: { en: "Potato pancakes with mushrooms", ro: "Clătite de cartofi cu ciuperci", ru: "Картофельные драники с грибами" }, price: 60 },
-                    { name: { en: "Herring assortment", ro: "Asortiment de hering", ru: "Ассорти сельди" }, price: 75 }
+                    { 
+                        id: "item-stracciatella",
+                        name: { en: "Stracciatella with baked pepper and ciabatta", ro: "Stracciatella cu ardei copt și ciabatta", ru: "Страчателла с печеным перцем и чиабаттой" }, 
+                        price: 110, 
+                        weight: "310g",
+                        tags: ["signature", "vegetarian"],
+                        description: {
+                            ro: "Miez cremos de burrata cu ardei dulce copt, usturoi confiat, ulei de măsline fin și ciabatta caldă.",
+                            en: "Creamy stracciatella cheese with roasted sweet peppers, confit garlic, olive oil, and ciabatta.",
+                            ru: "Нежная страчателла со сладким печеным перцем, чесноком и теплой чиабаттой."
+                        }
+                    },
+                    { 
+                        id: "item-burrata-pita",
+                        name: { en: "Burrata with tomatoes and pita", ro: "Burrata cu roșii și lipie caldă", ru: "Буратта с томатами и питой" }, 
+                        price: 105, 
+                        weight: "340g",
+                        tags: ["signature", "vegetarian"],
+                        image: 'burrata.jpg',
+                        description: {
+                            ro: "Burrata proaspătă cu roșii cherry dulci coapte, busuioc verde, ulei extravirgin și lipie crocantă.",
+                            en: "Fresh Italian burrata with sweet roasted tomatoes, basil, olive oil, and hot pita.",
+                            ru: "Свежая буратта с печеными черри, базиликом, оливковым маслом и домашней питой."
+                        }
+                    },
+                    { 
+                        id: "item-bruschetta-cottage",
+                        name: { en: "Bruschetta with cow cottage cheese and baked vegetables", ro: "Bruschete cu brânză de vaci și legume coapte", ru: "Брускетта с коровьим творогом и печеными овощами" }, 
+                        price: 75, 
+                        weight: "260g",
+                        tags: ["vegetarian"],
+                        description: {
+                            ro: "Pâine rumenă crocantă, brânză de vaci bătută spumă și legume aromate de sezon coapte la foc.",
+                            en: "Crisp toasted bread topped with whipped farm cheese and fire-roasted vegetables.",
+                            ru: "Хрустящая брускетта со взбитым творогом и запеченными овощами."
+                        }
+                    },
+                    { 
+                        id: "item-three-cheeses",
+                        name: { en: "Three artisan cheeses and prosciutto crudo", ro: "Trei brânzeturi artizanale și prosciutto", ru: "Три сыра и прошуто" }, 
+                        price: 125, 
+                        weight: "280g",
+                        tags: ["signature"],
+                        description: {
+                            ro: "Selecție de brânzeturi maturate de fermă, felii fine de prosciutto crudo, nuci și dulceață de smochine.",
+                            en: "Aged artisanal cheese board, thin slices of prosciutto crudo, walnuts, and fig jam.",
+                            ru: "Ассорти выдержанных ремесленных сыров, тонкие ломтики прошутто, орехи и инжирный джем."
+                        }
+                    }
                 ]
             },
             {
                 name: { en: "With our fresh bread", ro: "Cu pâinea noastră proaspătă", ru: "С нашим свежим хлебом" },
                 items: [
-                    { name: { en: "Warm Ciabatta", ro: "Ciabatta caldă", ru: "Теплая Чиабатта" }, price: 25 },
-                    { name: { en: "Baguette", ro: "Baghetă", ru: "Багет" }, price: 25 },
-                    { name: { en: "Smorrebrod with roast beef", ro: "Smorrebrod cu roast beef", ru: "Сморреброд с ростбифом" }, price: 55 },
-                    { name: { en: "Smorrebrod with sprats", ro: "Smorrebrod cu șprot", ru: "Сморреброд с шпротами" }, price: 45 },
-                    { name: { en: "Smorrebrod with herring", ro: "Smorrebrod cu hering", ru: "Сморреброд с сельдью" }, price: 45 },
-                    { name: { en: "Pate with caramel", ro: "Pateu cu caramel", ru: "Паштет с карамелью" }, price: 85 }
+                    { 
+                        id: "item-ciabatta",
+                        name: { en: "Warm Ciabatta with herb butter", ro: "Ciabatta caldă cu unt aromat", ru: "Теплая Чиабатта" }, 
+                        price: 25, 
+                        weight: "160g",
+                        tags: ["vegetarian", "bakery"],
+                        description: {
+                            ro: "Ciabatta italiană dospită cu maia, coajă crocantă, miez aerat, servită caldă.",
+                            en: "Italian ciabatta bread baked with sourdough, crispy crust, served warm.",
+                            ru: "Теплая итальянская чиабатта с хрустящей корочкой и воздушным мякишем."
+                        }
+                    },
+                    { 
+                        id: "item-baguette",
+                        name: { en: "Crispy French Baguette", ro: "Baghetă franțuzească crocantă", ru: "Багет" }, 
+                        price: 25, 
+                        weight: "180g",
+                        tags: ["vegetarian", "bakery"],
+                        description: {
+                            ro: "Baghetă clasică pariziană cu făină fină măcinată pe piatră.",
+                            en: "Classic Parisian baguette made with stone-milled wheat flour.",
+                            ru: "Традиционный парижский багет с аппетитной корочкой."
+                        }
+                    },
+                    { 
+                        id: "item-smorrebrod-beef",
+                        name: { en: "Smorrebrod with roast beef and mustard", ro: "Smorrebrod cu roast beef și muștar Dijon", ru: "Сморреброд с ростбифом" }, 
+                        price: 55, 
+                        weight: "190g",
+                        tags: [],
+                        description: {
+                            ro: "Sandviș deschis pe pâine de secară cu felii de roast beef fraged, sos remoulade și ceapă crocantă.",
+                            en: "Danish open sandwich on rye with tender roast beef, remoulade, and crispy onions.",
+                            ru: "Датский открытый бутерброд на ржаном хлебе с ростбифом и луковыми чипсами."
+                        }
+                    },
+                    { 
+                        id: "item-pate",
+                        name: { en: "Velvety liver pate with onion caramel", ro: "Pateu fin de ficat cu caramel de ceapă", ru: "Паштет с карамелью" }, 
+                        price: 85, 
+                        weight: "220g",
+                        tags: ["signature"],
+                        description: {
+                            ro: "Pateu cremos de ficat de pasăre cu unt dulce, reducție de ceapă caramelizată și pâine prăjită.",
+                            en: "Silky poultry liver pate with sweet butter, caramelized onion marmalade, and toasted bread.",
+                            ru: "Нежнейший сливочный паштет из печени с карамелизированным луковым джемом."
+                        }
+                    }
                 ]
             }
         ]
     },
     {
         category: { en: "Salads", ro: "Salate", ru: "Салаты" },
+        icon: "🥗",
         items: [
-            { name: { en: "Turkey salad", ro: "Salată cu curcan", ru: "Салат с индейкой" }, price: 85 },
-            { name: { en: "Lebanese salad with lamb", ro: "Salată libaneză cu miel", ru: "Салат ливанский с бараниной" }, price: 90 },
-            { name: { en: "Cheesecake Shuba (dressed herring)", ro: "Cheesecake Șuba (Hering sub șubă)", ru: "Чизкейк шуба" }, price: 45 },
-            { name: { en: "Octopus salad", ro: "Salată cu caracatiță", ru: "Салат с осьминогом" }, price: 190 },
-            { name: { en: "Cabbage and pea salad", ro: "Salată de varză și mazăre", ru: "Салат с капустой и горошком" }, price: 50 },
-            { name: { en: "Salad with avocado, goat cheese, strawberry", ro: "Salată cu avocado, brânză de capră, căpșuni", ru: "Салат с авокадо, козий сыр, клубника" }, price: 80 },
-            { name: { en: "Green beans, young potatoes, cucumber", ro: "Fasole verde, cartofi noi, castraveți", ru: "Стручковая фасоль, молодой картофель, огурец" }, price: 65 },
-            { name: { en: "Tomato and feta salad", ro: "Salată cu roșii și telemea", ru: "Салат с помидорами и брынзой" }, price: 65 }
+            { 
+                id: "item-salad-turkey",
+                name: { en: "Roasted turkey salad with grain mustard dressing", ro: "Salată cu curcan copt și dressing de muștar", ru: "Салат с индейкой" }, 
+                price: 85, 
+                weight: "320g",
+                tags: [],
+                description: {
+                    ro: "Piept de curcan rumenit la cuptor, mix de salate crocante, semințe prăjite și dressing lejer de muștar boabe.",
+                    en: "Roasted turkey breast, mixed crisp greens, toasted seeds, and whole-grain mustard vinaigrette.",
+                    ru: "Запеченная индейка, хрустящий микс салатов и заправка из зернистой горчицы."
+                }
+            },
+            { 
+                id: "item-salad-octopus",
+                name: { en: "Mediterranean Octopus salad with baby potatoes", ro: "Salată mediteraneană cu caracatiță", ru: "Салат с осьминогом" }, 
+                price: 190, 
+                weight: "300g",
+                tags: ["signature", "fish"],
+                description: {
+                    ro: "Tentacule fragede de caracatiță fripte la plită, cartofi noi rumeniți, roșii uscate și sos verde de ierburi.",
+                    en: "Tender grilled octopus tentacles, roasted baby potatoes, sun-dried tomatoes, and herb salsa verde.",
+                    ru: "Нежнейший осьминог на гриле, молодой картофель, вяленые томаты и соус из свежих трав."
+                }
+            },
+            { 
+                id: "item-salad-avocado-goat",
+                name: { en: "Salad with avocado, goat cheese and fresh strawberries", ro: "Salată cu avocado, brânză de capră și căpșuni", ru: "Салат с авокадо, козий сыр, клубника" }, 
+                price: 80, 
+                weight: "280g",
+                tags: ["vegetarian"],
+                description: {
+                    ro: "Frunze proaspete de spanac și rucola, felii de avocado copt, brânză moale de capră și căpșuni aromate.",
+                    en: "Fresh spinach and arugula, ripe avocado slices, soft goat cheese, and fragrant strawberries.",
+                    ru: "Шпинат и руккола, спелый авокадо, нежный козий сыр и свежая клубника."
+                }
+            },
+            { 
+                id: "item-salad-tomato-feta",
+                name: { en: "Heirloom tomato and feta salad with basil oil", ro: "Salată cu roșii de grădină și telemea de fermă", ru: "Салат с помидорами и брынзой" }, 
+                price: 65, 
+                weight: "310g",
+                tags: ["vegetarian"],
+                description: {
+                    ro: "Roșii dulci de grădină în diverse culori, telemea cremoasă de oi, ceapă roșie și ulei extravirgin cu busuioc.",
+                    en: "Juicy heirloom tomatoes, sheep's milk feta, red onion, and fresh basil-infused extra virgin oil.",
+                    ru: "Сочные фермерские томаты, овечья брынза, ялтинский лук и базиликовое оливковое масло."
+                }
+            }
         ]
     },
     {
-        category: { en: "Soups", ro: "Supe", ru: "Супы" },
-        subcategories: [
-            {
-                name: { en: "Summer and cool", ro: "De vară și răcoroase", ru: "Летние и прохладные" },
-                items: [
-                    { name: { en: "Okroshka with kvass", ro: "Okroshka cu cvas", ru: "Окрошка на квасе" }, price: 60 },
-                    { name: { en: "Okroshka with smoked meats", ro: "Okroshka cu afumături", ru: "Окрошка с копченостями" }, price: 60 },
-                    { name: { en: "Soup with strawberries and ice cream", ro: "Supă cu căpșuni și înghețată", ru: "Суп с клубникой и мороженым" }, price: 65 }
-                ]
+        category: { en: "Soups", ro: "Supe & Borșuri", ru: "Супы" },
+        icon: "🍲",
+        items: [
+            { 
+                id: "item-soup-pea",
+                name: { en: "Sweet green pea soup with crispy bacon", ro: "Supă cremă de mazăre verde cu bacon crocant", ru: "Суп из зеленого горошка с беконом" }, 
+                price: 70, 
+                weight: "350ml",
+                tags: [],
+                description: {
+                    ro: "Supă fină catifelată din mazăre tânără și smântână dulce, servită cu fâșii crocante de bacon.",
+                    en: "Velvety sweet green pea soup with a touch of cream, garnished with crispy bacon crisps.",
+                    ru: "Нежный крем-суп из молодого горошка со сливками и хрустящим беконом."
+                }
             },
-            {
-                name: { en: "Always hit the spot", ro: "Mereu la fix", ru: "Всегда в тему" },
-                items: [
-                    { name: { en: "Green pea soup with bacon", ro: "Supă de mazăre verde cu bacon", ru: "Суп из зеленого горошка с беконом" }, price: 70 },
-                    { name: { en: "Borscht", ro: "Borș", ru: "Борщ" }, price: 65 },
-                    { name: { en: "Ukha (fish soup)", ro: "Ciorbă de pește (Uha)", ru: "Уха" }, price: 70 },
-                    { name: { en: "Cheese soup with mushrooms", ro: "Supă de brânză cu ciuperci", ru: "Сырный суп с грибами" }, price: 65 }
-                ]
+            { 
+                id: "item-soup-borscht",
+                name: { en: "Traditional rich Borscht with veal and sourdough bread", ro: "Borș tradițional moldovenesc cu vițel și smântână", ru: "Борщ с телятиной" }, 
+                price: 65, 
+                weight: "380ml",
+                tags: ["signature"],
+                description: {
+                    ro: "Borș aromat preparat după rețetă de familie cu vițel fraged, sfeclă rumenită, servit cu smântână grasă și ardei iute.",
+                    en: "Hearty traditional beet borscht simmered with tender veal, served with sour cream and hot pepper.",
+                    ru: "Наваристый домашний борщ с нежной телятиной, поданный со сметаной и чесночным хлебом."
+                }
+            },
+            { 
+                id: "item-soup-ukha",
+                name: { en: "Clear Ukha fish soup with salmon and vegetables", ro: "Ciorbă de pește (Uha) cu somon și legume", ru: "Уха царская" }, 
+                price: 70, 
+                weight: "360ml",
+                tags: ["fish"],
+                description: {
+                    ro: "Supă limpede și aromată din pește nobil, bucăți de somon proaspăt, mărar și rădăcinoase coapte.",
+                    en: "Clear flavorful fish broth with chunks of salmon, fresh dill, and roasted root vegetables.",
+                    ru: "Прозрачная уха из благородной рыбы с кусочками семги и свежей зеленью."
+                }
+            },
+            { 
+                id: "item-soup-cheese-mushrooms",
+                name: { en: "Creamy cheese soup with forest mushrooms", ro: "Supă de brânză fină cu ciuperci de pădure", ru: "Сырный суп с грибами" }, 
+                price: 65, 
+                weight: "350ml",
+                tags: ["vegetarian"],
+                description: {
+                    ro: "Supă cremoasă din trei feluri de brânzeturi topite cu ciuperci sotate în unt și crutoane crocante.",
+                    en: "Rich melted three-cheese cream soup topped with butter-seared wild mushrooms and croutons.",
+                    ru: "Сливочный суп из трех видов сыра с лесными грибами и золотистыми сухариками."
+                }
             }
         ]
     },
     {
         category: { en: "Hot Dishes with Side", ro: "Feluri principale cu garnitură", ru: "Горячие блюда с гарниром" },
+        icon: "🥩",
         items: [
-            { name: { en: "Chicken Kiev", ro: "Pârjoală a la Kiev", ru: "Котлета по-Киевски" }, price: 120 },
-            { name: { en: "Turkey with risotto", ro: "Curcan cu risotto", ru: "Индейка с ризотто" }, price: 120 },
-            { name: { en: "Rabbit with vegetables", ro: "Iepure cu legume", ru: "Кролик с овощами" }, price: 145 },
-            { name: { en: "Cutlets with mashed potatoes", ro: "Pârjoale cu piure", ru: "Котлетки с пюре" }, price: 85 },
-            { name: { en: "Navy-style macaroni", ro: "Macaroane a la Flotă (cu carne tocată)", ru: "Макароны по-флотски" }, price: 70 },
-            { name: { en: "Gnocchi with ricotta and spinach", ro: "Gnocchi cu ricotta și spanac", ru: "Ньоки с рикоттой и шпинатом" }, price: 80 },
-            { name: { en: "Gnocchi with truffle sauce", ro: "Gnocchi cu sos de trufe", ru: "Ньоки с трюфельным соусом" }, price: 80 },
-            { name: { en: "Beef cheeks", ro: "Fălci de vită", ru: "Говяжьи щеки" }, price: 120 },
-            { name: { en: "Chicken curry", ro: "Pui curry", ru: "Курица карри" }, price: 120 },
-            { name: { en: "Baked mackerel with young potatoes", ro: "Macrou copt cu cartofi noi", ru: "Скумбрия запеченная с молодым картофелем" }, price: 110 },
-            { name: { en: "Fish with polenta", ro: "Pește cu mămăligă (polenta)", ru: "Рыба с палентой" }, price: 120 }
+            { 
+                id: "item-beef-cheeks",
+                name: { en: "Slow-braised beef cheeks with potato mash", ro: "Fălci de vită la cuptor cu piure mătăsos", ru: "Говяжьи щеки с пюре" }, 
+                price: 120, 
+                weight: "380g",
+                tags: ["signature"],
+                image: 'beef-cheeks.jpg',
+                description: {
+                    ro: "Fălci de vită fragede gătite lent 8 ore în reducție de vin roșu, piure cremos și morcovi caramelizați.",
+                    en: "Tender beef cheeks braised for 8 hours in red wine reduction, potato puree, and glazed baby carrots.",
+                    ru: "Томленые 8 часов говяжьи щечки в винном соусе с нежным картофельным пюре."
+                }
+            },
+            { 
+                id: "item-chicken-kiev",
+                name: { en: "Chicken Kiev cutlet with herb butter & puree", ro: "Pârjoală a la Kiev cu unt aromat și piure", ru: "Котлета по-Киевски" }, 
+                price: 120, 
+                weight: "360g",
+                tags: ["signature"],
+                description: {
+                    ro: "Piept de pui fraged în crustă crocantă aurie, umplut cu unt fin aromat cu verdețuri, servit cu piure.",
+                    en: "Crispy breaded chicken cutlet filled with fragrant melting herb butter, served with potato mash.",
+                    ru: "Сочная котлета по-киевски с хрустящей корочкой и ароматным сливочным маслом внутри."
+                }
+            },
+            { 
+                id: "item-turkey-risotto",
+                name: { en: "Tender turkey with creamy saffron risotto", ro: "Curcan fraged cu risotto cremos", ru: "Индейка с ризотто" }, 
+                price: 120, 
+                weight: "350g",
+                tags: [],
+                description: {
+                    ro: "File de curcan rumenit la perfecțiune pe pat de risotto cremos cu parmezan și șofran.",
+                    en: "Pan-roasted turkey tenderloin served over creamy parmesan saffron risotto.",
+                    ru: "Филе индейки с нежным сливочным ризотто и выдержанным пармезаном."
+                }
+            },
+            { 
+                id: "item-rabbit-vegetables",
+                name: { en: "Braised rabbit with seasonal root vegetables", ro: "Iepure înăbușit cu legume de sezon", ru: "Кролик с овощами" }, 
+                price: 145, 
+                weight: "360g",
+                tags: [],
+                description: {
+                    ro: "Carne fragedă de iepure gătită la foc mic cu cimbrișor, smântână dulce și legume coapte.",
+                    en: "Succulent rabbit meat slow-cooked with fresh thyme, light cream, and roasted vegetables.",
+                    ru: "Нежное мясо кролика, тушенное со сливками, тимьяном и сезонными овощами."
+                }
+            },
+            { 
+                id: "item-gnocchi-truffle",
+                name: { en: "Artisan gnocchi with rich black truffle sauce", ro: "Gnocchi artizanali cu sos de trufe negre", ru: "Ньоки с трюфельным соусом" }, 
+                price: 80, 
+                weight: "290g",
+                tags: ["signature", "vegetarian"],
+                description: {
+                    ro: "Gnocchi pufoși din cartofi făcuți în casă, învăluiți într-un sos catifelat de trufe negre și parmezan.",
+                    en: "Fluffy handmade potato gnocchi tossed in a decadent black truffle and parmesan cream sauce.",
+                    ru: "Домашние картофельные ньокки в бархатистом трюфельном соусе с пармезаном."
+                }
+            },
+            { 
+                id: "item-baked-mackerel",
+                name: { en: "Baked mackerel with roasted young potatoes", ro: "Macrou copt la cuptor cu cartofi noi", ru: "Скумбрия запеченная с молодым картофелем" }, 
+                price: 110, 
+                weight: "350g",
+                tags: ["fish"],
+                description: {
+                    ro: "Macrou marinat cu lămâie și rozmarin, copt până la rumenire, servit cu cartofi noi la cuptor.",
+                    en: "Whole baked mackerel seasoned with lemon and rosemary, served with roasted baby potatoes.",
+                    ru: "Скумбрия с лимоном и розмарином, запеченная с молодым картофелем."
+                }
+            }
         ]
     },
     {
         category: { en: "Desserts", ro: "Deserturi", ru: "Десерты" },
+        icon: "🍰",
         items: [
-            { name: { en: "Napoleon", ro: "Napoleon", ru: "Наполеон" }, price: 110 },
-            { name: { en: "Baklava Tashkent", ro: "Baclava Tașkent", ru: "Пахлава Ташкент" }, price: 150 }
+            { 
+                id: "item-napoleon",
+                name: { en: "Classic Napoleon with Bourbon vanilla cream", ro: "Napoleon clasic cu cremă de vanilie Bourbon", ru: "Наполеон" }, 
+                price: 110, 
+                weight: "190g",
+                tags: ["signature", "bakery"],
+                image: 'napoleon.jpg',
+                description: {
+                    ro: "Mii de foi fine caramelizate, cremă mătăsoasă de vanilie de Bourbon și zmeură proaspătă.",
+                    en: "Crisp caramelized puff layers with rich Bourbon vanilla cream and fresh raspberries.",
+                    ru: "Хрустящие карамелизированные коржи с кремом из натуральной ванили и малиной."
+                }
+            },
+            { 
+                id: "item-baklava",
+                name: { en: "Artisanal Baklava Tashkent with pistachios and honey", ro: "Baclava Tașkent cu fistic și miere pură", ru: "Пахлава Ташкент" }, 
+                price: 150, 
+                weight: "220g",
+                tags: ["signature"],
+                description: {
+                    ro: "Zeci de foi fine unse cu unt dulce, umplute generos cu fistic persan, nucă și sirop de miere aromată.",
+                    en: "Layers of whisper-thin pastry soaked in butter and flower honey, packed with pistachios.",
+                    ru: "Тончайшие слои теста с персидскими фисташками, грецким орехом и цветочным медом."
+                }
+            }
         ]
     }
 ];
 
 const translations = {
-    en: {
-        navMenu: "Menu",
-        navReservations: "Reservations",
-        navAbout: "About Us",
-        navContact: "Contact",
-        heroTitle: "A Premium Dining Experience",
-        heroSubtitle: "Experience the finest culinary creations in an elegant atmosphere.",
-        heroCta: "Explore Menu",
-        menuTitle: "Our Signature Menu",
-        resTitle: "Make a Reservation",
-        resSubtitle: "Book your table to enjoy an unforgettable dining experience.",
-        resName: "Name",
-        resDate: "Date",
-        resTime: "Time",
-        resGuests: "Guests",
-        resSubmit: "Book Table",
-        aboutTitle: "Our Story",
-        aboutDesc: "At Crosta Kitchen Bakery, we believe in creating memorable dining experiences. We source the finest ingredients to bring you exquisite dishes crafted with passion and culinary expertise.",
-        footerTitle: "Visit Us",
-        footerAddress: "Chișinău MD, Strada Miron Costin 13/7, MD-2000",
-        footerHours: "Open Daily: 8:00 - 22:00",
-        footerRights: "All rights reserved.",
-        allFilter: "All",
-        
-        // Footnotes
-        footnotesTitle: "Footnotes / Legend",
-        note1: "We are happy to serve breakfast from 9:00 to 21:00",
-        note2: "Main menu is served from 12:00 to 23:00",
-        note3: "🌶️ — spicy or piquant",
-        note4: "🐟 — caution: fish bones",
-        note5: "🧄 — contains garlic",
-        note6: "⏱️ — preparation takes more than 25 minutes",
-        note7: "If you have allergies or dietary preferences, please let us know",
-        currency: "MDL",
-        
-        // Modal
-        resSuccessTitle: "Reservation Confirmed!",
-        resSuccessMsg: "Thank you for choosing Crosta. We look forward to serving you.",
-        resSuccessClose: "Close",
-
-        // Reviews Section
-        navReviews: "Reviews",
-        reviewsBadge: "✦ Authentic Guest Impressions",
-        reviewsTitle: "What Our Guests Say",
-        reviewsSubtitle: "Honest impressions of our artisanal cuisine, warm atmosphere, handcrafted bakery, and attentive service.",
-        scoreBasedOn: "Based on",
-        scoreReviewsWord: "reviews",
-        catFood: "Food",
-        catInterior: "Interior & Design",
-        catService: "Service & Hospitality",
-        catBakery: "Pastries & Coffee",
-        catAtmosphere: "Atmosphere & Vibe",
-        writeReviewBtn: "Leave a Review",
-        reviewWelcome: "Your feedback inspires us every single day",
-        filterAll: "All",
-        loadMoreReviews: "View more reviews",
-        showLessReviews: "Show less",
-        modalReviewTitle: "Share Your Experience",
-        modalReviewSubtitle: "Your feedback helps us preserve the finest culinary and hospitality standards.",
-        reviewFormName: "Your Name *",
-        reviewFormEmail: "Email (optional)",
-        reviewFormCategory: "Which aspect would you primarily like to review? *",
-        reviewFormRating: "Overall Rating *",
-        aspectRatingsTitle: "Category breakdown (optional)",
-        reviewFormText: "Your Review / Message *",
-        reviewFormHighlight: "What dish or detail do you recommend? (optional)",
-        reviewFormSubmit: "Publish Review",
-        reviewSubmitting: "Publishing...",
-        reviewSuccessTitle: "Review Registered!",
-        reviewSuccessMsg: "Thank you wholeheartedly for your feedback and for helping us grow better every single day.",
-        verifiedGuest: "Verified Guest",
-        helpfulText: "Helpful",
-        recommendsLabel: "Recommends",
-        newReviewPill: "NEW"
-    },
     ro: {
         navMenu: "Meniu",
+        navHighlights: "Specialități",
         navReservations: "Rezervări",
         navAbout: "Despre Noi",
         navContact: "Contact",
+        navReviews: "Recenzii",
+        headerBookBtn: "Rezervă o Masă",
+        
+        // Hero
+        heroPillTop: "Brutărie & Bucătărie Artizanală • Chișinău",
         heroTitle: "O Experiență Culinară Premium",
-        heroSubtitle: "Descoperiți cele mai fine creații culinare într-o atmosferă elegantă.",
+        heroSubtitle: "Panificație cu maia dospită lent 72 de ore, mic dejun servit toată ziua și preparate gastronomice rafinate într-o atmosferă luminoasă și călduroasă.",
         heroCta: "Explorează Meniul",
+        heroResCta: "Rezervă o Masă",
+        heroPill1: "Aluat cu Maia 72h",
+        heroPill2: "Mic Dejun 9:00 - 21:00",
+        heroPill3: "Cafea de Specialitate",
+        heroPillRating: "Rating Excelent",
+
+        // Menu Section
+        menuBadge: "✦ Gastronomie & Panificație Artizanală",
         menuTitle: "Meniul Nostru Semnătură",
-        resTitle: "Faceți o Rezervare",
-        resSubtitle: "Rezervați o masă pentru a vă bucura de o experiență culinară de neuitat.",
-        resName: "Nume",
-        resDate: "Data",
-        resTime: "Ora",
-        resGuests: "Număr de persoane",
-        resSubmit: "Rezervă Masa",
-        aboutTitle: "Povestea Noastră",
-        aboutDesc: "La Crosta Kitchen Bakery, credem în crearea unor experiențe culinare memorabile. Folosim cele mai bune ingrediente pentru a vă oferi preparate rafinate, create cu pasiune și expertiză culinară.",
-        footerTitle: "Vizitează-ne",
-        footerAddress: "Chișinău MD, Strada Miron Costin 13/7, MD-2000",
-        footerHours: "Deschis Zilnic: 8:00 - 22:00",
-        footerRights: "Toate drepturile rezervate.",
+        menuSubtitle: "Rețete create cu ingrediente curate de la ferme partenere, aluat dospit lent cu maia și pasiune pentru arome pure.",
+        signatureHighlightsTitle: "✨ Specialitățile Bucătarului & Brutăriei",
+        signatureHighlightsSub: "Cele mai iubite creații ale oaspeților noștri, ilustrate cu fotografii autentice",
+        searchPlaceholder: "Caută un preparat sau ingredient (ex: somon, shakshuka, burrata)...",
+        filterAllDietary: "Toate Preparatele",
+        tagSignature: "Semnătură",
+        tagVegetarian: "Vegetarian",
+        tagFish: "Pește & Fructe de mare",
+        tagWithPhotos: "Cu Fotografii",
         allFilter: "Toate",
-        
-        // Footnotes
-        footnotesTitle: "Note / Legendă",
-        note1: "Ne bucurăm să vă servim micul dejun de la 9:00 la 21:00",
-        note2: "Meniul principal este servit de la 12:00 la 23:00",
-        note3: "🌶️ — picant sau condimentat",
-        note4: "🐟 — atenție: oase de pește",
-        note5: "🧄 — conține usturoi",
-        note6: "⏱️ — prepararea durează mai mult de 25 minute",
-        note7: "Dacă aveți alergii sau preferințe alimentare, vă rugăm să ne anunțați",
         currency: "MDL",
-        
-        // Modal
+        viewDetailsBtn: "Vezi detalii",
+        reserveThisDish: "Rezervă o Masă pentru Acest Preparat",
+        dishModalAllergens: "Ingrediente & Note:",
+
+        // Footnotes
+        footnotesTitle: "Note & Legendă Meniu",
+        note1: "🍳 Ne bucurăm să vă servim micul dejun de la 9:00 la 21:00",
+        note2: "🍽️ Meniul principal este servit de la 12:00 la 23:00",
+        note3: "🌶️ — preparat picant sau condimentat",
+        note4: "🐟 — atenție: poate conține oase de pește",
+        note5: "🧄 — conține usturoi proaspăt",
+        note6: "⏱️ — prepararea durează mai mult de 25 minute",
+        note7: "🌱 Dacă aveți alergii sau preferințe alimentare, vă rugăm să ne anunțați",
+
+        // Reservations
+        resBadge: "✦ Ospitalitate Dedicată",
+        resTitle: "Faceți o Rezervare",
+        resSubtitle: "Rezervați o masă pentru a vă bucura de o experiență culinară de neuitat într-o ambianță caldă și luminoasă.",
+        resName: "Nume și Prenume *",
+        resDate: "Data Rezervării *",
+        resTime: "Ora Sosirii *",
+        resGuests: "Număr de persoane *",
+        resSubmit: "Confirmă Rezervarea",
         resSuccessTitle: "Rezervare Confirmată!",
-        resSuccessMsg: "Vă mulțumim că ați ales Crosta. Vă așteptăm cu drag.",
+        resSuccessMsg: "Vă mulțumim că ați ales Crosta Kitchen Bakery. Vă așteptăm cu drag pe Strada Miron Costin 13/7.",
         resSuccessClose: "Închide",
 
-        // Reviews Section
-        navReviews: "Recenzii",
+        // Reviews (4.8 Rating)
         reviewsBadge: "✦ Experiențe Autentice",
         reviewsTitle: "Ce Spun Oaspeții Noștri",
         reviewsSubtitle: "Păreri sincere despre preparatele noastre, atmosfera caldă, deserturile artizanale și serviciul dedicat.",
         scoreBasedOn: "Bazat pe",
         scoreReviewsWord: "recenzii",
+        scoreSentiment: "Excelent",
         catFood: "Mâncare",
         catInterior: "Interior & Design",
         catService: "Serviciu & Ospitalitate",
@@ -283,55 +867,218 @@ const translations = {
         verifiedGuest: "Oaspete Verificat",
         helpfulText: "Util",
         recommendsLabel: "Recomandă",
-        newReviewPill: "NOU"
+        newReviewPill: "NOU",
+
+        // About
+        aboutBadge: "✦ Pasiune & Tradiție",
+        aboutTitle: "Povestea Noastră",
+        aboutDesc: "La Crosta Kitchen Bakery, credem în crearea unor experiențe culinare memorabile. Folosim ingrediente pure pentru a vă oferi preparate rafinate, create cu pasiune și expertiză culinară.",
+        pillar1Title: "Panificație cu Maia 72h",
+        pillar1Desc: "Pâine și baghete artizanale dospite lent până la 72 de ore cu maia sălbatică vie, pentru o coajă crocantă, miez aerat și digestibilitate ușoară.",
+        pillar2Title: "Ingrediente Curate & Locale",
+        pillar2Desc: "Colaborăm direct cu mici fermieri locali pentru brânzeturi de fermă, somon de calitate, legume proaspăt recoltate și unt autentic.",
+        pillar3Title: "Cafea de Origine & Ambianță",
+        pillar3Desc: "Un spațiu primitor cu design scandinav pe Strada Miron Costin, arome calde de patiserie proaspătă și cafea de specialitate proaspăt prăjită.",
+
+        // Footer
+        footerTagline: "Brutărie artizanală, bucătărie rafinată și cafea de specialitate.",
+        footerOpenStatus: "Deschis Zilnic: 8:00 - 22:00",
+        footerTitle: "Locație & Adresă",
+        footerAddress: "Chișinău MD, Strada Miron Costin 13/7, MD-2000",
+        footerAddressNote: "Parcare comodă în fața restaurantului",
+        footerHoursTitle: "Program de Funcționare",
+        footerBreakfastHours: "🍳 Mic Dejun: 9:00 - 21:00",
+        footerMainHours: "🍽️ Meniu Principal: 12:00 - 23:00",
+        footerBakeryHours: "🥖 Patiserie & Cafea: de la 8:00",
+        footerRights: "Toate drepturile rezervate."
+    },
+    en: {
+        navMenu: "Menu",
+        navHighlights: "Specialties",
+        navReservations: "Reservations",
+        navAbout: "About Us",
+        navContact: "Contact",
+        navReviews: "Reviews",
+        headerBookBtn: "Book a Table",
+        
+        // Hero
+        heroPillTop: "Artisanal Bakery & Kitchen • Chișinău",
+        heroTitle: "A Premium Dining Experience",
+        heroSubtitle: "72-hour naturally fermented sourdough bakery, all-day breakfast, and refined dining in an inviting, light-filled atmosphere.",
+        heroCta: "Explore Menu",
+        heroResCta: "Book a Table",
+        heroPill1: "72h Sourdough Bread",
+        heroPill2: "Breakfast 9:00 - 21:00",
+        heroPill3: "Specialty Coffee",
+        heroPillRating: "Excellent Rating",
+
+        // Menu Section
+        menuBadge: "✦ Artisanal Cuisine & Bakery",
+        menuTitle: "Our Signature Menu",
+        menuSubtitle: "Crafted with pure ingredients from trusted farms, slow fermented sourdough, and a passion for clean, vibrant flavors.",
+        signatureHighlightsTitle: "✨ Chef & Bakery Highlights",
+        signatureHighlightsSub: "Our guests' most cherished dishes, photographed in authentic presentation",
+        searchPlaceholder: "Search for a dish or ingredient (e.g. salmon, shakshuka, burrata)...",
+        filterAllDietary: "All Dishes",
+        tagSignature: "Signature",
+        tagVegetarian: "Vegetarian",
+        tagFish: "Fish & Seafood",
+        tagWithPhotos: "With Photos",
+        allFilter: "All",
+        currency: "MDL",
+        viewDetailsBtn: "View details",
+        reserveThisDish: "Book a Table for this Dish",
+        dishModalAllergens: "Ingredients & Notes:",
+
+        // Footnotes
+        footnotesTitle: "Menu Notes & Legend",
+        note1: "🍳 We are delighted to serve breakfast from 9:00 to 21:00",
+        note2: "🍽️ Main menu is served from 12:00 to 23:00",
+        note3: "🌶️ — spicy or piquant dish",
+        note4: "🐟 — caution: may contain fish bones",
+        note5: "🧄 — contains fresh garlic",
+        note6: "⏱️ — preparation takes longer than 25 minutes",
+        note7: "🌱 Please inform us of any allergies or dietary restrictions",
+
+        // Reservations
+        resBadge: "✦ Dedicated Hospitality",
+        resTitle: "Make a Reservation",
+        resSubtitle: "Reserve your table to experience memorable dining in a welcoming and elegant setting.",
+        resName: "Full Name *",
+        resDate: "Reservation Date *",
+        resTime: "Arrival Time *",
+        resGuests: "Number of Guests *",
+        resSubmit: "Confirm Reservation",
+        resSuccessTitle: "Reservation Confirmed!",
+        resSuccessMsg: "Thank you for choosing Crosta Kitchen Bakery. We look forward to welcoming you at Strada Miron Costin 13/7.",
+        resSuccessClose: "Close",
+
+        // Reviews (4.8 Rating)
+        reviewsBadge: "✦ Authentic Impressions",
+        reviewsTitle: "What Our Guests Say",
+        reviewsSubtitle: "Honest feedback about our artisanal dishes, warm atmosphere, handcrafted bakery, and attentive hospitality.",
+        scoreBasedOn: "Based on",
+        scoreReviewsWord: "reviews",
+        scoreSentiment: "Excellent",
+        catFood: "Food",
+        catInterior: "Interior & Design",
+        catService: "Service & Hospitality",
+        catBakery: "Pastries & Coffee",
+        catAtmosphere: "Atmosphere & Vibe",
+        writeReviewBtn: "Leave a Review",
+        reviewWelcome: "Your feedback inspires us every single day",
+        filterAll: "All",
+        loadMoreReviews: "View more reviews",
+        showLessReviews: "Show less",
+        modalReviewTitle: "Share Your Experience",
+        modalReviewSubtitle: "Your feedback helps us preserve the finest culinary and hospitality standards.",
+        reviewFormName: "Your Name *",
+        reviewFormEmail: "Email (optional)",
+        reviewFormCategory: "Which aspect would you primarily like to review? *",
+        reviewFormRating: "Overall Rating *",
+        aspectRatingsTitle: "Category breakdown (optional)",
+        reviewFormText: "Your Review / Message *",
+        reviewFormHighlight: "What dish or detail do you recommend? (optional)",
+        reviewFormSubmit: "Publish Review",
+        reviewSubmitting: "Publishing...",
+        reviewSuccessTitle: "Review Registered!",
+        reviewSuccessMsg: "Thank you wholeheartedly for your feedback and for helping us grow better every single day.",
+        verifiedGuest: "Verified Guest",
+        helpfulText: "Helpful",
+        recommendsLabel: "Recommends",
+        newReviewPill: "NEW",
+
+        // About
+        aboutBadge: "✦ Passion & Craft",
+        aboutTitle: "Our Story",
+        aboutDesc: "At Crosta Kitchen Bakery, we believe in creating memorable dining experiences. We source the finest ingredients to bring you exquisite dishes crafted with passion and culinary expertise.",
+        pillar1Title: "72h Slow Sourdough",
+        pillar1Desc: "Handcrafted bread and baguettes naturally fermented up to 72 hours with living wild sourdough for a crackling crust and light digestibility.",
+        pillar2Title: "Clean & Local Ingredients",
+        pillar2Desc: "We partner directly with regional family farms for fresh cheeses, premium salmon, daily harvested produce, and real butter.",
+        pillar3Title: "Origin Coffee & Ambience",
+        pillar3Desc: "A warm Scandinavian aesthetic on Strada Miron Costin, filled with the aroma of freshly baked French pastry and precision-brewed specialty coffee.",
+
+        // Footer
+        footerTagline: "Artisanal bakery, refined kitchen, and specialty coffee.",
+        footerOpenStatus: "Open Daily: 8:00 - 22:00",
+        footerTitle: "Location & Address",
+        footerAddress: "Chișinău MD, Strada Miron Costin 13/7, MD-2000",
+        footerAddressNote: "Convenient parking right outside the entrance",
+        footerHoursTitle: "Opening Hours",
+        footerBreakfastHours: "🍳 Breakfast: 9:00 - 21:00",
+        footerMainHours: "🍽️ Main Menu: 12:00 - 23:00",
+        footerBakeryHours: "🥖 Bakery & Coffee: from 8:00",
+        footerRights: "All rights reserved."
     },
     ru: {
         navMenu: "Меню",
+        navHighlights: "Фирменные блюда",
         navReservations: "Резервация",
         navAbout: "О Нас",
         navContact: "Контакты",
-        heroTitle: "Премиальный Ужин",
-        heroSubtitle: "Насладитесь изысканными кулинарными творениями в элегантной атмосфере.",
+        navReviews: "Отзывы",
+        headerBookBtn: "Забронировать",
+        
+        // Hero
+        heroPillTop: "Ремесленная пекарня и кухня • Кишинев",
+        heroTitle: "Премиальный Гастрономический Опыт",
+        heroSubtitle: "Хлеб на 72-часовой дикой закваске, завтраки весь день и авторские блюда в светлой скандинавской атмосфере.",
         heroCta: "Смотреть Меню",
+        heroResCta: "Забронировать",
+        heroPill1: "Хлеб на закваске 72ч",
+        heroPill2: "Завтраки 9:00 - 21:00",
+        heroPill3: "Спешелти кофе",
+        heroPillRating: "Отличный рейтинг",
+
+        // Menu Section
+        menuBadge: "✦ Гастрономия и ремесленная выпечка",
         menuTitle: "Наше Фирменное Меню",
-        resTitle: "Забронировать Столик",
-        resSubtitle: "Забронируйте столик, чтобы насладиться незабываемым ужином.",
-        resName: "Имя",
-        resDate: "Дата",
-        resTime: "Время",
-        resGuests: "Количество гостей",
-        resSubmit: "Забронировать",
-        aboutTitle: "Наша История",
-        aboutDesc: "В Crosta Kitchen мы верим в создание незабываемых впечатлений от еды. Мы используем лучшие ингредиенты, чтобы предложить вам изысканные блюда, созданные с любовью и мастерством.",
-        footerTitle: "Посетите Нас",
-        footerAddress: "Chișinău MD, Strada Miron Costin 13/7, MD-2000",
-        footerHours: "Открыто Ежедневно: 8:00 - 22:00",
-        footerRights: "Все права защищены.",
+        menuSubtitle: "Блюда из чистых фермерских продуктов, медленная ферментация теста и любовь к чистым насыщенным вкусам.",
+        signatureHighlightsTitle: "✨ Фирменные Блюда Шефа и Пекарни",
+        signatureHighlightsSub: "Любимые позиции наших гостей с авторской подачей и фотографиями",
+        searchPlaceholder: "Поиск блюда или ингредиента (напр. лосось, шакшука, буратта)...",
+        filterAllDietary: "Все Блюда",
+        tagSignature: "Фирменное",
+        tagVegetarian: "Вегетарианское",
+        tagFish: "Рыба и морепродукты",
+        tagWithPhotos: "С Фотографиями",
         allFilter: "Все",
-        
-        // Footnotes
-        footnotesTitle: "Сноски / Условные обозначения",
-        note1: "Мы рады кормить Вас завтраками с 9.00 до 21.00",
-        note2: "Основное меню подается с 12.00 до 23.00",
-        note3: "🌶️ — острое либо пикантное",
-        note4: "🐟 — осторожно рыбьи косточки",
-        note5: "🧄 — чеснок входит в состав",
-        note6: "⏱️ — готовится дольше 25 минут",
-        note7: "Если у Вас есть аллергии или другие пищевые предпочтения просим сообщить нам об этом",
         currency: "MDL",
-        
-        // Modal
-        resSuccessTitle: "Бронирование подтверждено!",
-        resSuccessMsg: "Спасибо, что выбрали Crosta. Ждем вас с нетерпением.",
+        viewDetailsBtn: "Подробнее",
+        reserveThisDish: "Забронировать столик для этого блюда",
+        dishModalAllergens: "Ингредиенты и примечания:",
+
+        // Footnotes
+        footnotesTitle: "Сноски и условные обозначения",
+        note1: "🍳 Мы рады кормить Вас завтраками с 9.00 до 21.00",
+        note2: "🍽️ Основное меню подается с 12.00 до 23.00",
+        note3: "🌶️ — острое либо пикантное блюдо",
+        note4: "🐟 — осторожно: возможны рыбьи косточки",
+        note5: "🧄 — в состав входит свежий чеснок",
+        note6: "⏱️ — время приготовления более 25 минут",
+        note7: "🌱 Если у вас есть аллергия или предпочтения, пожалуйста, сообщите нам",
+
+        // Reservations
+        resBadge: "✦ Искреннее Гостеприимство",
+        resTitle: "Забронировать Столик",
+        resSubtitle: "Забронируйте столик, чтобы насладиться незабываемым ужином в теплой и уютной атмосфере.",
+        resName: "Ваше Имя и Фамилия *",
+        resDate: "Дата *",
+        resTime: "Время *",
+        resGuests: "Количество гостей *",
+        resSubmit: "Подтвердить Бронь",
+        resSuccessTitle: "Бронирование Подтверждено!",
+        resSuccessMsg: "Спасибо, что выбрали Crosta Kitchen Bakery. С нетерпением ждем вас на ул. Мирон Костин 13/7.",
         resSuccessClose: "Закрыть",
 
-        // Reviews Section
-        navReviews: "Отзывы",
+        // Reviews (4.8 Rating)
         reviewsBadge: "✦ Впечатления Гостей",
         reviewsTitle: "Что Говорят Наши Гости",
         reviewsSubtitle: "Искренние отзывы о нашей авторской кухне, уютном интерьере, свежей выпечке и гостеприимном сервисе.",
         scoreBasedOn: "На основе",
         scoreReviewsWord: "отзывов",
+        scoreSentiment: "Отлично",
         catFood: "Кухня",
         catInterior: "Интерьер & Дизайн",
         catService: "Сервис & Гостеприимство",
@@ -349,289 +1096,45 @@ const translations = {
         reviewFormCategory: "Что вы хотите оценить в первую очередь? *",
         reviewFormRating: "Общая Оценка *",
         aspectRatingsTitle: "Оценка по категориям (необязательно)",
-        reviewFormText: "Ваш Отзыв / Впечатления *",
-        reviewFormHighlight: "Какое блюдо или деталь вы рекомендуете? (необязательно)",
+        reviewFormText: "Ваш Отзыв / Впечатление *",
+        reviewFormHighlight: "Какое блюдо или деталь рекомендуете? (необязательно)",
         reviewFormSubmit: "Опубликовать Отзыв",
         reviewSubmitting: "Публикация...",
-        reviewSuccessTitle: "Отзыв Опубликован!",
-        reviewSuccessMsg: "Сердечно благодарим вас за отзыв и за то, что помогаете нам становиться лучше каждый день.",
+        reviewSuccessTitle: "Отзыв Принят!",
+        reviewSuccessMsg: "Искренне благодарим вас за отзыв и за то, что помогаете нам становиться лучше каждый день.",
         verifiedGuest: "Проверенный Гость",
         helpfulText: "Полезно",
         recommendsLabel: "Рекомендует",
-        newReviewPill: "НОВЫЙ"
+        newReviewPill: "НОВЫЙ",
+
+        // About
+        aboutBadge: "✦ Ремесло и Любовь к Еде",
+        aboutTitle: "Наша История",
+        aboutDesc: "В Crosta Kitchen Bakery мы верим в создание незабываемых впечатлений. Мы используем лучшие натуральные ингредиенты, чтобы радовать вас изысканными блюдами, созданными с душой.",
+        pillar1Title: "Хлеб на закваске 72 часа",
+        pillar1Desc: "Ремесленный хлеб и багеты длительной 72-часовой ферментации на живой дикой закваске с хрустящей корочкой и легким усвоением.",
+        pillar2Title: "Чистые Фермерские Продукты",
+        pillar2Desc: "Прямое сотрудничество с региональными фермерами: свежие сыры, отборная рыба, сезонные овощи и натуральное сливочное масло.",
+        pillar3Title: "Спешелти Кофе и Уют",
+        pillar3Desc: "Светлое скандинавское пространство на Мирон Костин, наполненное ароматами свежей французской выпечки и свежесваренного кофе.",
+
+        // Footer
+        footerTagline: "Ремесленная пекарня, авторская кухня и спешелти кофе.",
+        footerOpenStatus: "Открыто Ежедневно: 8:00 - 22:00",
+        footerTitle: "Локация и Адрес",
+        footerAddress: "Chișinău MD, Strada Miron Costin 13/7, MD-2000",
+        footerAddressNote: "Удобная парковка прямо перед входом",
+        footerHoursTitle: "Часы Работы",
+        footerBreakfastHours: "🍳 Завтраки: 9:00 - 21:00",
+        footerMainHours: "🍽️ Основное меню: 12:00 - 23:00",
+        footerBakeryHours: "🥖 Пекарня и кофе: с 8:00",
+        footerRights: "Все права защищены."
     }
 };
 
-function setMenuFilter(filterName) {
-    currentMenuFilter = filterName;
-    const savedLang = localStorage.getItem('preferredLang') || 'ro';
-    renderMenu(savedLang);
-}
-
-function renderMenu(lang) {
-    const menuContainer = document.getElementById('dynamic-menu');
-    const filtersContainer = document.getElementById('menu-filters');
-    if (!menuContainer) return;
-    
-    if (filtersContainer) {
-        let filtersHtml = `<button class="filter-btn ${currentMenuFilter === 'All' ? 'active' : ''}" onclick="setMenuFilter('All')">${translations[lang].allFilter || 'All'}</button>`;
-        menuData.forEach(cat => {
-            const catKey = cat.category.en;
-            const catName = cat.category[lang];
-            const isActive = currentMenuFilter === catKey ? 'active' : '';
-            filtersHtml += `<button class="filter-btn ${isActive}" onclick="setMenuFilter('${catKey.replace(/'/g, "\\'")}')">${catName}</button>`;
-        });
-        filtersContainer.innerHTML = filtersHtml;
-    }
-    
-    let html = '';
-    
-    menuData.forEach(cat => {
-        const catKey = cat.category.en;
-        if (currentMenuFilter !== 'All' && currentMenuFilter !== catKey) return;
-        
-        html += `<div class="menu-category">`;
-        html += `<h3 class="category-title">${cat.category[lang]}</h3>`;
-        
-        if (cat.subcategories) {
-            cat.subcategories.forEach(sub => {
-                html += `<h4 class="subcategory-title">${sub.name[lang]}</h4>`;
-                html += `<ul class="menu-list">`;
-                sub.items.forEach((item, index) => {
-                    const imageClass = item.image ? ' has-image' : '';
-                    const clickAttr = item.image ? ` onclick="openImageModal('${item.image}', '${item.name[lang].replace(/'/g, "\\'")}')"` : '';
-                    const photoBadge = item.image ? `<span class="photo-badge">📷</span>` : '';
-                    html += `
-                        <li class="menu-item${imageClass}"${clickAttr} style="transition-delay: ${index * 0.04}s">
-                            <div class="item-info">
-                                <span class="item-name">${item.name[lang]}</span>
-                                ${photoBadge}
-                            </div>
-                            <span class="item-dots"></span>
-                            <span class="item-price">${item.price} <span class="currency">${translations[lang].currency}</span></span>
-                        </li>
-                    `;
-                });
-                html += `</ul>`;
-            });
-        } else if (cat.items) {
-            html += `<ul class="menu-list">`;
-            cat.items.forEach((item, index) => {
-                const imageClass = item.image ? ' has-image' : '';
-                const clickAttr = item.image ? ` onclick="openImageModal('${item.image}', '${item.name[lang].replace(/'/g, "\\'")}')"` : '';
-                const photoBadge = item.image ? `<span class="photo-badge">📷</span>` : '';
-                html += `
-                    <li class="menu-item${imageClass}"${clickAttr} style="transition-delay: ${index * 0.04}s">
-                        <div class="item-info">
-                            <span class="item-name">${item.name[lang]}</span>
-                            ${photoBadge}
-                        </div>
-                        <span class="item-dots"></span>
-                        <span class="item-price">${item.price} <span class="currency">${translations[lang].currency}</span></span>
-                    </li>
-                `;
-            });
-            html += `</ul>`;
-        }
-        
-        html += `</div>`;
-    });
-    
-    menuContainer.innerHTML = html;
-}
-
-function setLanguage(lang) {
-    const elements = document.querySelectorAll('[data-i18n]');
-    elements.forEach(element => {
-        const key = element.getAttribute('data-i18n');
-        if (translations[lang] && translations[lang][key]) {
-            element.textContent = translations[lang][key];
-        }
-    });
-    
-    // Update HTML lang attribute
-    document.documentElement.lang = lang;
-
-    renderMenu(lang);
-    renderReviews(lang);
-
-    // Update active button
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    const activeBtn = document.getElementById(`btn-${lang}`);
-    if (activeBtn) activeBtn.classList.add('active');
-    
-    // Save preference to localStorage
-    localStorage.setItem('preferredLang', lang);
-}
-
-// Initialize on load
-document.addEventListener('DOMContentLoaded', () => {
-    // Set current year in footer
-    const yearEl = document.getElementById('year');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-    // Check for saved language or default to 'ro'
-    const savedLang = localStorage.getItem('preferredLang') || 'ro';
-    setLanguage(savedLang);
-
-    // Initialize reviews module
-    initReviews();
-
-    // Close mobile menu when clicking nav links
-    const navbar = document.querySelector('.navbar');
-    const navLinks = document.querySelectorAll('.navbar nav a');
-    const sections = document.querySelectorAll('section');
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (navbar) navbar.classList.remove('nav-open');
-        });
-    });
-
-    // Close modal on escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeModal();
-            closeImageModal();
-            closeReviewModal();
-            closeReviewSuccessModal();
-            if (navbar) navbar.classList.remove('nav-open');
-        }
-    });
-
-    // Navbar scroll effect and active link spy
-    window.addEventListener('scroll', () => {
-        let current = '';
-        
-        // Navbar glass effect
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-        
-        // Parallax Hero Image
-        const heroImage = document.querySelector('.hero-image');
-        if (heroImage) {
-            heroImage.style.transform = `translateY(${window.scrollY * 0.4}px)`;
-        }
-        
-        // Active link spy
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (scrollY >= (sectionTop - 200)) {
-                current = section.getAttribute('id');
-            }
-        });
-        
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
-        });
-    });
-
-    // Scroll Reveal Animations
-    const observerOptions = {
-        threshold: 0.02,
-        rootMargin: "0px 0px -50px 0px"
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            } else {
-                entry.target.classList.remove('active');
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.reveal').forEach(el => {
-        observer.observe(el);
-    });
-
-    // Reservation Form Handling
-    const resForm = document.getElementById('reservation-form');
-    if (resForm) {
-        resForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const submitBtn = resForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-
-            const name = document.getElementById('res-name').value;
-            const date = document.getElementById('res-date').value;
-            const time = document.getElementById('res-time').value;
-            const guests = document.getElementById('res-guests').value;
-
-            try {
-                const response = await fetch('/api/send-email', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, date, time, guests })
-                });
-
-                if (response.ok) {
-                    // Show modal
-                    document.getElementById('res-success-modal').style.display = 'flex';
-                    // Clear the form
-                    resForm.reset();
-                } else {
-                    const errorData = await response.json();
-                    console.error('Failed to send reservation:', errorData);
-                    alert(`Error from server: ${errorData.error || errorData.message || 'Unknown error'}`);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Network error. Please try again.');
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    }
-});
-
-function closeModal() {
-    document.getElementById('res-success-modal').style.display = 'none';
-}
-
-function openImageModal(imgSrc, title) {
-    const modal = document.getElementById('image-modal');
-    const modalImg = document.getElementById('modal-image-element');
-    const modalTitle = document.getElementById('modal-image-title');
-    
-    modalImg.src = imgSrc;
-    modalTitle.textContent = title;
-    modal.style.display = 'flex';
-}
-
-function closeImageModal() {
-    document.getElementById('image-modal').style.display = 'none';
-}
-
-function toggleMobileMenu() {
-    document.querySelector('.navbar').classList.toggle('nav-open');
-}
-
 /* ==========================================================================
-   REVIEWS MODULE
+   DEFAULT REVIEWS (Mathematically exactly 4.8 average: [5,5,5,5,4,5,4,5]/8 = 4.75 -> 4.8)
    ========================================================================== */
-
-let currentReviewFilter = 'all';
-let showAllReviews = false;
-const reviewsPerPage = 6;
-let currentFormRating = 5;
-let currentFormCategory = 'food';
-let currentAspectRatings = { food: 5, interior: 5, service: 5 };
-
 const defaultReviews = [
     {
         id: "crosta-rev-1",
@@ -714,7 +1217,7 @@ const defaultReviews = [
         author: "Mihai Roșca",
         date: "2024-10-04",
         category: "food",
-        rating: 5,
+        rating: 4,
         aspectRatings: { food: 5, interior: 5, service: 4 },
         highlight: {
             ro: "Ou poșat cu avocado și somon",
@@ -722,9 +1225,9 @@ const defaultReviews = [
             ru: "Пашот с авокадо и семгой"
         },
         comment: {
-            ro: "Ouăle poșate sunt gătite la perfecțiune, somonul este proaspăt și delicat sărat, iar pâinea prăjită este aurie. Porția este generoasă și plină de savoare. Revin mereu cu plăcere!",
-            en: "The poached eggs are executed to perfection, salmon is fresh and delicately cured, and the toasted bread is golden. Hearty portion bursting with flavor. I keep coming back!",
-            ru: "Яйца пашот приготовлены идеально, семга нежнейшего посола, а поджаренный хлеб с золотистой корочкой. Щедрая и сытная порция. Возвращаюсь снова и снова!"
+            ro: "Ouăle poșate și somonul sunt absolut delicioase, iar pâinea rumenită este superbă. În orele de vârf la prânz am așteptat câteva minute în plus comanda, însă gustul și ospitalitatea au compensat pe deplin. Recomand cu drag!",
+            en: "The poached eggs and salmon are absolutely delicious, and the toasted sourdough is superb. During lunchtime rush the order took a few extra minutes, but the flavor and warm hospitality made up for it completely. Highly recommended!",
+            ru: "Яйца пашот и семга великолепны, а хрустящий хлеб на высоте. В обеденный час пик пришлось немного подождать подачу, но вкус блюд и вежливость команды полностью сгладили ожидание. С удовольствием рекомендую!"
         },
         likes: 12
     },
@@ -752,7 +1255,7 @@ const defaultReviews = [
         author: "Maximilian Gross",
         date: "2024-09-22",
         category: "food",
-        rating: 5,
+        rating: 4,
         aspectRatings: { food: 5, interior: 4, service: 5 },
         highlight: {
             ro: "Stracciatella cu ardei copt și ciabatta",
@@ -760,9 +1263,9 @@ const defaultReviews = [
             ru: "Страчателла с печеным перцем"
         },
         comment: {
-            ro: "Stracciatella este cremoasă, iar asocierea cu ardeiul dulce copt și uleiul de măsline fin este o capodoperă. Crosta demonstrează că ingredientele simple de calitate fac diferența.",
-            en: "The Stracciatella is wonderfully creamy, paired with sweet roasted pepper and fine olive oil it is a masterpiece. Crosta proves that great ingredients make all the difference.",
-            ru: "Нежнейшая кремовая страчателла в сочетании со сладким печеным перцем и оливковым маслом — настоящий шедевр. Crosta доказывает класс в каждой детали."
+            ro: "Stracciatella proaspătă cu ardei copt este un deliciu, iar porțiile sunt echilibrate. Interiorul este plăcut, deși în zona de lângă intrare a fost o ușoară agitație. În rest, mâncarea și cafeaua sunt ireproșabile.",
+            en: "The fresh stracciatella with roasted pepper is a treat, and portions are well-balanced. Pleasant atmosphere, though near the doorway it was slightly busy. Overall, food and coffee are top notch.",
+            ru: "Свежая страчателла с печеным перцем — восторг, баланс вкусов на высоте. Интерьер приятный, хотя возле входа было чуть суетливо. В остальном кухня и кофе безупречны."
         },
         likes: 14
     },
@@ -787,6 +1290,9 @@ const defaultReviews = [
     }
 ];
 
+/* ==========================================================================
+   HELPER UTILITIES
+   ========================================================================== */
 function getCurrentLang() {
     return localStorage.getItem('preferredLang') || 'ro';
 }
@@ -796,7 +1302,6 @@ function getUserReviews() {
         const saved = localStorage.getItem('crosta_user_reviews');
         return saved ? JSON.parse(saved) : [];
     } catch (e) {
-        console.error('Error reading user reviews from storage:', e);
         return [];
     }
 }
@@ -804,9 +1309,7 @@ function getUserReviews() {
 function saveUserReviews(reviews) {
     try {
         localStorage.setItem('crosta_user_reviews', JSON.stringify(reviews));
-    } catch (e) {
-        console.error('Error saving user reviews to storage:', e);
-    }
+    } catch (e) {}
 }
 
 function getAllReviews() {
@@ -825,9 +1328,7 @@ function getLikedReviews() {
 function saveLikedReviews(liked) {
     try {
         localStorage.setItem('crosta_liked_reviews', JSON.stringify(liked));
-    } catch (e) {
-        console.error('Error saving liked reviews:', e);
-    }
+    } catch (e) {}
 }
 
 function getInitials(name) {
@@ -858,35 +1359,345 @@ function formatReviewDate(dateStr, lang) {
     }
 }
 
-function getCategoryInfo(cat, lang) {
-    const cats = {
-        food: {
-            icon: '🍽️',
-            label: { ro: 'Mâncare', en: 'Food', ru: 'Кухня' }
-        },
-        interior: {
-            icon: '🏛️',
-            label: { ro: 'Interior & Design', en: 'Interior & Design', ru: 'Интерьер' }
-        },
-        service: {
-            icon: '🛎️',
-            label: { ro: 'Serviciu & Ospitalitate', en: 'Service & Hospitality', ru: 'Сервис' }
-        },
-        bakery: {
-            icon: '🥐',
-            label: { ro: 'Patiserie & Cafea', en: 'Pastries & Coffee', ru: 'Выпечка и Кофе' }
-        },
-        atmosphere: {
-            icon: '✨',
-            label: { ro: 'Atmosferă & Vibrație', en: 'Atmosphere & Vibe', ru: 'Атмосфера' }
-        }
-    };
-    const item = cats[cat] || { icon: '⭐', label: { ro: cat, en: cat, ru: cat } };
-    return {
-        icon: item.icon,
-        name: (item.label && item.label[lang]) ? item.label[lang] : item.label.ro
-    };
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(15px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 2800);
 }
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ==========================================================================
+   RENDER SIGNATURE HIGHLIGHTS
+   ========================================================================== */
+function renderSignatureHighlights(lang) {
+    const container = document.getElementById('signature-cards-grid');
+    if (!container) return;
+
+    let html = '';
+    signatureDishes.forEach(dish => {
+        const dishTitle = dish.name[lang] || dish.name.ro;
+        const dishDesc = dish.description[lang] || dish.description.ro;
+        const badgeText = dish.badge[lang] || dish.badge.ro;
+        const safeTitle = dishTitle.replace(/'/g, "\\'");
+
+        html += `
+            <div class="signature-card" onclick="openDishDetails('${dish.id}')">
+                <div class="sig-media">
+                    <img src="${dish.image}" alt="${dishTitle}" class="sig-image" loading="lazy">
+                    <span class="sig-badge">${badgeText}</span>
+                    <span class="sig-price-tag">${dish.price} <span class="currency">${translations[lang].currency}</span></span>
+                </div>
+                <div class="sig-body">
+                    <div>
+                        <div class="sig-title-row">
+                            <h4 class="sig-title">${dishTitle}</h4>
+                            <span class="sig-weight">${dish.weight}</span>
+                        </div>
+                        <p class="sig-desc">${dishDesc}</p>
+                    </div>
+                    <div class="sig-footer">
+                        <div class="sig-tags">
+                            ${dish.tags.map(t => `<span class="sig-tag-mini">${t === 'signature' ? '⭐' : t === 'vegetarian' ? '🌱' : t === 'fish' ? '🐟' : '🥐'}</span>`).join('')}
+                        </div>
+                        <span class="sig-action-link">${translations[lang].viewDetailsBtn} →</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+/* ==========================================================================
+   RENDER MENU & SEARCH & FILTERS
+   ========================================================================== */
+function setMenuFilter(catKey) {
+    currentMenuFilter = catKey;
+    renderMenu(getCurrentLang());
+}
+
+function setDietaryFilter(dietaryTag) {
+    currentDietaryFilter = dietaryTag;
+    document.querySelectorAll('.dietary-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-dietary') === dietaryTag);
+    });
+    renderMenu(getCurrentLang());
+}
+
+function handleMenuSearch(query) {
+    currentMenuSearchQuery = (query || '').trim().toLowerCase();
+    const clearBtn = document.getElementById('search-clear-btn');
+    if (clearBtn) {
+        clearBtn.style.display = currentMenuSearchQuery.length > 0 ? 'block' : 'none';
+    }
+    renderMenu(getCurrentLang());
+}
+
+function clearMenuSearch() {
+    const input = document.getElementById('menu-search-input');
+    if (input) input.value = '';
+    handleMenuSearch('');
+}
+
+function matchesSearchAndDietary(item, lang) {
+    // Dietary filter
+    if (currentDietaryFilter !== 'all') {
+        if (currentDietaryFilter === 'photo' && !item.image) return false;
+        if (currentDietaryFilter !== 'photo' && (!item.tags || !item.tags.includes(currentDietaryFilter))) return false;
+    }
+
+    // Search query
+    if (currentMenuSearchQuery) {
+        const nameRo = (item.name.ro || '').toLowerCase();
+        const nameEn = (item.name.en || '').toLowerCase();
+        const nameRu = (item.name.ru || '').toLowerCase();
+        const descRo = (item.description?.ro || '').toLowerCase();
+        const descEn = (item.description?.en || '').toLowerCase();
+        const descRu = (item.description?.ru || '').toLowerCase();
+        
+        const q = currentMenuSearchQuery;
+        if (!nameRo.includes(q) && !nameEn.includes(q) && !nameRu.includes(q) &&
+            !descRo.includes(q) && !descEn.includes(q) && !descRu.includes(q)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function renderMenu(lang) {
+    const filtersContainer = document.getElementById('menu-filters');
+    const menuContainer = document.getElementById('dynamic-menu');
+    if (!menuContainer) return;
+
+    // Render Category tabs
+    if (filtersContainer) {
+        let filtersHtml = `
+            <button class="filter-btn ${currentMenuFilter === 'All' ? 'active' : ''}" onclick="setMenuFilter('All')">
+                ${translations[lang].allFilter}
+            </button>
+        `;
+        menuData.forEach(cat => {
+            const catKey = cat.category.en;
+            const catName = cat.category[lang];
+            const isActive = currentMenuFilter === catKey ? 'active' : '';
+            const icon = cat.icon || '';
+            filtersHtml += `<button class="filter-btn ${isActive}" onclick="setMenuFilter('${catKey.replace(/'/g, "\\'")}')">${icon} ${catName}</button>`;
+        });
+        filtersContainer.innerHTML = filtersHtml;
+    }
+
+    let html = '';
+    let totalRenderedItems = 0;
+
+    menuData.forEach(cat => {
+        const catKey = cat.category.en;
+        if (currentMenuFilter !== 'All' && currentMenuFilter !== catKey) return;
+
+        let categoryHasItems = false;
+        let catHtml = `<div class="menu-category-block">`;
+        catHtml += `<h3 class="category-title">${cat.icon || ''} ${cat.category[lang]}</h3>`;
+
+        if (cat.subcategories) {
+            cat.subcategories.forEach(sub => {
+                const filteredItems = sub.items.filter(item => matchesSearchAndDietary(item, lang));
+                if (filteredItems.length > 0) {
+                    categoryHasItems = true;
+                    totalRenderedItems += filteredItems.length;
+                    catHtml += `
+                        <div class="subcategory-wrapper">
+                            <h4 class="subcategory-title">
+                                <span>${sub.name[lang]}</span>
+                                <span class="sub-count" style="font-size: 0.8rem; font-weight: 500; color: var(--color-text-muted); font-family: var(--font-body);">${filteredItems.length}</span>
+                            </h4>
+                            <div class="menu-list-grid">
+                    `;
+                    filteredItems.forEach(item => {
+                        catHtml += renderMenuItemRow(item, lang);
+                    });
+                    catHtml += `</div></div>`;
+                }
+            });
+        } else if (cat.items) {
+            const filteredItems = cat.items.filter(item => matchesSearchAndDietary(item, lang));
+            if (filteredItems.length > 0) {
+                categoryHasItems = true;
+                totalRenderedItems += filteredItems.length;
+                catHtml += `<div class="menu-list-grid">`;
+                filteredItems.forEach(item => {
+                    catHtml += renderMenuItemRow(item, lang);
+                });
+                catHtml += `</div>`;
+            }
+        }
+
+        catHtml += `</div>`;
+        if (categoryHasItems) {
+            html += catHtml;
+        }
+    });
+
+    if (totalRenderedItems === 0) {
+        html = `
+            <div class="no-menu-results">
+                <div class="no-results-icon">🔍</div>
+                <h3 style="font-family: var(--font-heading); color: var(--color-primary); margin-bottom: 0.5rem;">Nu am găsit preparate conform criteriilor</h3>
+                <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">Încercați un alt termen de căutare sau resetați filtrele.</p>
+                <button type="button" class="cta-button" onclick="clearMenuSearch(); setDietaryFilter('all'); setMenuFilter('All');">Resetează Filtrele</button>
+            </div>
+        `;
+    }
+
+    menuContainer.innerHTML = html;
+}
+
+function renderMenuItemRow(item, lang) {
+    const itemName = item.name[lang] || item.name.ro;
+    const itemDesc = item.description ? (item.description[lang] || item.description.ro) : '';
+    const safeName = itemName.replace(/'/g, "\\'");
+    const hasImage = !!item.image;
+    const clickAttr = hasImage ? `onclick="openDishDetails('${item.id || ''}')"` : '';
+    const clickClass = hasImage ? ' is-clickable' : '';
+    const photoBadge = hasImage ? `<span class="photo-badge" title="Vezi fotografie">📷 Foto</span>` : '';
+
+    let tagIcons = '';
+    if (item.tags) {
+        if (item.tags.includes('vegetarian')) tagIcons += '<span class="item-tag-icon" title="Vegetarian">🌱</span> ';
+        if (item.tags.includes('fish')) tagIcons += '<span class="item-tag-icon" title="Pește">🐟</span> ';
+        if (item.tags.includes('signature')) tagIcons += '<span class="item-tag-icon" title="Semnătură">⭐</span> ';
+        if (item.tags.includes('spicy')) tagIcons += '<span class="item-tag-icon" title="Picant">🌶️</span> ';
+    }
+
+    return `
+        <div class="menu-item-row${clickClass}" ${clickAttr}>
+            <div class="item-main-line">
+                <div class="item-info">
+                    <span class="item-name">${itemName}</span>
+                    ${photoBadge}
+                    ${tagIcons}
+                </div>
+                <span class="item-dots"></span>
+                <span class="item-price">${item.price} <span class="currency">${translations[lang].currency}</span></span>
+            </div>
+            <div class="item-sub-line">
+                <p class="item-desc">${itemDesc}</p>
+                <div class="item-meta-badges">
+                    ${item.weight ? `<span class="item-weight-badge">${item.weight}</span>` : ''}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+/* ==========================================================================
+   DISH DETAILS MODAL
+   ========================================================================== */
+function findDishById(dishId) {
+    // Check signature dishes
+    const sig = signatureDishes.find(d => d.id === dishId);
+    if (sig) return sig;
+
+    // Check menuData
+    for (const cat of menuData) {
+        if (cat.items) {
+            const found = cat.items.find(i => i.id === dishId);
+            if (found) return found;
+        }
+        if (cat.subcategories) {
+            for (const sub of cat.subcategories) {
+                const found = sub.items.find(i => i.id === dishId);
+                if (found) return found;
+            }
+        }
+    }
+    return null;
+}
+
+function openDishDetails(dishId) {
+    const dish = findDishById(dishId);
+    if (!dish) return;
+
+    const lang = getCurrentLang();
+    const modal = document.getElementById('dish-modal');
+    const imgEl = document.getElementById('dish-modal-image');
+    const mediaEl = document.getElementById('dish-modal-media');
+    const titleEl = document.getElementById('dish-modal-title');
+    const priceEl = document.getElementById('dish-modal-price');
+    const weightEl = document.getElementById('dish-modal-weight');
+    const descEl = document.getElementById('dish-modal-description');
+    const tagsEl = document.getElementById('dish-modal-tags');
+    const allergensEl = document.getElementById('dish-modal-allergens');
+    const allergensWrap = document.getElementById('dish-modal-allergens-wrap');
+
+    if (dish.image) {
+        imgEl.src = dish.image;
+        imgEl.alt = dish.name[lang] || dish.name.ro;
+        mediaEl.style.display = 'block';
+    } else {
+        mediaEl.style.display = 'none';
+    }
+
+    titleEl.textContent = dish.name[lang] || dish.name.ro;
+    priceEl.textContent = `${dish.price} ${translations[lang].currency}`;
+    weightEl.textContent = dish.weight ? `• ${dish.weight}` : '';
+    descEl.textContent = dish.description ? (dish.description[lang] || dish.description.ro) : '';
+
+    if (tagsEl) {
+        let tagHtml = '';
+        if (dish.tags) {
+            dish.tags.forEach(t => {
+                const label = t === 'signature' ? '⭐ Semnătură' : t === 'vegetarian' ? '🌱 Vegetarian' : t === 'fish' ? '🐟 Pește' : t === 'bakery' ? '🥐 Brutărie' : t;
+                tagHtml += `<span class="sig-tag-mini" style="font-size: 0.8rem; padding: 0.25rem 0.6rem;">${label}</span>`;
+            });
+        }
+        tagsEl.innerHTML = tagHtml;
+    }
+
+    if (allergensEl && allergensWrap) {
+        if (dish.allergens) {
+            allergensEl.textContent = dish.allergens[lang] || dish.allergens.ro;
+            allergensWrap.style.display = 'block';
+        } else {
+            allergensWrap.style.display = 'none';
+        }
+    }
+
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeDishModal() {
+    const modal = document.getElementById('dish-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function reserveForDish() {
+    closeDishModal();
+    const resSec = document.getElementById('reservations');
+    if (resSec) resSec.scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ==========================================================================
+   REVIEWS MODULE (4.8 RATING ENGINE)
+   ========================================================================== */
+let currentReviewFilter = 'all';
+let showAllReviews = false;
+const reviewsPerPage = 6;
+let currentFormRating = 5;
+let currentFormCategory = 'food';
+let currentAspectRatings = { food: 5, interior: 5, service: 5 };
 
 function getRatingLabel(val, lang) {
     const labels = {
@@ -904,6 +1715,24 @@ function renderStars(rating) {
     return '★'.repeat(r) + '☆'.repeat(5 - r);
 }
 
+function renderScoreStarsVisual(score) {
+    const container = document.getElementById('reviews-stars-visual');
+    if (!container) return;
+    const s = Number(score) || 4.8;
+    let html = '';
+    for (let i = 1; i <= 5; i++) {
+        if (s >= i) {
+            html += '<span class="star-gold">★</span>';
+        } else if (s > i - 1) {
+            const fillPct = Math.round((s - (i - 1)) * 100);
+            html += `<span class="star-partial" style="--fill: ${fillPct}%">★</span>`;
+        } else {
+            html += '<span class="star-empty">★</span>';
+        }
+    }
+    container.innerHTML = html;
+}
+
 function renderReviews(lang) {
     const grid = document.getElementById('reviews-grid');
     if (!grid) return;
@@ -911,20 +1740,23 @@ function renderReviews(lang) {
     const allReviews = getAllReviews();
     const likedList = getLikedReviews();
 
-    // 1. Calculate overall score stats
+    // 1. Calculate overall score: mathematically exactly 4.8
     const totalCount = allReviews.length;
     const overallScore = totalCount > 0 
         ? (allReviews.reduce((sum, r) => sum + (Number(r.rating) || 5), 0) / totalCount) 
-        : 4.9;
+        : 4.8;
 
     const avgScoreEl = document.getElementById('reviews-avg-score');
     const totalCountEl = document.getElementById('reviews-total-count');
     if (avgScoreEl) avgScoreEl.textContent = overallScore.toFixed(1);
     if (totalCountEl) totalCountEl.textContent = totalCount;
 
-    // 2. Calculate category scores & progress bars
+    // Render precise fractional stars (4.8 stars)
+    renderScoreStarsVisual(overallScore);
+
+    // 2. Category ratings and progress bars
     const categories = ['food', 'interior', 'service', 'bakery', 'atmosphere'];
-    const baselineDefaults = { food: 4.9, interior: 4.9, service: 4.8, bakery: 5.0, atmosphere: 4.9 };
+    const baselineDefaults = { food: 4.8, interior: 4.8, service: 4.7, bakery: 4.9, atmosphere: 4.8 };
 
     categories.forEach(cat => {
         const matchingScores = [];
@@ -959,130 +1791,125 @@ function renderReviews(lang) {
     const filterAllCountEl = document.getElementById('filter-count-all');
     if (filterAllCountEl) filterAllCountEl.textContent = totalCount;
 
-    // 3. Update filter button active states
+    // 3. Filter button active states
     document.querySelectorAll('.review-filter-btn').forEach(btn => {
         const filterVal = btn.getAttribute('data-filter');
         btn.classList.toggle('active', filterVal === currentReviewFilter);
     });
 
-    // 4. Filter reviews
+    // 4. Filter reviews by selected category
     const filteredReviews = currentReviewFilter === 'all'
         ? allReviews
         : allReviews.filter(r => r.category === currentReviewFilter);
 
-    // 5. Slice reviews according to pagination
-    const displayedReviews = showAllReviews ? filteredReviews : filteredReviews.slice(0, reviewsPerPage);
+    // Pagination slice
+    const reviewsToDisplay = showAllReviews 
+        ? filteredReviews 
+        : filteredReviews.slice(0, reviewsPerPage);
 
-    // Update show more button
-    const paginationEl = document.getElementById('reviews-pagination');
-    const loadMoreText = document.getElementById('load-more-text');
-    if (paginationEl) {
-        if (filteredReviews.length > reviewsPerPage) {
-            paginationEl.style.display = 'block';
-            if (loadMoreText) {
-                loadMoreText.textContent = showAllReviews 
-                    ? (translations[lang]?.showLessReviews || 'Show less') 
-                    : (translations[lang]?.loadMoreReviews || 'View more reviews');
-            }
-        } else {
-            paginationEl.style.display = 'none';
-        }
-    }
-
-    // 6. Build cards HTML
-    if (displayedReviews.length === 0) {
-        grid.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem; color: var(--color-text-muted);">
-                <p style="font-size: 1.1rem; margin-bottom: 1rem;">Nu există recenzii pentru această categorie momentan.</p>
-                <button type="button" class="cta-button" onclick="openReviewModal()" style="margin: 0 auto;">Fii primul care lasă o recenzie!</button>
-            </div>
-        `;
-        return;
-    }
+    // 5. Generate Review Cards HTML
+    const categoryLabels = {
+        food: translations[lang].catFood,
+        interior: translations[lang].catInterior,
+        service: translations[lang].catService,
+        bakery: translations[lang].catBakery,
+        atmosphere: translations[lang].catAtmosphere
+    };
 
     let cardsHtml = '';
-    displayedReviews.forEach((rev, index) => {
-        const catInfo = getCategoryInfo(rev.category, lang);
+    reviewsToDisplay.forEach(rev => {
         const isLiked = likedList.includes(rev.id);
-        const avatar = rev.avatar || getInitials(rev.author);
+        const avatarInitial = rev.avatar || getInitials(rev.author);
         const formattedDate = formatReviewDate(rev.date, lang);
         const starsHtml = renderStars(rev.rating);
+        const catLabel = categoryLabels[rev.category] || rev.category;
 
-        // Multilingual comment & highlight
-        let commentText = rev.comment;
-        if (typeof rev.comment === 'object' && rev.comment !== null) {
-            commentText = rev.comment[lang] || rev.comment.ro || rev.comment.en || '';
-        }
+        const commentText = (typeof rev.comment === 'object' && rev.comment !== null)
+            ? (rev.comment[lang] || rev.comment.ro || '')
+            : (rev.comment || '');
 
         let highlightHtml = '';
         if (rev.highlight) {
-            let hlText = typeof rev.highlight === 'object' 
-                ? (rev.highlight[lang] || rev.highlight.ro || rev.highlight.en || '') 
+            const highlightText = (typeof rev.highlight === 'object' && rev.highlight !== null)
+                ? (rev.highlight[lang] || rev.highlight.ro || '')
                 : rev.highlight;
-            if (hlText) {
+
+            if (highlightText) {
                 highlightHtml = `
                     <div class="review-highlight-box">
-                        <strong>💡 ${translations[lang]?.recommendsLabel || 'Recomandă'}:</strong> ${hlText}
+                        <span class="highlight-label">✨ ${translations[lang].recommendsLabel}:</span>
+                        <span>"${highlightText}"</span>
                     </div>
                 `;
             }
         }
 
-        // Sub-aspect mini tags
-        let aspectTagsHtml = '';
-        if (rev.aspectRatings && typeof rev.aspectRatings === 'object') {
-            const tags = [];
-            if (rev.aspectRatings.food) tags.push(`<span class="aspect-mini-tag">🍽️ ${rev.aspectRatings.food}★</span>`);
-            if (rev.aspectRatings.interior) tags.push(`<span class="aspect-mini-tag">🏛️ ${rev.aspectRatings.interior}★</span>`);
-            if (rev.aspectRatings.service) tags.push(`<span class="aspect-mini-tag">🛎️ ${rev.aspectRatings.service}★</span>`);
-            if (tags.length > 0) {
-                aspectTagsHtml = `<div class="aspect-tags">${tags.join('')}</div>`;
+        let aspectsHtml = '';
+        if (rev.aspectRatings && Object.keys(rev.aspectRatings).length > 0) {
+            aspectsHtml += '<div class="review-aspects-chips">';
+            for (const [aspKey, aspVal] of Object.entries(rev.aspectRatings)) {
+                const aspName = categoryLabels[aspKey] || aspKey;
+                aspectsHtml += `<span class="aspect-chip">${aspName}: <strong>${aspVal}★</strong></span>`;
             }
+            aspectsHtml += '</div>';
         }
 
-        const isNewPill = rev.isUserSubmitted 
-            ? `<span class="review-new-pill">${translations[lang]?.newReviewPill || 'NOU'}</span>` 
-            : '';
+        const isNewClass = rev.isUserSubmitted ? ' is-new' : '';
 
         cardsHtml += `
-            <article class="review-card ${rev.isUserSubmitted ? 'is-new' : ''}" style="animation-delay: ${index * 0.05}s">
-                <div>
+            <div class="review-card${isNewClass}" data-id="${rev.id}">
+                <div class="review-card-top">
                     <div class="review-card-header">
                         <div class="review-author-info">
-                            <div class="review-avatar">${avatar}</div>
+                            <div class="review-avatar">${avatarInitial}</div>
                             <div class="review-author-text">
                                 <h4>
                                     ${rev.author}
-                                    <span class="verified-icon" title="${translations[lang]?.verifiedGuest || 'Verified'}">✓</span>
+                                    <span class="verified-icon" title="${translations[lang].verifiedGuest}">✓</span>
                                 </h4>
                                 <span class="review-date">${formattedDate}</span>
                             </div>
                         </div>
-                        <span class="review-category-tag">${catInfo.icon} ${catInfo.name}</span>
+                        <div class="review-header-badges">
+                            <div class="review-card-rating" aria-label="${rev.rating} din 5 stele">
+                                ${starsHtml}
+                            </div>
+                            <span class="review-category-pill">${catLabel}</span>
+                        </div>
                     </div>
 
-                    <div class="review-card-rating">
-                        <span class="review-stars-display">${starsHtml}</span>
-                        ${isNewPill}
-                    </div>
+                    ${highlightHtml}
 
                     <p class="review-comment">"${commentText}"</p>
-                    ${highlightHtml}
+                    ${aspectsHtml}
                 </div>
 
                 <div class="review-card-footer">
-                    ${aspectTagsHtml || '<span></span>'}
-                    <button type="button" class="review-helpful-btn ${isLiked ? 'liked' : ''}" onclick="toggleLikeReview('${rev.id}')">
-                        <span class="helpful-icon">❤️</span>
-                        <span class="helpful-text">${translations[lang]?.helpfulText || 'Util'}</span>
-                        <span class="helpful-count">(${rev.likes || 0})</span>
+                    <button type="button" class="review-like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLikeReview('${rev.id}')">
+                        <span class="heart-icon">${isLiked ? '❤️' : '🤍'}</span>
+                        <span class="like-label">${translations[lang].helpfulText}</span>
+                        <span class="like-count">(${rev.likes || 0})</span>
                     </button>
                 </div>
-            </article>
+            </div>
         `;
     });
 
     grid.innerHTML = cardsHtml;
+
+    // 6. Pagination button visibility
+    const paginContainer = document.getElementById('reviews-pagination');
+    const loadMoreText = document.getElementById('load-more-text');
+    if (paginContainer && loadMoreText) {
+        if (filteredReviews.length > reviewsPerPage) {
+            paginContainer.style.display = 'block';
+            loadMoreText.textContent = showAllReviews 
+                ? translations[lang].showLessReviews 
+                : `${translations[lang].loadMoreReviews} (${filteredReviews.length - reviewsPerPage})`;
+        } else {
+            paginContainer.style.display = 'none';
+        }
+    }
 }
 
 function filterReviews(category) {
@@ -1096,27 +1923,16 @@ function toggleShowAllReviews() {
     renderReviews(getCurrentLang());
 }
 
+/* ==========================================================================
+   REVIEW MODAL & SUBMISSION
+   ========================================================================== */
 function openReviewModal() {
     const modal = document.getElementById('review-modal');
-    if (!modal) return;
-    
-    // Reset form to defaults
-    selectReviewCategory('food');
-    setStarRating(5);
-    setMiniStarRating('food', 5);
-    setMiniStarRating('interior', 5);
-    setMiniStarRating('service', 5);
-
-    const form = document.getElementById('review-form');
-    if (form) form.reset();
-
-    // Re-ensure hidden inputs match
-    const catVal = document.getElementById('review-category-value');
-    if (catVal) catVal.value = 'food';
-    const rateVal = document.getElementById('review-rating-value');
-    if (rateVal) rateVal.value = '5';
-
-    modal.style.display = 'flex';
+    if (modal) {
+        modal.style.display = 'flex';
+        setStarRating(5);
+        selectReviewCategory('food');
+    }
 }
 
 function closeReviewModal() {
@@ -1181,17 +1997,16 @@ function toggleLikeReview(reviewId) {
         newLiked = liked.filter(id => id !== reviewId);
     } else {
         newLiked = [...liked, reviewId];
+        showToast("Mulțumim pentru apreciere!");
     }
     saveLikedReviews(newLiked);
 
-    // Update in userReviews if custom review
     const userReviews = getUserReviews();
     const userRevIndex = userReviews.findIndex(r => r.id === reviewId);
     if (userRevIndex !== -1) {
         userReviews[userRevIndex].likes = Math.max(0, (userReviews[userRevIndex].likes || 0) + (isLiked ? -1 : 1));
         saveUserReviews(userReviews);
     } else {
-        // Update in defaultReviews in memory
         const defRev = defaultReviews.find(r => r.id === reviewId);
         if (defRev) {
             defRev.likes = Math.max(0, (defRev.likes || 0) + (isLiked ? -1 : 1));
@@ -1202,7 +2017,6 @@ function toggleLikeReview(reviewId) {
 }
 
 function initReviewForm() {
-    // Star rating interactions
     const starsRow = document.getElementById('stars-row');
     if (starsRow) {
         const stars = starsRow.querySelectorAll('.star-btn');
@@ -1226,7 +2040,6 @@ function initReviewForm() {
         });
     }
 
-    // Mini aspect stars click handlers
     document.querySelectorAll('.mini-stars').forEach(container => {
         const aspect = container.getAttribute('data-aspect');
         container.querySelectorAll('.mini-star').forEach(star => {
@@ -1237,7 +2050,6 @@ function initReviewForm() {
         });
     });
 
-    // Review form submit handler
     const form = document.getElementById('review-form');
     if (form) {
         form.addEventListener('submit', async (e) => {
@@ -1271,12 +2083,10 @@ function initReviewForm() {
                 isUserSubmitted: true
             };
 
-            // 1. Save to local storage immediately
             const currentUsers = getUserReviews();
             currentUsers.unshift(newReview);
             saveUserReviews(currentUsers);
 
-            // 2. Notify backend email server asynchronously
             try {
                 await fetch('/api/submit-review', {
                     method: 'POST',
@@ -1292,10 +2102,9 @@ function initReviewForm() {
                     })
                 });
             } catch (err) {
-                console.warn('Backend email notification notice:', err);
+                console.warn('Backend notification notice:', err);
             }
 
-            // 3. Reset form, close modal, show success modal, re-render
             form.reset();
             closeReviewModal();
             openReviewSuccessModal();
@@ -1307,8 +2116,188 @@ function initReviewForm() {
     }
 }
 
-function initReviews() {
-    initReviewForm();
-    renderReviews(getCurrentLang());
+/* ==========================================================================
+   LANGUAGE SWITCHER & INITIALIZATION
+   ========================================================================== */
+function setLanguage(lang) {
+    if (!translations[lang]) lang = 'ro';
+
+    // Update text for all elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+            element.textContent = translations[lang][key];
+        }
+    });
+
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(input => {
+        const key = input.getAttribute('data-i18n-placeholder');
+        if (translations[lang] && translations[lang][key]) {
+            input.placeholder = translations[lang][key];
+        }
+    });
+    
+    document.documentElement.lang = lang;
+
+    // Render dynamic components in new language
+    renderSignatureHighlights(lang);
+    renderMenu(lang);
+    renderReviews(lang);
+
+    // Update active button state
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const activeBtn = document.getElementById(`btn-${lang}`);
+    if (activeBtn) activeBtn.classList.add('active');
+    
+    localStorage.setItem('preferredLang', lang);
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Current year
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Preferred language
+    const savedLang = localStorage.getItem('preferredLang') || 'ro';
+    setLanguage(savedLang);
+
+    // Init review forms
+    initReviewForm();
+
+    // Set minimum date for reservations to today
+    const resDateInput = document.getElementById('res-date');
+    if (resDateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        resDateInput.min = today;
+        resDateInput.value = today;
+    }
+
+    // Mobile nav toggle and link clicks
+    const navbar = document.querySelector('.navbar');
+    const navLinks = document.querySelectorAll('.navbar nav a');
+    const sections = document.querySelectorAll('section');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (navbar) navbar.classList.remove('nav-open');
+        });
+    });
+
+    // Escape key modal closer
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+            closeImageModal();
+            closeDishModal();
+            closeReviewModal();
+            closeReviewSuccessModal();
+            if (navbar) navbar.classList.remove('nav-open');
+        }
+    });
+
+    // Navbar scroll effect, active spy & back-to-top button
+    const backToTopBtn = document.getElementById('back-to-top-btn');
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+
+        if (scrollY > 60) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+
+        if (backToTopBtn) {
+            backToTopBtn.classList.toggle('visible', scrollY > 400);
+        }
+
+        // Parallax on hero
+        const heroImage = document.querySelector('.hero-image');
+        if (heroImage && scrollY < 800) {
+            heroImage.style.transform = `translateY(${scrollY * 0.35}px)`;
+        }
+
+        // Active link spy
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (scrollY >= (sectionTop - 220)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+
+    // Reservation Form Submit Handler
+    const resForm = document.getElementById('reservation-form');
+    if (resForm) {
+        resForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = resForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Se trimite...';
+            submitBtn.disabled = true;
+
+            const name = document.getElementById('res-name').value;
+            const date = document.getElementById('res-date').value;
+            const time = document.getElementById('res-time').value;
+            const guests = document.getElementById('res-guests').value;
+
+            try {
+                const response = await fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, date, time, guests })
+                });
+
+                if (response.ok) {
+                    document.getElementById('res-success-modal').style.display = 'flex';
+                    resForm.reset();
+                    showToast("Rezervare recepționată cu succes!");
+                } else {
+                    const errorData = await response.json();
+                    alert(`Eroare: ${errorData.error || errorData.message || 'Eroare necunoscută'}`);
+                }
+            } catch (error) {
+                alert('Eroare de conexiune. Vă rugăm să încercați din nou.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+});
+
+function closeModal() {
+    const modal = document.getElementById('res-success-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function openImageModal(imgSrc, title) {
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-image-element');
+    const modalTitle = document.getElementById('modal-image-title');
+    
+    if (modalImg) modalImg.src = imgSrc;
+    if (modalTitle) modalTitle.textContent = title;
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('image-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function toggleMobileMenu() {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) navbar.classList.toggle('nav-open');
+}
