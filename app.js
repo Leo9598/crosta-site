@@ -657,11 +657,23 @@ const translations = {
         resBadge: "✦ Ospitalitate Dedicată",
         resTitle: "Faceți o Rezervare",
         resSubtitle: "Rezervați o masă pentru a vă bucura de o experiență culinară de neuitat într-o ambianță caldă și luminoasă.",
+        resTabOnline: "Rezervare Online",
         resName: "Nume și Prenume *",
         resDate: "Data Rezervării *",
         resTime: "Ora Sosirii *",
         resGuests: "Număr de persoane *",
         resSubmit: "Confirmă Rezervarea",
+        resOrWord: "sau rezervă rapid prin apel",
+        resPreferCall: "Preferi să rezervi direct prin telefon?",
+        resInstantConfirm: "Confirmare instantanee și asistență dedicată",
+        resPhoneCardTitle: "Rezervare Telefonică Rapidă",
+        resPhoneCardDesc: "Echipa noastră vă stă cu drag la dispoziție pentru rezervări de mese, evenimente private sau cerințe speciale.",
+        copyPhoneBtn: "Copiază Numărul",
+        resSwitchToForm: "Mergi la Formular Online",
+        resPerk1: "Confirmare Imediată",
+        resPerk2: "Zilnic 08:00 - 22:00",
+        resPerk3: "Mese & Evenimente Speciale",
+        phoneCopiedToast: "Numărul 060328232 a fost copiat în clipboard!",
         resSuccessTitle: "Rezervare Confirmată!",
         resSuccessMsg: "Vă mulțumim că ați ales Crosta Kitchen Bakery. Vă așteptăm cu drag pe Strada Miron Costin 13/7.",
         resSuccessClose: "Închide",
@@ -772,11 +784,23 @@ const translations = {
         resBadge: "✦ Dedicated Hospitality",
         resTitle: "Make a Reservation",
         resSubtitle: "Reserve your table to experience memorable dining in a welcoming and elegant setting.",
+        resTabOnline: "Online Reservation",
         resName: "Full Name *",
         resDate: "Reservation Date *",
         resTime: "Arrival Time *",
         resGuests: "Number of Guests *",
         resSubmit: "Confirm Reservation",
+        resOrWord: "or reserve instantly by phone",
+        resPreferCall: "Prefer to reserve directly by phone?",
+        resInstantConfirm: "Instant confirmation and dedicated assistance",
+        resPhoneCardTitle: "Fast Phone Reservation",
+        resPhoneCardDesc: "Our team is pleased to assist you with table bookings, private events, or special arrangements.",
+        copyPhoneBtn: "Copy Phone Number",
+        resSwitchToForm: "Switch to Online Form",
+        resPerk1: "Instant Confirmation",
+        resPerk2: "Daily 08:00 - 22:00",
+        resPerk3: "Tables & Special Occasions",
+        phoneCopiedToast: "Number 060328232 copied to clipboard!",
         resSuccessTitle: "Reservation Confirmed!",
         resSuccessMsg: "Thank you for choosing Crosta Kitchen Bakery. We look forward to welcoming you at Strada Miron Costin 13/7.",
         resSuccessClose: "Close",
@@ -887,11 +911,23 @@ const translations = {
         resBadge: "✦ Искреннее Гостеприимство",
         resTitle: "Забронировать Столик",
         resSubtitle: "Забронируйте столик, чтобы насладиться незабываемым ужином в теплой и уютной атмосфере.",
+        resTabOnline: "Онлайн Бронирование",
         resName: "Ваше Имя и Фамилия *",
         resDate: "Дата *",
         resTime: "Время *",
         resGuests: "Количество гостей *",
         resSubmit: "Подтвердить Бронь",
+        resOrWord: "или забронируйте по телефону",
+        resPreferCall: "Предпочитаете забронировать по телефону?",
+        resInstantConfirm: "Мгновенное подтверждение и помощь администратора",
+        resPhoneCardTitle: "Быстрое Бронирование по Телефону",
+        resPhoneCardDesc: "Наша команда с удовольствием поможет вам забронировать столик, организовать мероприятие или учесть особые пожелания.",
+        copyPhoneBtn: "Скопировать номер",
+        resSwitchToForm: "Перейти к онлайн форме",
+        resPerk1: "Мгновенное подтверждение",
+        resPerk2: "Ежедневно 08:00 - 22:00",
+        resPerk3: "Столики и мероприятия",
+        phoneCopiedToast: "Номер 060328232 скопирован в буфер обмена!",
         resSuccessTitle: "Бронирование Подтверждено!",
         resSuccessMsg: "Спасибо, что выбрали Crosta Kitchen Bakery. С нетерпением ждем вас на ул. Мирон Костин 13/7.",
         resSuccessClose: "Закрыть",
@@ -2038,3 +2074,50 @@ function toggleMobileMenu() {
     const navbar = document.querySelector('.navbar');
     if (navbar) navbar.classList.toggle('nav-open');
 }
+
+function switchReservationTab(mode) {
+    const tabOnlineBtn = document.getElementById('tab-online-btn');
+    const tabPhoneBtn = document.getElementById('tab-phone-btn');
+    const panelOnline = document.getElementById('res-panel-online');
+    const panelPhone = document.getElementById('res-panel-phone');
+
+    if (!tabOnlineBtn || !tabPhoneBtn || !panelOnline || !panelPhone) return;
+
+    if (mode === 'phone') {
+        tabOnlineBtn.classList.remove('active');
+        tabOnlineBtn.setAttribute('aria-selected', 'false');
+        tabPhoneBtn.classList.add('active');
+        tabPhoneBtn.setAttribute('aria-selected', 'true');
+
+        panelOnline.classList.remove('active');
+        panelPhone.classList.add('active');
+    } else {
+        tabPhoneBtn.classList.remove('active');
+        tabPhoneBtn.setAttribute('aria-selected', 'false');
+        tabOnlineBtn.classList.add('active');
+        tabOnlineBtn.setAttribute('aria-selected', 'true');
+
+        panelPhone.classList.remove('active');
+        panelOnline.classList.add('active');
+    }
+}
+
+function copyReservationPhone(phone) {
+    const num = phone || '060328232';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(num).then(() => {
+            const lang = document.documentElement.lang || 'ro';
+            const msg = (translations[lang] && translations[lang].phoneCopiedToast) 
+                ? translations[lang].phoneCopiedToast 
+                : `Numărul ${num} a fost copiat în clipboard!`;
+            showToast(msg);
+        }).catch(() => {
+            showToast(`Număr: ${num}`);
+        });
+    } else {
+        showToast(`Număr: ${num}`);
+    }
+}
+
+window.switchReservationTab = switchReservationTab;
+window.copyReservationPhone = copyReservationPhone;

@@ -977,6 +977,323 @@ section {
     font-size: 0.88rem;
 }
 
+/* Reservation Method Switcher Tabs */
+.res-tabs-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2.2rem;
+}
+
+.res-method-tabs {
+    display: inline-flex;
+    background: rgba(61, 46, 30, 0.06);
+    padding: 0.35rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    gap: 0.4rem;
+    max-width: 100%;
+    box-shadow: inset 0 2px 4px rgba(61, 46, 30, 0.04);
+}
+
+.res-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.res-tab-btn:hover {
+    color: var(--color-primary);
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.res-tab-btn.active {
+    background: var(--color-primary);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(61, 46, 30, 0.2);
+    border-color: var(--color-primary);
+}
+
+.res-tab-btn.active .tab-icon {
+    transform: scale(1.15);
+}
+
+.res-tab-btn .tab-title {
+    letter-spacing: 0.3px;
+}
+
+/* Reservation Panels */
+.res-panel {
+    display: none;
+    animation: resPanelFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.res-panel.active {
+    display: block;
+}
+
+@keyframes resPanelFade {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Direct Call Strip on Online Form */
+.res-or-divider {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.4rem 0 0.5rem 0;
+    color: var(--color-text-muted);
+    font-size: 0.76rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.res-or-divider::before,
+.res-or-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.res-or-divider span {
+    padding: 0 1.2rem;
+    font-weight: 600;
+    color: var(--color-accent);
+}
+
+.res-call-strip {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(176, 141, 87, 0.09);
+    border: 1px solid rgba(176, 141, 87, 0.28);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.4rem;
+    transition: all var(--transition-fast);
+    gap: 1rem;
+}
+
+.res-call-strip:hover {
+    background: rgba(176, 141, 87, 0.15);
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(61, 46, 30, 0.06);
+}
+
+.res-call-strip-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.res-call-strip-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.res-call-strip-subtitle {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+.res-call-strip-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-primary);
+    color: #ffffff;
+    padding: 0.75rem 1.4rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    box-shadow: 0 4px 12px rgba(61, 46, 30, 0.18);
+    white-space: nowrap;
+    border: 1px solid rgba(176, 141, 87, 0.35);
+}
+
+.res-call-strip-btn:hover {
+    background: var(--color-accent);
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(176, 141, 87, 0.35);
+    transform: translateY(-2px);
+}
+
+/* Phone Reservation Dedicated Card */
+.res-phone-card {
+    text-align: center;
+    padding: 2.8rem 2.2rem;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(176, 141, 87, 0.35);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-subtle);
+    position: relative;
+    overflow: hidden;
+}
+
+.res-phone-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+}
+
+.res-phone-card-icon {
+    font-size: 2.8rem;
+    margin-bottom: 0.9rem;
+    display: inline-block;
+    animation: phonePulse 2.4s infinite ease-in-out;
+}
+
+@keyframes phonePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+.res-phone-card-title {
+    font-family: var(--font-heading);
+    font-size: 1.7rem;
+    color: var(--color-primary);
+    margin-bottom: 0.6rem;
+}
+
+.res-phone-card-desc {
+    color: var(--color-text-muted);
+    font-size: 0.98rem;
+    max-width: 520px;
+    margin: 0 auto 2rem auto;
+    line-height: 1.6;
+}
+
+.res-phone-cta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.res-call-big-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    background: linear-gradient(135deg, var(--color-primary), #4e3c29);
+    color: #ffffff;
+    padding: 1.15rem 2.5rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    box-shadow: 0 10px 26px rgba(61, 46, 30, 0.24);
+    border: 1px solid rgba(176, 141, 87, 0.45);
+    transition: all var(--transition-smooth);
+}
+
+.res-call-big-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(61, 46, 30, 0.32);
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+}
+
+.res-call-big-btn .phone-tag {
+    font-size: 0.95rem;
+    color: var(--color-accent-light);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.res-call-big-btn .phone-number {
+    font-size: 1.35rem;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.res-phone-actions-secondary {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.res-secondary-pill-btn {
+    background: rgba(61, 46, 30, 0.05);
+    border: 1px solid var(--color-border);
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-family: var(--font-body);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.res-secondary-pill-btn:hover {
+    background: rgba(61, 46, 30, 0.1);
+    border-color: var(--color-accent);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.res-phone-perks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-top: 1.8rem;
+    padding-top: 1.8rem;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+}
+
+.res-perk-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.res-perk-icon {
+    font-size: 1.35rem;
+}
+
+.res-perk-text {
+    font-size: 0.84rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
 /* ==========================================================================
    REVIEWS SECTION (4.8 RATING)
    ========================================================================== */
@@ -2124,7 +2441,60 @@ section {
     }
 
     .reservations-content {
-        padding: 3rem 1.8rem;
+        padding: 3rem 1.4rem;
+    }
+
+    .res-method-tabs {
+        width: 100%;
+        flex-direction: column;
+        border-radius: var(--radius-md);
+        gap: 0.35rem;
+    }
+
+    .res-tab-btn {
+        width: 100%;
+        justify-content: center;
+        border-radius: var(--radius-sm);
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .res-call-strip {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.9rem;
+        padding: 1.2rem 1rem;
+    }
+
+    .res-call-strip-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .res-phone-card {
+        padding: 2rem 1.2rem;
+    }
+
+    .res-call-big-btn {
+        width: 100%;
+        padding: 1rem 1.2rem;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .res-phone-actions-secondary {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .res-secondary-pill-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .res-phone-perks {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
     }
 
     .form-row {

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crosta Kitchen Bakery | Brutărie Artizanală & Bistro Chișinău</title>
     <meta name="description" content="Crosta Kitchen Bakery - Brutărie artizanală cu maia, mic dejun toute la journée, preparate rafinate și cafea de specialitate pe Strada Miron Costin 13/7, Chișinău.">
-    <link rel="stylesheet" href="styles.css?v=5.0">
+    <link rel="stylesheet" href="styles.css?v=5.1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -130,41 +130,113 @@
                 </div>
                 <h2 class="section-title" data-i18n="resTitle">Faceți o Rezervare</h2>
                 <p data-i18n="resSubtitle" class="res-subtitle">Rezervați o masă pentru a vă bucura de o experiență culinară de neuitat într-o ambianță caldă și luminoasă.</p>
-                <form class="reservation-form" id="reservation-form">
-                    <div class="form-group">
-                        <label for="res-name" data-i18n="resName">Nume și Prenume *</label>
-                        <input type="text" id="res-name" placeholder="Ex: Alexandru Popa" required>
+
+                <!-- Reservation Method Switcher -->
+                <div class="res-tabs-wrapper">
+                    <div class="res-method-tabs" role="tablist" aria-label="Metodă de rezervare">
+                        <button type="button" class="res-tab-btn active" id="tab-online-btn" onclick="switchReservationTab('online')" role="tab" aria-selected="true" aria-controls="res-panel-online">
+                            <span class="tab-icon">📝</span>
+                            <span data-i18n="resTabOnline">Rezervare Online</span>
+                        </button>
+                        <button type="button" class="res-tab-btn" id="tab-phone-btn" onclick="switchReservationTab('phone')" role="tab" aria-selected="false" aria-controls="res-panel-phone">
+                            <span class="tab-icon">📲</span>
+                            <span class="tab-title">call • Reserves 📲 060328232</span>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="res-date" data-i18n="resDate">Data Rezervării *</label>
-                        <input type="date" id="res-date" required>
+                </div>
+
+                <!-- Panel 1: Online Form -->
+                <div id="res-panel-online" class="res-panel active" role="tabpanel" aria-labelledby="tab-online-btn">
+                    <form class="reservation-form" id="reservation-form">
+                        <div class="form-group">
+                            <label for="res-name" data-i18n="resName">Nume și Prenume *</label>
+                            <input type="text" id="res-name" placeholder="Ex: Alexandru Popa" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="res-date" data-i18n="resDate">Data Rezervării *</label>
+                            <input type="date" id="res-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="res-time" data-i18n="resTime">Ora Sosirii *</label>
+                            <select id="res-time" required>
+                                <option value="08:00">08:00</option>
+                                <option value="09:00">09:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                                <option value="20:00">20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="res-guests" data-i18n="resGuests">Număr de persoane *</label>
+                            <input type="number" id="res-guests" min="1" max="25" value="2" required>
+                        </div>
+                        <button type="submit" class="cta-button res-submit" data-i18n="resSubmit">Confirmă Rezervarea</button>
+
+                        <!-- Direct Call Alternative inside Form Panel -->
+                        <div class="res-or-divider">
+                            <span data-i18n="resOrWord">sau rezervă rapid prin apel</span>
+                        </div>
+
+                        <div class="res-call-strip">
+                            <div class="res-call-strip-info">
+                                <span class="res-call-strip-title" data-i18n="resPreferCall">Preferi să rezervi direct prin telefon?</span>
+                                <span class="res-call-strip-subtitle" data-i18n="resInstantConfirm">Confirmare instantanee și asistență dedicată</span>
+                            </div>
+                            <a href="tel:060328232" class="res-call-strip-btn">
+                                <span>call • Reserves 📲 <strong>060328232</strong></span>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Panel 2: Direct Phone Call Option -->
+                <div id="res-panel-phone" class="res-panel" role="tabpanel" aria-labelledby="tab-phone-btn">
+                    <div class="res-phone-card">
+                        <div class="res-phone-card-icon">📞</div>
+                        <h3 class="res-phone-card-title" data-i18n="resPhoneCardTitle">Rezervare Telefonică Rapidă</h3>
+                        <p class="res-phone-card-desc" data-i18n="resPhoneCardDesc">Echipa noastră vă stă cu drag la dispoziție pentru rezervări de mese, evenimente private sau cerințe speciale.</p>
+                        
+                        <div class="res-phone-cta-group">
+                            <a href="tel:060328232" class="res-call-big-btn">
+                                <span class="phone-tag">call • Reserves 📲</span>
+                                <span class="phone-number">060328232</span>
+                            </a>
+                            <div class="res-phone-actions-secondary">
+                                <button type="button" class="res-secondary-pill-btn" onclick="copyReservationPhone('060328232')">
+                                    📋 <span data-i18n="copyPhoneBtn">Copiază Numărul</span>
+                                </button>
+                                <button type="button" class="res-secondary-pill-btn" onclick="switchReservationTab('online')">
+                                    📝 <span data-i18n="resSwitchToForm">Mergi la Formular Online</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="res-phone-perks">
+                            <div class="res-perk-item">
+                                <span class="res-perk-icon">⚡</span>
+                                <span class="res-perk-text" data-i18n="resPerk1">Confirmare Imediată</span>
+                            </div>
+                            <div class="res-perk-item">
+                                <span class="res-perk-icon">⏰</span>
+                                <span class="res-perk-text" data-i18n="resPerk2">Zilnic 08:00 - 22:00</span>
+                            </div>
+                            <div class="res-perk-item">
+                                <span class="res-perk-icon">🥂</span>
+                                <span class="res-perk-text" data-i18n="resPerk3">Mese & Evenimente Speciale</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="res-time" data-i18n="resTime">Ora Sosirii *</label>
-                        <select id="res-time" required>
-                            <option value="08:00">08:00</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                            <option value="19:00">19:00</option>
-                            <option value="20:00">20:00</option>
-                            <option value="21:00">21:00</option>
-                            <option value="22:00">22:00</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="res-guests" data-i18n="resGuests">Număr de persoane *</label>
-                        <input type="number" id="res-guests" min="1" max="25" value="2" required>
-                    </div>
-                    <button type="submit" class="cta-button res-submit" data-i18n="resSubmit">Confirmă Rezervarea</button>
-                </form>
+                </div>
             </div>
         </section>
 
@@ -327,6 +399,11 @@
                     </a>
                 </p>
                 <p class="footer-note" data-i18n="footerAddressNote">Parcare comodă în fața restaurantului</p>
+                <p class="footer-phone-row" style="margin-top: 0.65rem;">
+                    <a href="tel:060328232" class="footer-link">
+                        📲 call • Reserves 📲 060328232
+                    </a>
+                </p>
             </div>
 
             <div class="footer-col">
@@ -522,6 +599,6 @@
     <!-- Toast Notification Container -->
     <div id="toast-container" class="toast-container"></div>
 
-    <script src="app.js?v=5.0"></script>
+    <script src="app.js?v=5.1"></script>
 </body>
 </html>
