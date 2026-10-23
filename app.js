@@ -2,178 +2,6 @@ let currentMenuFilter = 'All';
 let currentDietaryFilter = 'all';
 let currentMenuSearchQuery = '';
 
-// High-resolution signature photos
-const signatureDishes = [
-    {
-        id: "sig-poached-egg",
-        name: {
-            ro: "Ou poșat cu avocado, somon & mazăre verde",
-            en: "Poached egg with avocado, cured salmon & young peas",
-            ru: "Пашот с авокадо, малосольным лососем и горошком"
-        },
-        category: { ro: "Mic Dejun", en: "Breakfasts", ru: "Завтраки" },
-        price: 110,
-        weight: "320g",
-        image: "poached-egg.jpg",
-        badge: { ro: "⭐ Semnătură", en: "⭐ Signature", ru: "⭐ Фирменное" },
-        tags: ["signature", "fish"],
-        description: {
-            ro: "Pâine artizanală cu maia rumenită pe vatră, avocado cremos hass, somon marinat delicat în casă, două ouă poșate bio și mazăre verde dulce.",
-            en: "Artisanal toasted sourdough, creamy hass avocado, house-cured salmon, two organic poached eggs, and tender young green peas.",
-            ru: "Подрумяненный ремесленный тартин, нежный авокадо хасс, слабосоленый лосось собственного посола, два яйца пашот и молодой зеленый горошек."
-        },
-        allergens: {
-            ro: "Gluten (grâu), Ouă, Pește, Semințe de susan",
-            en: "Gluten (wheat), Eggs, Fish, Sesame seeds",
-            ru: "Глютен (пшеница), Яйца, Рыба, Семена кунжута"
-        }
-    },
-    {
-        id: "sig-shakshuka",
-        name: {
-            ro: "Shakshuka artizanală cu brânză de capră",
-            en: "Artisanal Shakshuka with goat cheese",
-            ru: "Шакшука с пашот и козьим сыром"
-        },
-        category: { ro: "Mic Dejun", en: "Breakfasts", ru: "Завтраки" },
-        price: 75,
-        weight: "380g",
-        image: "shakshuka.jpg",
-        badge: { ro: "🌿 Vegetarian", en: "🌿 Vegetarian", ru: "🌿 Вегетарианское" },
-        tags: ["signature", "vegetarian"],
-        description: {
-            ro: "Sos catifelat din roșii coapte, ardei gras dulce, usturoi copt și chimion oriental, cu ouă poșate moi, brânză fină de capră și pâine caldă cu maia.",
-            en: "Rich stewed tomato sauce with sweet peppers, roasted garlic and aromatic cumin, soft poached eggs, crumbled goat cheese, and warm sourdough.",
-            ru: "Густой пряный соус из печеных томатов, сладкого перца, чеснока и кумина, нежные яйца пашот, козий сыр и теплая домашняя чиабатта."
-        },
-        allergens: {
-            ro: "Ouă, Lactoză (brânză de capră), Gluten",
-            en: "Eggs, Lactose (goat cheese), Gluten",
-            ru: "Яйца, Лактоза (козий сыр), Глютен"
-        }
-    },
-    {
-        id: "sig-burrata",
-        name: {
-            ro: "Burrata cremoasă cu roșii dulci & lipie caldă",
-            en: "Creamy Burrata with heirloom tomatoes & warm pita",
-            ru: "Буратта с томатами и теплой домашней питой"
-        },
-        category: { ro: "Gustări", en: "Appetizers", ru: "Закуски" },
-        price: 105,
-        weight: "340g",
-        image: "burrata.jpg",
-        badge: { ro: "⭐ Semnătură", en: "⭐ Signature", ru: "⭐ Фирменное" },
-        tags: ["signature", "vegetarian"],
-        description: {
-            ro: "Burrata proaspătă cu inimă cremoasă, roșii cherry coapte la cuptor, busuioc proaspăt, glazură balsamică, ulei extravirgin și lipie artizanală caldă.",
-            en: "Fresh Italian burrata with a creamy stracciatella heart, roasted heirloom cherry tomatoes, fresh basil, aged balsamic, extra virgin olive oil, and hot pita.",
-            ru: "Нежнейшая кремовая буратта, сладкие печеные томаты черри, свежий базилик, бальзамическая глазурь, оливковое масло и горячая домашняя пита."
-        },
-        allergens: {
-            ro: "Lactoză (lapte de bivoliță/vacă), Gluten",
-            en: "Lactose (dairy), Gluten",
-            ru: "Лактоза (молочные продукты), Глютен"
-        }
-    },
-    {
-        id: "sig-beef-cheeks",
-        name: {
-            ro: "Fălci de vită la cuptor cu piure mătăsos",
-            en: "Slow-braised beef cheeks with velvety mash",
-            ru: "Томленые говяжьи щечки с нежным пюре"
-        },
-        category: { ro: "Feluri principale", en: "Hot Dishes with Side", ru: "Горячие блюда с гарниром" },
-        price: 120,
-        weight: "380g",
-        image: "beef-cheeks.jpg",
-        badge: { ro: "🔥 La Cuptor 8h", en: "🔥 Slow Cooked 8h", ru: "🔥 Томление 8 часов" },
-        tags: ["signature"],
-        description: {
-            ro: "Fălci de vită fragede gătite lent timp de 8 ore în reducție bogată de vin roșu și cimbru proaspăt, servite pe un pat de piure catifelat de cartofi cu unt.",
-            en: "Tender beef cheeks braised for 8 hours in a rich red wine reduction and fresh thyme, served atop velvety butter-whipped potato mash.",
-            ru: "Тающие во рту говяжьи щечки, томленные 8 часов в соусе из сухого красного вина и тимьяна, на подушке из сливочного картофельного пюре."
-        },
-        allergens: {
-            ro: "Lactoză (unt, lapte), Sulfiți (reducție de vin)",
-            en: "Lactose (butter, milk), Sulfites (wine reduction)",
-            ru: "Лактоза (сливочное масло, молоко), Сульфиты (винный соус)"
-        }
-    },
-    {
-        id: "sig-omelette",
-        name: {
-            ro: "Omletă sufleu aerată cu baghetă artizanală",
-            en: "Fluffy Souffle omelette with crisp baguette",
-            ru: "Воздушный омлет-суфле с французским багетом"
-        },
-        category: { ro: "Mic Dejun", en: "Breakfasts", ru: "Завтраки" },
-        price: 55,
-        weight: "260g",
-        image: "omelette.jpg",
-        badge: { ro: "🍳 Specialitate", en: "🍳 Specialty", ru: "🍳 Фирменное" },
-        tags: ["signature", "vegetarian"],
-        description: {
-            ro: "Omletă bătută spumă și gătită delicat ca un sufleu, cu textură ușoară și cremoasă, servită cu baghetă franțuzească crocantă și unt aromat de casă.",
-            en: "Whipped cloud-like souffle omelette gently baked to a golden finish, served with crispy French artisanal baguette and house compound butter.",
-            ru: "Взбитый пышный омлет, запеченный до воздушной текстуры суфле, подается с хрустящим багетом и домашним сливочным маслом с травами."
-        },
-        allergens: {
-            ro: "Ouă, Lactoză, Gluten",
-            en: "Eggs, Lactose, Gluten",
-            ru: "Яйца, Лактоза, Глютен"
-        }
-    },
-    {
-        id: "sig-pastry-coffee",
-        name: {
-            ro: "Croissant franțuzesc cu unt & Cappuccino artizanal",
-            en: "French butter croissant & artisanal Cappuccino",
-            ru: "Французский круассан и авторский капучино"
-        },
-        category: { ro: "Brutărie & Cafea", en: "Bakery & Coffee", ru: "Выпечка и кофе" },
-        price: 65,
-        weight: "220g",
-        image: "pastry-coffee.jpg",
-        badge: { ro: "🥐 100% Unt", en: "🥐 Pure Butter", ru: "🥐 100% Масло" },
-        tags: ["signature", "bakery"],
-        description: {
-            ro: "Croissant clasic franțuzesc rulat manual cu 100% unt veritabil, având coaja aurie și sfărâmicioasă, însoțit de un cappuccino cremos preparat din boabe de cafea de specialitate.",
-            en: "Handcrafted classic French croissant made with 100% pure butter, golden crisp layers, paired with our velvety specialty-grade cappuccino.",
-            ru: "Классический слоеный круассан ручной лепки на 100% натуральном сливочном масле в паре с нежным капучино из свежеобжаренной спешелти арабики."
-        },
-        allergens: {
-            ro: "Gluten, Lactoză",
-            en: "Gluten, Lactose",
-            ru: "Глютен, Лактоза"
-        }
-    },
-    {
-        id: "sig-napoleon",
-        name: {
-            ro: "Napoleon clasic cu cremă de vanilie Bourbon",
-            en: "Classic Napoleon with Bourbon vanilla cream",
-            ru: "Классический Наполеон с кремом из бурбонской ванили"
-        },
-        category: { ro: "Deserturi", en: "Desserts", ru: "Десерты" },
-        price: 110,
-        weight: "190g",
-        image: "napoleon.jpg",
-        badge: { ro: "🍰 Artizanal", en: "🍰 Artisanal", ru: "🍰 Авторский" },
-        tags: ["signature", "bakery"],
-        description: {
-            ro: "Foi fine caramelizate la cuptor, cremă fină de vanilie naturală de Bourbon, zmeură proaspătă și un voal delicat de zahăr pudră.",
-            en: "Caramelized crisp puff pastry sheets layered with velvety real Bourbon vanilla bean cream chantilly, fresh raspberries, and powdered sugar.",
-            ru: "Хрустящие карамелизированные коржи, нежнейший заварной крем с натуральной бурбонской ванилью, свежая малина и сахарная пудра."
-        },
-        allergens: {
-            ro: "Gluten, Lactoză, Ouă",
-            en: "Gluten, Lactose, Eggs",
-            ru: "Глютен, Лактоза, Яйца"
-        }
-    }
-];
-
 const menuData = [
     {
         category: { en: "Breakfasts", ro: "Mic Dejun", ru: "Завтраки" },
@@ -188,11 +16,15 @@ const menuData = [
                         price: 110, 
                         weight: "320g",
                         tags: ["signature", "fish"],
-                        image: 'poached-egg.jpg',
                         description: {
                             ro: "Pâine artizanală rumenită pe vatră, avocado cremos hass, somon marinat delicat în casă și mazăre verde tânără.",
                             en: "Toasted artisanal sourdough, creamy hass avocado, house-cured salmon, and sweet green peas.",
                             ru: "Подрумяненный ремесленный тартин, авокадо хасс, слабосоленый лосось и зеленый горошек."
+                        },
+                        allergens: {
+                            ro: "Gluten (grâu), Ouă, Pește, Semințe de susan",
+                            en: "Gluten (wheat), Eggs, Fish, Sesame seeds",
+                            ru: "Глютен (пшеница), Яйца, Рыба, Семена кунжута"
                         }
                     },
                     { 
@@ -201,24 +33,32 @@ const menuData = [
                         price: 75, 
                         weight: "380g",
                         tags: ["signature", "vegetarian"],
-                        image: 'shakshuka.jpg',
                         description: {
-                            ro: "Sos de roșii coapte cu ardei dulce, chimion, ouă poșate, brânză fină de capră și pâine caldă.",
-                            en: "Baked tomato sauce with peppers, cumin, poached eggs, goat cheese, and warm bread.",
+                            ro: "Sos de roșii coapte cu ardei dulce, chimion, ouă poșate, brânză fină de capră și pâine caldă cu maia.",
+                            en: "Baked tomato sauce with sweet peppers, cumin, poached eggs, crumbled goat cheese, and warm bread.",
                             ru: "Соус из печеных томатов, сладкого перца, кумина, яйца пашот и козий сыр."
+                        },
+                        allergens: {
+                            ro: "Ouă, Lactoză (brânză de capră), Gluten",
+                            en: "Eggs, Lactose (goat cheese), Gluten",
+                            ru: "Яйца, Лактоза (козий сыр), Глютен"
                         }
                     },
                     { 
                         id: "item-omelette",
-                        name: { en: "Souffle omelette with baguette", ro: "Omletă sufleu cu baghetă", ru: "Омлет суфле с багетом" }, 
+                        name: { en: "Souffle omelette with baguette", ro: "Omletă sufleu cu baghetă artizanală", ru: "Омлет суфле с багетом" }, 
                         price: 55, 
                         weight: "260g",
                         tags: ["signature", "vegetarian"],
-                        image: 'omelette.jpg',
                         description: {
                             ro: "Omletă aerată și extrem de pufoasă, servită cu baghetă caldă franțuzească și unt aromat.",
                             en: "Fluffy whipped souffle omelette served with warm baguette and herb butter.",
                             ru: "Воздушный омлет-суфле с теплым французским багетом и сливочным маслом."
+                        },
+                        allergens: {
+                            ro: "Ouă, Lactoză, Gluten",
+                            en: "Eggs, Lactose, Gluten",
+                            ru: "Яйца, Лактоза, Глютен"
                         }
                     },
                     { 
@@ -252,7 +92,7 @@ const menuData = [
                         weight: "290g",
                         tags: [],
                         description: {
-                            ro: "Ouă ochiuri rumenite, bacon crocant de casă, roșii dulci la grătar și brânză telemea.",
+                            ro: "Ouă ochiuri rumenite, bacon crocant de casă, roșii dulci la grătar și brânză telemea de fermă.",
                             en: "Sunny side eggs with crisp bacon, seared tomatoes, and regional feta cheese.",
                             ru: "Глазунья с хрустящим беконом, сочными помидорами и домашней брынзой."
                         }
@@ -382,7 +222,6 @@ const menuData = [
                 price: 35,
                 weight: "85g",
                 tags: ["signature", "bakery"],
-                image: "pastry-coffee.jpg",
                 description: {
                     ro: "Croissant laminat manual cu unt de Normandia, crustă fină crocantă și miez aerat.",
                     en: "Handmade laminated croissant with pure Normandy butter and golden flaky crust.",
@@ -440,7 +279,7 @@ const menuData = [
         ]
     },
     {
-        category: { en: "Appetizers", ro: "Gustări", ru: "Закуски" },
+        category: { en: "Appetizers", ro: "Gustări & Brânzeturi", ru: "Закуски" },
         icon: "🧀",
         subcategories: [
             {
@@ -460,11 +299,10 @@ const menuData = [
                     },
                     { 
                         id: "item-burrata-pita",
-                        name: { en: "Burrata with tomatoes and pita", ro: "Burrata cu roșii și lipie caldă", ru: "Буратта с томатами и питой" }, 
+                        name: { en: "Burrata with tomatoes and pita", ro: "Burrata cu roșii dulci și lipie caldă", ru: "Буратта с томатами и питой" }, 
                         price: 105, 
                         weight: "340g",
                         tags: ["signature", "vegetarian"],
-                        image: 'burrata.jpg',
                         description: {
                             ro: "Burrata proaspătă cu roșii cherry dulci coapte, busuioc verde, ulei extravirgin și lipie crocantă.",
                             en: "Fresh Italian burrata with sweet roasted tomatoes, basil, olive oil, and hot pita.",
@@ -553,7 +391,7 @@ const menuData = [
         ]
     },
     {
-        category: { en: "Salads", ro: "Salate", ru: "Салаты" },
+        category: { en: "Salads", ro: "Salate Proaspete", ru: "Салаты" },
         icon: "🥗",
         items: [
             { 
@@ -666,11 +504,10 @@ const menuData = [
         items: [
             { 
                 id: "item-beef-cheeks",
-                name: { en: "Slow-braised beef cheeks with potato mash", ro: "Fălci de vită la cuptor cu piure mătăsos", ru: "Говяжьи щеки с пюре" }, 
+                name: { en: "Slow-braised beef cheeks with potato mash", ro: "Fălci de vită la cuptor 8h cu piure mătăsos", ru: "Говяжьи щеки с пюре" }, 
                 price: 120, 
                 weight: "380g",
                 tags: ["signature"],
-                image: 'beef-cheeks.jpg',
                 description: {
                     ro: "Fălci de vită fragede gătite lent 8 ore în reducție de vin roșu, piure cremos și morcovi caramelizați.",
                     en: "Tender beef cheeks braised for 8 hours in red wine reduction, potato puree, and glazed baby carrots.",
@@ -740,7 +577,7 @@ const menuData = [
         ]
     },
     {
-        category: { en: "Desserts", ro: "Deserturi", ru: "Десерты" },
+        category: { en: "Desserts", ro: "Deserturi Artizanale", ru: "Десерты" },
         icon: "🍰",
         items: [
             { 
@@ -749,7 +586,6 @@ const menuData = [
                 price: 110, 
                 weight: "190g",
                 tags: ["signature", "bakery"],
-                image: 'napoleon.jpg',
                 description: {
                     ro: "Mii de foi fine caramelizate, cremă mătăsoasă de vanilie de Bourbon și zmeură proaspătă.",
                     en: "Crisp caramelized puff layers with rich Bourbon vanilla cream and fresh raspberries.",
@@ -775,7 +611,6 @@ const menuData = [
 const translations = {
     ro: {
         navMenu: "Meniu",
-        navHighlights: "Specialități",
         navReservations: "Rezervări",
         navAbout: "Despre Noi",
         navContact: "Contact",
@@ -797,17 +632,14 @@ const translations = {
         menuBadge: "✦ Gastronomie & Panificație Artizanală",
         menuTitle: "Meniul Nostru Semnătură",
         menuSubtitle: "Rețete create cu ingrediente curate de la ferme partenere, aluat dospit lent cu maia și pasiune pentru arome pure.",
-        signatureHighlightsTitle: "✨ Specialitățile Bucătarului & Brutăriei",
-        signatureHighlightsSub: "Cele mai iubite creații ale oaspeților noștri, ilustrate cu fotografii autentice",
         searchPlaceholder: "Caută un preparat sau ingredient (ex: somon, shakshuka, burrata)...",
         filterAllDietary: "Toate Preparatele",
-        tagSignature: "Semnătură",
+        tagSignature: "Specialități",
         tagVegetarian: "Vegetarian",
         tagFish: "Pește & Fructe de mare",
-        tagWithPhotos: "Cu Fotografii",
+        tagSpicy: "Picant",
         allFilter: "Toate",
         currency: "MDL",
-        viewDetailsBtn: "Vezi detalii",
         reserveThisDish: "Rezervă o Masă pentru Acest Preparat",
         dishModalAllergens: "Ingrediente & Note:",
 
@@ -894,7 +726,6 @@ const translations = {
     },
     en: {
         navMenu: "Menu",
-        navHighlights: "Specialties",
         navReservations: "Reservations",
         navAbout: "About Us",
         navContact: "Contact",
@@ -916,17 +747,14 @@ const translations = {
         menuBadge: "✦ Artisanal Cuisine & Bakery",
         menuTitle: "Our Signature Menu",
         menuSubtitle: "Crafted with pure ingredients from trusted farms, slow fermented sourdough, and a passion for clean, vibrant flavors.",
-        signatureHighlightsTitle: "✨ Chef & Bakery Highlights",
-        signatureHighlightsSub: "Our guests' most cherished dishes, photographed in authentic presentation",
         searchPlaceholder: "Search for a dish or ingredient (e.g. salmon, shakshuka, burrata)...",
         filterAllDietary: "All Dishes",
-        tagSignature: "Signature",
+        tagSignature: "Specialties",
         tagVegetarian: "Vegetarian",
         tagFish: "Fish & Seafood",
-        tagWithPhotos: "With Photos",
+        tagSpicy: "Spicy",
         allFilter: "All",
         currency: "MDL",
-        viewDetailsBtn: "View details",
         reserveThisDish: "Book a Table for this Dish",
         dishModalAllergens: "Ingredients & Notes:",
 
@@ -1013,7 +841,6 @@ const translations = {
     },
     ru: {
         navMenu: "Меню",
-        navHighlights: "Фирменные блюда",
         navReservations: "Резервация",
         navAbout: "О Нас",
         navContact: "Контакты",
@@ -1035,17 +862,14 @@ const translations = {
         menuBadge: "✦ Гастрономия и ремесленная выпечка",
         menuTitle: "Наше Фирменное Меню",
         menuSubtitle: "Блюда из чистых фермерских продуктов, медленная ферментация теста и любовь к чистым насыщенным вкусам.",
-        signatureHighlightsTitle: "✨ Фирменные Блюда Шефа и Пекарни",
-        signatureHighlightsSub: "Любимые позиции наших гостей с авторской подачей и фотографиями",
         searchPlaceholder: "Поиск блюда или ингредиента (напр. лосось, шакшука, буратта)...",
         filterAllDietary: "Все Блюда",
-        tagSignature: "Фирменное",
+        tagSignature: "Специалитеты",
         tagVegetarian: "Вегетарианское",
         tagFish: "Рыба и морепродукты",
-        tagWithPhotos: "С Фотографиями",
+        tagSpicy: "Острое",
         allFilter: "Все",
         currency: "MDL",
-        viewDetailsBtn: "Подробнее",
         reserveThisDish: "Забронировать столик для этого блюда",
         dishModalAllergens: "Ингредиенты и примечания:",
 
@@ -1189,7 +1013,7 @@ const defaultReviews = [
         comment: {
             ro: "Serviciul de la Crosta stabilește un nou standard în oraș. Chelnerii sunt extrem de politicoși, cunosc în detaliu fiecare ingredient din meniu și au avut o grijă deosebită pentru preferințele noastre.",
             en: "The service at Crosta sets a benchmark in the city. The staff is polite, knows every ingredient in the menu, and took wonderful care of our dining preferences.",
-            ru: "Сервис в Crosta задает высочайший стандарт в городе. Официанты очень вежливы, знают каждую деталь меню и окружили нас искренней заботой."
+            ru: "Сервис в Crosta задает высочайший standard в городе. Официанты очень вежливы, знают каждую деталь меню и окружили нас искренней заботой."
         },
         likes: 15
     },
@@ -1379,50 +1203,7 @@ function scrollToTop() {
 }
 
 /* ==========================================================================
-   RENDER SIGNATURE HIGHLIGHTS
-   ========================================================================== */
-function renderSignatureHighlights(lang) {
-    const container = document.getElementById('signature-cards-grid');
-    if (!container) return;
-
-    let html = '';
-    signatureDishes.forEach(dish => {
-        const dishTitle = dish.name[lang] || dish.name.ro;
-        const dishDesc = dish.description[lang] || dish.description.ro;
-        const badgeText = dish.badge[lang] || dish.badge.ro;
-        const safeTitle = dishTitle.replace(/'/g, "\\'");
-
-        html += `
-            <div class="signature-card" onclick="openDishDetails('${dish.id}')">
-                <div class="sig-media">
-                    <img src="${dish.image}" alt="${dishTitle}" class="sig-image" loading="lazy">
-                    <span class="sig-badge">${badgeText}</span>
-                    <span class="sig-price-tag">${dish.price} <span class="currency">${translations[lang].currency}</span></span>
-                </div>
-                <div class="sig-body">
-                    <div>
-                        <div class="sig-title-row">
-                            <h4 class="sig-title">${dishTitle}</h4>
-                            <span class="sig-weight">${dish.weight}</span>
-                        </div>
-                        <p class="sig-desc">${dishDesc}</p>
-                    </div>
-                    <div class="sig-footer">
-                        <div class="sig-tags">
-                            ${dish.tags.map(t => `<span class="sig-tag-mini">${t === 'signature' ? '⭐' : t === 'vegetarian' ? '🌱' : t === 'fish' ? '🐟' : '🥐'}</span>`).join('')}
-                        </div>
-                        <span class="sig-action-link">${translations[lang].viewDetailsBtn} →</span>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-
-    container.innerHTML = html;
-}
-
-/* ==========================================================================
-   RENDER MENU & SEARCH & FILTERS
+   RENDER MENU & SEARCH & FILTERS (Pure Typography, No Meal Photos)
    ========================================================================== */
 function setMenuFilter(catKey) {
     currentMenuFilter = catKey;
@@ -1455,8 +1236,7 @@ function clearMenuSearch() {
 function matchesSearchAndDietary(item, lang) {
     // Dietary filter
     if (currentDietaryFilter !== 'all') {
-        if (currentDietaryFilter === 'photo' && !item.image) return false;
-        if (currentDietaryFilter !== 'photo' && (!item.tags || !item.tags.includes(currentDietaryFilter))) return false;
+        if (!item.tags || !item.tags.includes(currentDietaryFilter)) return false;
     }
 
     // Search query
@@ -1521,12 +1301,12 @@ function renderMenu(lang) {
                         <div class="subcategory-wrapper">
                             <h4 class="subcategory-title">
                                 <span>${sub.name[lang]}</span>
-                                <span class="sub-count" style="font-size: 0.8rem; font-weight: 500; color: var(--color-text-muted); font-family: var(--font-body);">${filteredItems.length}</span>
+                                <span class="sub-count" style="font-size: 0.8rem; font-weight: 500; color: var(--color-text-muted); font-family: var(--font-body);">${filteredItems.length} preparate</span>
                             </h4>
                             <div class="menu-list-grid">
                     `;
                     filteredItems.forEach(item => {
-                        catHtml += renderMenuItemRow(item, lang);
+                        catHtml += renderMenuItemRow(item, lang, cat.category[lang]);
                     });
                     catHtml += `</div></div>`;
                 }
@@ -1538,7 +1318,7 @@ function renderMenu(lang) {
                 totalRenderedItems += filteredItems.length;
                 catHtml += `<div class="menu-list-grid">`;
                 filteredItems.forEach(item => {
-                    catHtml += renderMenuItemRow(item, lang);
+                    catHtml += renderMenuItemRow(item, lang, cat.category[lang]);
                 });
                 catHtml += `</div>`;
             }
@@ -1564,30 +1344,26 @@ function renderMenu(lang) {
     menuContainer.innerHTML = html;
 }
 
-function renderMenuItemRow(item, lang) {
+function renderMenuItemRow(item, lang, categoryName) {
     const itemName = item.name[lang] || item.name.ro;
     const itemDesc = item.description ? (item.description[lang] || item.description.ro) : '';
     const safeName = itemName.replace(/'/g, "\\'");
-    const hasImage = !!item.image;
-    const clickAttr = hasImage ? `onclick="openDishDetails('${item.id || ''}')"` : '';
-    const clickClass = hasImage ? ' is-clickable' : '';
-    const photoBadge = hasImage ? `<span class="photo-badge" title="Vezi fotografie">📷 Foto</span>` : '';
+    const clickAttr = `onclick="openDishDetails('${item.id || ''}')"`;
 
-    let tagIcons = '';
+    let tagBadges = '';
     if (item.tags) {
-        if (item.tags.includes('vegetarian')) tagIcons += '<span class="item-tag-icon" title="Vegetarian">🌱</span> ';
-        if (item.tags.includes('fish')) tagIcons += '<span class="item-tag-icon" title="Pește">🐟</span> ';
-        if (item.tags.includes('signature')) tagIcons += '<span class="item-tag-icon" title="Semnătură">⭐</span> ';
-        if (item.tags.includes('spicy')) tagIcons += '<span class="item-tag-icon" title="Picant">🌶️</span> ';
+        if (item.tags.includes('signature')) tagBadges += '<span class="item-tag-pill signature" title="Rețetă Semnătură">⭐ Semnătură</span> ';
+        if (item.tags.includes('vegetarian')) tagBadges += '<span class="item-tag-pill veg" title="Vegetarian">🌱 Vegetarian</span> ';
+        if (item.tags.includes('fish')) tagBadges += '<span class="item-tag-pill fish" title="Pește">🐟 Pește</span> ';
+        if (item.tags.includes('spicy')) tagBadges += '<span class="item-tag-pill spicy" title="Picant">🌶️ Picant</span> ';
     }
 
     return `
-        <div class="menu-item-row${clickClass}" ${clickAttr}>
+        <div class="menu-item-row is-clickable" ${clickAttr}>
             <div class="item-main-line">
                 <div class="item-info">
                     <span class="item-name">${itemName}</span>
-                    ${photoBadge}
-                    ${tagIcons}
+                    ${tagBadges}
                 </div>
                 <span class="item-dots"></span>
                 <span class="item-price">${item.price} <span class="currency">${translations[lang].currency}</span></span>
@@ -1603,23 +1379,18 @@ function renderMenuItemRow(item, lang) {
 }
 
 /* ==========================================================================
-   DISH DETAILS MODAL
+   DISH DETAILS MODAL (Pure Typography & Culinary Notes, No Photos)
    ========================================================================== */
 function findDishById(dishId) {
-    // Check signature dishes
-    const sig = signatureDishes.find(d => d.id === dishId);
-    if (sig) return sig;
-
-    // Check menuData
     for (const cat of menuData) {
         if (cat.items) {
             const found = cat.items.find(i => i.id === dishId);
-            if (found) return found;
+            if (found) return { ...found, categoryName: cat.category };
         }
         if (cat.subcategories) {
             for (const sub of cat.subcategories) {
                 const found = sub.items.find(i => i.id === dishId);
-                if (found) return found;
+                if (found) return { ...found, categoryName: cat.category, subcategoryName: sub.name };
             }
         }
     }
@@ -1632,8 +1403,7 @@ function openDishDetails(dishId) {
 
     const lang = getCurrentLang();
     const modal = document.getElementById('dish-modal');
-    const imgEl = document.getElementById('dish-modal-image');
-    const mediaEl = document.getElementById('dish-modal-media');
+    const catEl = document.getElementById('dish-modal-category');
     const titleEl = document.getElementById('dish-modal-title');
     const priceEl = document.getElementById('dish-modal-price');
     const weightEl = document.getElementById('dish-modal-weight');
@@ -1642,12 +1412,10 @@ function openDishDetails(dishId) {
     const allergensEl = document.getElementById('dish-modal-allergens');
     const allergensWrap = document.getElementById('dish-modal-allergens-wrap');
 
-    if (dish.image) {
-        imgEl.src = dish.image;
-        imgEl.alt = dish.name[lang] || dish.name.ro;
-        mediaEl.style.display = 'block';
-    } else {
-        mediaEl.style.display = 'none';
+    if (catEl) {
+        const cName = dish.categoryName ? (dish.categoryName[lang] || dish.categoryName.ro) : '';
+        const subName = dish.subcategoryName ? ` • ${dish.subcategoryName[lang] || dish.subcategoryName.ro}` : '';
+        catEl.textContent = `${cName}${subName}`;
     }
 
     titleEl.textContent = dish.name[lang] || dish.name.ro;
@@ -1659,8 +1427,8 @@ function openDishDetails(dishId) {
         let tagHtml = '';
         if (dish.tags) {
             dish.tags.forEach(t => {
-                const label = t === 'signature' ? '⭐ Semnătură' : t === 'vegetarian' ? '🌱 Vegetarian' : t === 'fish' ? '🐟 Pește' : t === 'bakery' ? '🥐 Brutărie' : t;
-                tagHtml += `<span class="sig-tag-mini" style="font-size: 0.8rem; padding: 0.25rem 0.6rem;">${label}</span>`;
+                const label = t === 'signature' ? '⭐ Specialitate Semnătură' : t === 'vegetarian' ? '🌱 Vegetarian' : t === 'fish' ? '🐟 Pește & Seafood' : t === 'spicy' ? '🌶️ Picant' : t;
+                tagHtml += `<span class="sig-tag-mini">${label}</span>`;
             });
         }
         tagsEl.innerHTML = tagHtml;
@@ -2122,7 +1890,6 @@ function initReviewForm() {
 function setLanguage(lang) {
     if (!translations[lang]) lang = 'ro';
 
-    // Update text for all elements with data-i18n attribute
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
         if (translations[lang] && translations[lang][key]) {
@@ -2130,7 +1897,6 @@ function setLanguage(lang) {
         }
     });
 
-    // Update placeholders
     document.querySelectorAll('[data-i18n-placeholder]').forEach(input => {
         const key = input.getAttribute('data-i18n-placeholder');
         if (translations[lang] && translations[lang][key]) {
@@ -2140,12 +1906,9 @@ function setLanguage(lang) {
     
     document.documentElement.lang = lang;
 
-    // Render dynamic components in new language
-    renderSignatureHighlights(lang);
     renderMenu(lang);
     renderReviews(lang);
 
-    // Update active button state
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.remove('active');
     });
@@ -2156,18 +1919,14 @@ function setLanguage(lang) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Current year
     const yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    // Preferred language
     const savedLang = localStorage.getItem('preferredLang') || 'ro';
     setLanguage(savedLang);
 
-    // Init review forms
     initReviewForm();
 
-    // Set minimum date for reservations to today
     const resDateInput = document.getElementById('res-date');
     if (resDateInput) {
         const today = new Date().toISOString().split('T')[0];
@@ -2175,7 +1934,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resDateInput.value = today;
     }
 
-    // Mobile nav toggle and link clicks
     const navbar = document.querySelector('.navbar');
     const navLinks = document.querySelectorAll('.navbar nav a');
     const sections = document.querySelectorAll('section');
@@ -2186,11 +1944,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Escape key modal closer
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeModal();
-            closeImageModal();
             closeDishModal();
             closeReviewModal();
             closeReviewSuccessModal();
@@ -2198,7 +1954,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Navbar scroll effect, active spy & back-to-top button
     const backToTopBtn = document.getElementById('back-to-top-btn');
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
@@ -2213,13 +1968,11 @@ document.addEventListener('DOMContentLoaded', () => {
             backToTopBtn.classList.toggle('visible', scrollY > 400);
         }
 
-        // Parallax on hero
         const heroImage = document.querySelector('.hero-image');
         if (heroImage && scrollY < 800) {
             heroImage.style.transform = `translateY(${scrollY * 0.35}px)`;
         }
 
-        // Active link spy
         let current = '';
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
@@ -2236,7 +1989,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Reservation Form Submit Handler
     const resForm = document.getElementById('reservation-form');
     if (resForm) {
         resForm.addEventListener('submit', async (e) => {
@@ -2279,21 +2031,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function closeModal() {
     const modal = document.getElementById('res-success-modal');
-    if (modal) modal.style.display = 'none';
-}
-
-function openImageModal(imgSrc, title) {
-    const modal = document.getElementById('image-modal');
-    const modalImg = document.getElementById('modal-image-element');
-    const modalTitle = document.getElementById('modal-image-title');
-    
-    if (modalImg) modalImg.src = imgSrc;
-    if (modalTitle) modalTitle.textContent = title;
-    if (modal) modal.style.display = 'flex';
-}
-
-function closeImageModal() {
-    const modal = document.getElementById('image-modal');
     if (modal) modal.style.display = 'none';
 }
 
