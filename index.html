@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crosta Kitchen Bakery | Brutărie Artizanală & Bistro Chișinău</title>
     <meta name="description" content="Crosta Kitchen Bakery - Brutărie artizanală cu maia, mic dejun toute la journée, preparate rafinate și cafea de specialitate pe Strada Miron Costin 13/7, Chișinău.">
-    <link rel="stylesheet" href="styles.css?v=5.1">
+    <link rel="stylesheet" href="styles.css?v=5.2">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
             <span class="logo-main">CROSTA</span>
             <span class="logo-sub">KITCHEN BAKERY</span>
         </a>
-        <nav id="main-nav">
+        <nav id="main-nav" aria-label="Navigare principală">
             <a href="#menu" data-i18n="navMenu">Meniu</a>
             <a href="#reservations" data-i18n="navReservations">Rezervări</a>
             <a href="#reviews" data-i18n="navReviews">Recenzii</a>
@@ -30,13 +30,20 @@
                 <button onclick="setLanguage('ru')" class="lang-btn" id="btn-ru">RU</button>
             </div>
             <a href="#reservations" class="header-cta-btn" data-i18n="headerBookBtn">Rezervă o Masă</a>
-            <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Deschide meniul de navigare">
+            <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Deschide meniul de navigare" aria-expanded="false" aria-controls="main-nav" type="button">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
     </header>
+    <button class="mobile-nav-backdrop" type="button" aria-label="Închide meniul de navigare" onclick="closeMobileMenu()"></button>
+
+    <nav class="mobile-quick-actions" aria-label="Acțiuni rapide">
+        <a href="#menu" data-i18n="navMenu">Meniu</a>
+        <a href="#reservations" class="mobile-quick-primary" data-i18n="headerBookBtn">Rezervă o Masă</a>
+        <a href="tel:060328232" data-i18n="mobileCall">Sună</a>
+    </nav>
 
     <main>
         <!-- Hero Section -->
@@ -79,6 +86,7 @@
             <div class="menu-controls-wrapper">
                 <div class="menu-search-box">
                     <span class="search-icon">🔍</span>
+                    <label class="sr-only" for="menu-search-input">Caută în meniu</label>
                     <input type="text" id="menu-search-input" placeholder="Caută un preparat sau ingredient (ex: somon, shakshuka, burrata)..." data-i18n-placeholder="searchPlaceholder" oninput="handleMenuSearch(this.value)">
                     <button type="button" class="search-clear-btn" id="search-clear-btn" onclick="clearMenuSearch()" style="display: none;" title="Șterge căutarea">&times;</button>
                 </div>
@@ -103,7 +111,7 @@
             </div>
 
             <!-- Category Filter Tabs -->
-            <div id="menu-filters" class="menu-filters"></div>
+            <div id="menu-filters" class="menu-filters" role="group" aria-label="Categorii meniu"></div>
 
             <!-- Dynamic Menu Items List -->
             <div id="dynamic-menu" class="dynamic-menu-container"></div>
@@ -599,6 +607,6 @@
     <!-- Toast Notification Container -->
     <div id="toast-container" class="toast-container"></div>
 
-    <script src="app.js?v=5.1"></script>
+    <script src="app.js?v=5.2"></script>
 </body>
 </html>

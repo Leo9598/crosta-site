@@ -616,6 +616,7 @@ const translations = {
         navContact: "Contact",
         navReviews: "Recenzii",
         headerBookBtn: "Rezervă o Masă",
+        mobileCall: "Sună",
         
         // Hero
         heroPillTop: "Brutărie & Bucătărie Artizanală • Chișinău",
@@ -743,6 +744,7 @@ const translations = {
         navContact: "Contact",
         navReviews: "Reviews",
         headerBookBtn: "Book a Table",
+        mobileCall: "Call",
         
         // Hero
         heroPillTop: "Artisanal Bakery & Kitchen • Chișinău",
@@ -870,6 +872,7 @@ const translations = {
         navContact: "Контакты",
         navReviews: "Отзывы",
         headerBookBtn: "Забронировать",
+        mobileCall: "Позвонить",
         
         // Hero
         heroPillTop: "Ремесленная пекарня и кухня • Кишинев",
@@ -1244,6 +1247,7 @@ function scrollToTop() {
 function setMenuFilter(catKey) {
     currentMenuFilter = catKey;
     renderMenu(getCurrentLang());
+    document.querySelector('.menu-filters .filter-btn.active')?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
 }
 
 function setDietaryFilter(dietaryTag) {
@@ -1302,7 +1306,7 @@ function renderMenu(lang) {
     // Render Category tabs
     if (filtersContainer) {
         let filtersHtml = `
-            <button class="filter-btn ${currentMenuFilter === 'All' ? 'active' : ''}" onclick="setMenuFilter('All')">
+            <button type="button" class="filter-btn ${currentMenuFilter === 'All' ? 'active' : ''}" aria-pressed="${currentMenuFilter === 'All'}" onclick="setMenuFilter('All')">
                 ${translations[lang].allFilter}
             </button>
         `;
@@ -1311,7 +1315,7 @@ function renderMenu(lang) {
             const catName = cat.category[lang];
             const isActive = currentMenuFilter === catKey ? 'active' : '';
             const icon = cat.icon || '';
-            filtersHtml += `<button class="filter-btn ${isActive}" onclick="setMenuFilter('${catKey.replace(/'/g, "\\'")}')">${icon} ${catName}</button>`;
+            filtersHtml += `<button type="button" class="filter-btn ${isActive}" aria-pressed="${Boolean(isActive)}" onclick="setMenuFilter('${catKey.replace(/'/g, "\\'")}')">${icon} ${catName}</button>`;
         });
         filtersContainer.innerHTML = filtersHtml;
     }
@@ -1976,8 +1980,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
-            if (navbar) navbar.classList.remove('nav-open');
+            closeMobileMenu();
         });
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) closeMobileMenu();
     });
 
     document.addEventListener('keydown', (e) => {
@@ -1986,7 +1994,7 @@ document.addEventListener('DOMContentLoaded', () => {
             closeDishModal();
             closeReviewModal();
             closeReviewSuccessModal();
-            if (navbar) navbar.classList.remove('nav-open');
+            closeMobileMenu(true);
         }
     });
 
@@ -2072,7 +2080,29 @@ function closeModal() {
 
 function toggleMobileMenu() {
     const navbar = document.querySelector('.navbar');
-    if (navbar) navbar.classList.toggle('nav-open');
+    if (!navbar) return;
+    if (navbar.classList.contains('nav-open')) {
+        closeMobileMenu(true);
+        return;
+    }
+    navbar.classList.add('nav-open');
+    document.body.classList.add('mobile-menu-open');
+    const toggle = navbar.querySelector('.mobile-toggle');
+    toggle?.setAttribute('aria-expanded', 'true');
+    toggle?.setAttribute('aria-label', 'Închide meniul de navigare');
+    navbar.querySelector('nav a')?.focus();
+}
+
+function closeMobileMenu(restoreFocus = false) {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    const wasOpen = navbar.classList.contains('nav-open');
+    navbar.classList.remove('nav-open');
+    document.body.classList.remove('mobile-menu-open');
+    const toggle = navbar.querySelector('.mobile-toggle');
+    toggle?.setAttribute('aria-expanded', 'false');
+    toggle?.setAttribute('aria-label', 'Deschide meniul de navigare');
+    if (restoreFocus && wasOpen) toggle?.focus();
 }
 
 function switchReservationTab(mode) {
