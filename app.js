@@ -616,6 +616,7 @@ const translations = {
         navContact: "Contact",
         navReviews: "Recenzii",
         headerBookBtn: "Rezervă o Masă",
+        mobileReserve: "Rezervă",
         mobileCall: "Sună",
         
         // Hero
@@ -744,6 +745,7 @@ const translations = {
         navContact: "Contact",
         navReviews: "Reviews",
         headerBookBtn: "Book a Table",
+        mobileReserve: "Reserve",
         mobileCall: "Call",
         
         // Hero
@@ -872,6 +874,7 @@ const translations = {
         navContact: "Контакты",
         navReviews: "Отзывы",
         headerBookBtn: "Забронировать",
+        mobileReserve: "Бронь",
         mobileCall: "Позвонить",
         
         // Hero
