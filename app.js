@@ -155,18 +155,20 @@
   }
   function localizeAccessibility() {
     const labels = {
-      ro: {nav:'Navigare principală', language:'Limbă', discover:'Descoperă Crosta', categories:'Categorii de meniu', dietary:'Filtre alimentare', craft:'Brutărie artizanală', reviews:'Categorii de recenzii', rating:'4,8 din 5 stele', dish:'Detalii despre preparat'},
-      en: {nav:'Main navigation', language:'Language', discover:'Discover Crosta', categories:'Menu categories', dietary:'Dietary filters', craft:'Artisan bakery', reviews:'Review categories', rating:'4.8 out of 5 stars', dish:'Dish details'},
-      ru: {nav:'Основная навигация', language:'Язык', discover:'Откройте для себя Crosta', categories:'Категории меню', dietary:'Фильтры питания', craft:'Ремесленная пекарня', reviews:'Категории отзывов', rating:'4,8 из 5 звёзд', dish:'Информация о блюде'}
+      ro: {nav:'Navigare principală', language:'Limbă', discover:'Descoperă Crosta', categories:'Categorii de meniu', dietary:'Filtre alimentare', craft:'Crosta pe Instagram', reviews:'Categorii de recenzii', rating:'4,8 din 5 stele', dish:'Detalii despre preparat'},
+      en: {nav:'Main navigation', language:'Language', discover:'Discover Crosta', categories:'Menu categories', dietary:'Dietary filters', craft:'Crosta on Instagram', reviews:'Review categories', rating:'4.8 out of 5 stars', dish:'Dish details'},
+      ru: {nav:'Основная навигация', language:'Язык', discover:'Откройте для себя Crosta', categories:'Категории меню', dietary:'Фильтры питания', craft:'Crosta в Instagram', reviews:'Категории отзывов', rating:'4,8 из 5 звёзд', dish:'Информация о блюде'}
     }[lang];
-    const ariaSelectors = {'#site-nav':'nav', '.language-switch':'language', '.scroll-link':'discover', '#category-tabs':'categories', '#diet-filters':'dietary', '.craft-banner':'craft', '#review-filters':'reviews', '.review-score .rating-stars':'rating', '#dish-dialog':'dish'};
+    const ariaSelectors = {'#site-nav':'nav', '.language-switch':'language', '.scroll-link':'discover', '#category-tabs':'categories', '#diet-filters':'dietary', '.social-section':'craft', '#review-filters':'reviews', '.review-score .rating-stars':'rating', '#dish-dialog':'dish'};
     Object.entries(ariaSelectors).forEach(([selector, key]) => $(selector)?.setAttribute('aria-label', labels[key]));
     const imageAlts = {
-      ro: {'hero-pastry.jpg':'Croissante aurii, cu foi fine de unt', 'bread.jpg':'Mâini lucrând aluatul artizanal', 'interior.jpg':'Interiorul luminos Crosta Kitchen & Bakery, Chișinău', 'breakfast.jpg':'Cafea și un mic dejun liniștit'},
-      en: {'hero-pastry.jpg':'Golden croissants with delicate buttery layers', 'bread.jpg':'Hands shaping artisan bread dough', 'interior.jpg':'The bright interior of Crosta Kitchen & Bakery in Chișinău', 'breakfast.jpg':'Coffee and a quiet breakfast'},
-      ru: {'hero-pastry.jpg':'Золотистые круассаны с тонкими масляными слоями', 'bread.jpg':'Руки, работающие с ремесленным тестом', 'interior.jpg':'Светлый интерьер Crosta Kitchen & Bakery в Кишинёве', 'breakfast.jpg':'Кофе и неспешный завтрак'}
+      ro: {'crosta-berry.webp':'Preparat Crosta cu fructe de pădure, migdale și mentă', 'crosta-cake.webp':'Felie de tort cu cremă la Crosta', 'interior.webp':'Interiorul Crosta Kitchen & Bakery, Chișinău', 'crosta-terrace.webp':'Mic dejun și cafea pe terasa Crosta'},
+      en: {'crosta-berry.webp':'A Crosta dish with berries, almonds and mint', 'crosta-cake.webp':'A slice of layered cream cake at Crosta', 'interior.webp':'Inside Crosta Kitchen & Bakery in Chișinău', 'crosta-terrace.webp':'Breakfast and coffee on Crosta’s terrace'},
+      ru: {'crosta-berry.webp':'Блюдо Crosta с ягодами, миндалём и мятой', 'crosta-cake.webp':'Кусочек слоёного торта с кремом в Crosta', 'interior.webp':'Интерьер Crosta Kitchen & Bakery в Кишинёве', 'crosta-terrace.webp':'Завтрак и кофе на террасе Crosta'}
     }[lang];
     $$('img').forEach(image => { const filename = image.getAttribute('src')?.split('/').pop(); if (imageAlts[filename]) image.alt = imageAlts[filename]; });
+    $('.daily-strip')?.setAttribute('aria-label', {ro:'Alege din meniu', en:'Explore the menu', ru:'Выберите из меню'}[lang]);
+    $('.map-link iframe')?.setAttribute('title', {ro:'Locația Crosta Kitchen & Bakery', en:'Crosta Kitchen & Bakery location', ru:'Расположение Crosta Kitchen & Bakery'}[lang]);
     updateNavigationLabel();
   }
   function setLanguage(next) {
@@ -175,6 +177,8 @@
     persist('crosta_language', lang);
     persist('preferredLang', lang);
     document.documentElement.lang = lang;
+    const description = window.CROSTA_COPY?.[lang]?.metaDescription;
+    if (description) $('meta[name="description"]')?.setAttribute('content', description);
     $$('[data-i18n]').forEach(el => { const value = data.translations[lang]?.[el.dataset.i18n]; if (value !== undefined) el.textContent = value; });
     $$('[data-copy]').forEach(el => { const value = window.CROSTA_COPY?.[lang]?.[el.dataset.copy]; if (value !== undefined) { if (el.hasAttribute('data-copy-html')) el.innerHTML = value; else el.textContent = value; } });
     $$('[data-lang]').forEach(el => { el.classList.toggle('active', el.dataset.lang === lang); el.setAttribute('aria-pressed', String(el.dataset.lang === lang)); });
@@ -188,6 +192,16 @@
   document.addEventListener('click', event => {
     const language = event.target.closest('[data-lang]');
     if (language) { setLanguage(language.dataset.lang); return; }
+    const shortcut = event.target.closest('[data-menu-category]');
+    if (shortcut) {
+      const next = Number(shortcut.dataset.menuCategory);
+      if (Number.isInteger(next) && next >= 0 && next < data.menuData.length) {
+        category = next; dietary = 'all'; search = '';
+        if ($('#menu-search')) $('#menu-search').value = '';
+        categories(); filters(); renderMenu();
+      }
+      return;
+    }
     const cat = event.target.closest('[data-category]');
     if (cat) { category = Number(cat.dataset.category); categories(); renderMenu(); restoreButtonFocus('data-category', category); return; }
     const diet = event.target.closest('[data-diet]');

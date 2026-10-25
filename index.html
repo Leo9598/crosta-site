@@ -5,17 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f0e8">
   <title>Crosta — Kitchen & Bakery, Chișinău</title>
-  <meta name="description" content="Brutărie artizanală cu maia, mic dejun toată ziua și cafea de specialitate. Descoperă Crosta Kitchen & Bakery pe Strada Miron Costin 13/7, Chișinău.">
+  <meta name="description" content="Mic dejun, bucate calde, deserturi și cafea la Crosta Kitchen & Bakery, Strada Miron Costin 13/7, Chișinău. Zilnic 08:00–22:00.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Crosta — Kitchen & Bakery, Chișinău">
+  <meta property="og:description" content="Mic dejun, bucate calde, deserturi și cafea la Crosta Kitchen & Bakery, Strada Miron Costin 13/7, Chișinău. Zilnic 08:00–22:00.">
+  <meta property="og:url" content="https://crosta.kitchen/">
+  <meta property="og:image" content="https://crosta.kitchen/assets/crosta-berry.webp">
+  <meta property="og:image:width" content="545">
+  <meta property="og:image:height" content="640">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Restaurant", "@id": "https://crosta.kitchen/#restaurant", "name": "Crosta Kitchen & Bakery", "url": "https://crosta.kitchen/", "telephone": "+37360328232", "image": "https://crosta.kitchen/assets/interior.webp", "address": {"@type": "PostalAddress", "streetAddress": "Strada Miron Costin 13/7", "addressLocality": "Chișinău", "postalCode": "MD-2000", "addressCountry": "MD"}, "hasMenu": "https://crosta.kitchen/#menu", "sameAs": ["https://www.instagram.com/crostakitchenandbakery/"], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "08:00", "closes": "22:00"}]}</script>
   <link rel="canonical" href="https://crosta.kitchen/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261025-redesign">
-  <script defer src="data.js?v=20261025-redesign"></script>
-  <script defer src="copy.js?v=20261025-redesign"></script>
-  <script defer src="app.js?v=20261025-redesign"></script>
-  <script defer src="forms.js?v=20261025-redesign"></script>
+  <link rel="stylesheet" href="styles.css?v=20261025-crosta">
+  <script defer src="data.js?v=20261025-crosta"></script>
+  <script defer src="copy.js?v=20261025-crosta"></script>
+  <script defer src="app.js?v=20261025-crosta"></script>
+  <script defer src="forms.js?v=20261025-crosta"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu" data-copy="skip">Sari la meniu</a>
@@ -36,43 +45,51 @@
   <main>
     <section id="home" class="hero">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="little-star" aria-hidden="true">✳</span><span data-copy="heroEyebrow">ARTIZANAL, ÎN FIECARE ZI. CHIȘINĂU.</span></div>
-        <h1><span data-copy="heroLine1">Pâine bună.</span><em data-copy="heroLine2">Zile frumoase.</em></h1>
-        <p class="hero-description" data-i18n="heroSubtitle">Panificație cu maia dospită lent 72 de ore, mic dejun servit toată ziua și preparate gastronomice rafinate într-o atmosferă luminoasă și călduroasă.</p>
-        <a class="button hero-button" href="#menu"><span data-i18n="heroCta">Explorează meniul</span><span aria-hidden="true">↗</span></a>
+        <div class="eyebrow"><span class="little-star" aria-hidden="true">✳</span><span data-copy="heroEyebrow">MIC DEJUN. BUCĂTĂRIE. DESERTURI.</span></div>
+        <h1><span data-copy="heroLine1">Bun de tot.</span><em data-copy="heroLine2">Bine împreună.</em></h1>
+        <p class="hero-description" data-i18n="heroSubtitle">Mic dejun fără grabă, bucate calde, deserturi și cafea. Un loc pentru o pauză bună și oameni dragi, pe Miron Costin 13/7.</p>
+        <div class="hero-actions"><a class="button hero-button" href="#menu"><span data-i18n="heroCta">Explorează meniul</span><span aria-hidden="true">↗</span></a><button type="button" class="text-link" data-booking><span data-i18n="headerBookBtn">Rezervă o masă</span><span aria-hidden="true">↗</span></button></div>
         <div class="hero-bottom"><a class="hero-rating" href="#reviews"><span class="rating-stars" aria-hidden="true">★★★★★</span><span><b id="hero-rating-score">4.8</b> / 5 <span class="quiet">·</span> <span data-copy="guestLove">de la oaspeții noștri</span></span></a><a href="#about" class="scroll-link" aria-label="Discover Crosta"><span aria-hidden="true">↓</span></a></div>
       </div>
       <div class="hero-visual">
-        <img src="assets/hero-pastry.jpg" alt="Croissante aurii, cu foi fine de unt" fetchpriority="high" width="1600" height="2400">
-        <div class="photo-label"><span class="tiny-dot"></span><span data-copy="photoLabel">BUCURIA LUCRURILOR SIMPLE</span></div>
-        <div class="sourdough-seal"><span data-copy="sealTop">MAIA NATURALĂ</span><strong>72<em>h</em></strong><span data-copy="sealBottom">RĂBDAREA ARE GUST</span></div>
+        <img src="assets/crosta-berry.webp" alt="Preparat Crosta cu fructe de pădure, migdale și mentă" fetchpriority="high" width="545" height="640">
+        <div class="photo-label"><span class="tiny-dot"></span><span data-copy="photoLabel">DIN BUCĂTĂRIA CROSTA</span></div>
+        <div class="hours-seal"><span data-copy="sealTop">ZILNIC</span><strong>08–22</strong><span data-copy="sealBottom">NE VEDEM LA CROSTA</span></div>
       </div>
     </section>
-    <div class="daily-strip">
-      <div><span class="strip-number">01</span><span data-i18n="heroPill1">Aluat cu Maia 72h</span></div><span class="strip-star" aria-hidden="true">✳</span>
-      <div><span class="strip-number">02</span><span data-i18n="heroPill2">Mic Dejun 9:00 - 21:00</span></div><span class="strip-star" aria-hidden="true">✳</span>
-      <div><span class="strip-number">03</span><span data-i18n="heroPill3">Cafea de Specialitate</span></div>
-    </div>
+    <nav class="daily-strip" aria-label="Alege din meniu">
+      <a href="#menu" data-menu-category="0"><span class="strip-number">01</span><span data-copy="quickBreakfast">Mic dejun</span><span aria-hidden="true">↗</span></a><span class="strip-star" aria-hidden="true">✳</span>
+      <a href="#menu" data-menu-category="5"><span class="strip-number">02</span><span data-copy="quickMains">Bucate calde</span><span aria-hidden="true">↗</span></a><span class="strip-star" aria-hidden="true">✳</span>
+      <a href="#menu" data-menu-category="6"><span class="strip-number">03</span><span data-copy="quickDesserts">Deserturi</span><span aria-hidden="true">↗</span></a>
+    </nav>
     <section id="menu" class="menu-section section-pad">
-      <div class="section-heading menu-heading"><div><div class="eyebrow" data-copy="menuEyebrow">DIN BUCĂTĂRIA NOASTRĂ</div><h2 data-copy="menuHeading">Poftă de ceva <em>bun?</em></h2></div><p data-i18n="menuSubtitle">Rețete create cu ingrediente curate de la ferme partenere, aluat dospit lent cu maia și pasiune pentru arome pure.</p></div>
+      <div class="section-heading menu-heading"><div><div class="eyebrow" data-copy="menuEyebrow">DIN BUCĂTĂRIA NOASTRĂ</div><h2 data-copy="menuHeading">Poftă de ceva <em>bun?</em></h2></div><p data-i18n="menuSubtitle">De la ouă poșate și syrniki la salate, supe, bucate calde și deserturi. Găsește ceva pe gustul tău.</p></div>
       <div class="menu-layout">
-        <aside class="menu-sidebar"><div class="menu-sidebar-label" data-copy="menuBrowse">DESCOPERĂ MENIUL</div><div id="category-tabs" aria-label="Menu categories"></div><div class="menu-sidebar-note"><span aria-hidden="true">✳</span><p data-copy="menuNote">De la prima cafea până la ultima îmbucătură.</p><span class="currency-note" data-copy="priceNote">Prețuri în MDL</span></div></aside>
+        <aside class="menu-sidebar"><div class="menu-sidebar-label" data-copy="menuBrowse">DESCOPERĂ MENIUL</div><div id="category-tabs" aria-label="Menu categories"></div><div class="menu-sidebar-note"><span aria-hidden="true">✳</span><p data-copy="menuNote">Mic dejun, ceva sărat sau un final dulce.</p><span class="currency-note" data-copy="priceNote">Prețuri în MDL</span></div></aside>
         <div class="menu-main">
           <div class="menu-toolbar"><label class="search-field"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="menu-search" type="search" data-placeholder="searchPlaceholder" placeholder="Caută un preparat sau ingredient…" autocomplete="off" aria-label="Caută în meniu"></label><span id="menu-count" class="menu-count" aria-live="polite"></span></div>
           <div id="diet-filters" class="diet-filters" aria-label="Dietary filters"></div>
           <div id="menu-results" class="menu-results" aria-live="polite"></div>
-          <details class="menu-notes"><summary><span data-i18n="footnotesTitle">Note & Legendă Meniu</span><span aria-hidden="true">+</span></summary><div class="notes-grid"><p data-i18n="note1"></p><p data-i18n="note2"></p><p data-i18n="note3"></p><p data-i18n="note4"></p><p data-i18n="note5"></p><p data-i18n="note6"></p><p data-i18n="note7"></p></div></details>
+          <details class="menu-notes"><summary><span data-i18n="footnotesTitle">Note & Legendă Meniu</span><span aria-hidden="true">+</span></summary><div class="notes-grid"><p data-i18n="note1"></p><p data-i18n="note2">🍽️ Meniul principal este servit de la 12:00</p><p data-i18n="note3"></p><p data-i18n="note4"></p><p data-i18n="note5"></p><p data-i18n="note6"></p><p data-i18n="note7"></p></div></details>
         </div>
       </div>
     </section>
-    <section class="craft-banner" aria-label="Artisan bakery"><img src="assets/bread.jpg" alt="Mâini lucrând aluatul artizanal" loading="lazy" width="1200" height="800"><div class="craft-overlay"><div class="eyebrow" data-copy="craftEyebrow">FĂINĂ. APĂ. MAIA. TIMP.</div><p data-copy="craftLine">Lucrurile bune<br>nu se grăbesc.</p><a href="#about" class="text-link light"><span data-i18n="aboutTitle">Povestea noastră</span><span aria-hidden="true">↗</span></a></div><span class="craft-index" aria-hidden="true">72h</span></section>
+    <section class="social-section section-pad" aria-labelledby="social-title">
+      <div class="section-heading"><div><div class="eyebrow" data-copy="socialEyebrow">O PRIVIRE ÎN LUMEA NOASTRĂ</div><h2 id="social-title" data-copy="socialHeading">Un pic de <em>Crosta.</em></h2></div><p data-copy="socialIntro">Din farfurie până la atmosfera de la masă. Descoperă noutățile și momentele noastre pe Instagram.</p></div>
+      <div class="social-grid">
+        <a class="social-card" href="https://www.instagram.com/crostakitchenandbakery/reel/Db2VPiWMpzP/" target="_blank" rel="noopener"><img src="assets/crosta-terrace.webp" alt="Mic dejun și cafea pe terasa Crosta" loading="lazy" decoding="async" width="360" height="640"><span><span data-copy="socialBreakfast">La masă, împreună</span><span aria-hidden="true">↗</span></span></a>
+        <a class="social-card" href="https://www.instagram.com/crostakitchenandbakery/p/DeLqRAijHl7/" target="_blank" rel="noopener"><img src="assets/crosta-cake.webp" alt="Felie de tort cu cremă la Crosta" loading="lazy" decoding="async" width="480" height="640"><span><span data-copy="socialDessert">Ceva dulce</span><span aria-hidden="true">↗</span></span></a>
+        <a class="social-card" href="https://www.instagram.com/crostakitchenandbakery/p/DbsHk48Mb-y/" target="_blank" rel="noopener"><img src="assets/crosta-berry.webp" alt="Preparat Crosta cu fructe de pădure, migdale și mentă" loading="lazy" decoding="async" width="545" height="640"><span><span data-copy="socialBerry">Un strop de culoare</span><span aria-hidden="true">↗</span></span></a>
+      </div>
+      <a class="text-link social-profile" href="https://www.instagram.com/crostakitchenandbakery/" target="_blank" rel="noopener"><span data-copy="socialLink">Urmărește-ne pe Instagram</span><span aria-hidden="true">↗</span></a>
+    </section>
     <section id="about" class="about-section section-pad">
-      <div class="about-image"><img src="assets/interior.jpg" alt="Interiorul luminos Crosta Kitchen & Bakery, Chișinău" loading="lazy" width="1024" height="686"><div class="image-caption"><span>CROSTA, CHIȘINĂU</span><span data-copy="aPlace">UN LOC ÎN CARE REVII.</span></div></div>
-      <div class="about-copy"><div class="eyebrow" data-i18n="aboutBadge">✦ Pasiune & Tradiție</div><h2 data-copy="aboutHeading">Cu timp.<br>Cu grijă.<br><em>Cu drag.</em></h2><p class="about-intro" data-i18n="aboutDesc"></p><div class="pillars"><div><span>01</span><div><h3 data-i18n="pillar1Title"></h3><p data-i18n="pillar1Desc"></p></div></div><div><span>02</span><div><h3 data-i18n="pillar2Title"></h3><p data-i18n="pillar2Desc"></p></div></div><div><span>03</span><div><h3 data-i18n="pillar3Title"></h3><p data-i18n="pillar3Desc"></p></div></div></div>
+      <div class="about-image"><img src="assets/interior.webp" alt="Interiorul luminos Crosta Kitchen & Bakery, Chișinău" loading="lazy" width="1024" height="686"><div class="image-caption"><span>CROSTA, CHIȘINĂU</span><span data-copy="aPlace">UN LOC ÎN CARE REVII.</span></div></div>
+      <div class="about-copy"><div class="eyebrow" data-i18n="aboutBadge">✦ La noi, la Crosta</div><h2 data-copy="aboutHeading">Cu timp.<br>Cu grijă.<br><em>Cu drag.</em></h2><p class="about-intro" data-i18n="aboutDesc">O cafea, un mic dejun târziu, o masă cu prietenii sau ceva dulce. La Crosta, toate își găsesc locul — într-un spațiu cald, pe Strada Miron Costin 13/7.</p><div class="pillars"><div><span>01</span><div><h3 data-i18n="pillar1Title">Mic dejun, în ritmul tău</h3><p data-i18n="pillar1Desc">Ouă poșate, shakshuka, syrniki și alte preferate. Micul dejun te așteaptă între 09:00 și 21:00.</p></div></div><div><span>02</span><div><h3 data-i18n="pillar2Title">Bucătărie pentru toate poftele</h3><p data-i18n="pillar2Desc">Salate, supe și bucate calde — pentru un prânz liniștit sau o masă împreună.</p></div></div><div><span>03</span><div><h3 data-i18n="pillar3Title">Cafea, desert și încă un moment</h3><p data-i18n="pillar3Desc">Un final dulce și o cafea bună. Mai rămâi puțin, conversația abia a început.</p></div></div></div>
     </section>
     <section id="reservations" class="reservation-section">
       <div class="reservation-copy"><div class="eyebrow" data-copy="reservationEyebrow">NE VEDEM LA CROSTA</div><h2 data-copy="reservationHeading">Un loc la<br><em>masa noastră.</em></h2><p data-i18n="resSubtitle"></p><div class="reservation-actions"><button class="button pale" type="button" data-booking><span data-i18n="resTabOnline">Rezervare online</span><span aria-hidden="true">↗</span></button><a class="phone-link" href="tel:+37360328232">060 328 232 <span aria-hidden="true">↗</span></a></div><p class="booking-note" data-copy="bookingNote">Pentru cerințe speciale, sunați-ne. Vă ajutăm cu drag.</p><div class="reservation-meta"><span data-i18n="resPerk2">Zilnic 08:00 - 22:00</span><span data-i18n="resPerk3">Mese & Evenimente Speciale</span></div></div>
-      <div class="reservation-image"><img src="assets/breakfast.jpg" alt="Cafea și un mic dejun liniștit" loading="lazy" width="1200" height="800"><span class="reservation-image-caption" data-copy="tableCaption">CAFÉ • BUCĂTĂRIE • BRUTĂRIE</span></div>
+      <div class="reservation-image"><img src="assets/crosta-terrace.webp" alt="Mic dejun și cafea pe terasa Crosta" loading="lazy" decoding="async" width="360" height="640"><span class="reservation-image-caption" data-copy="tableCaption">MÂNCARE BUNĂ • TIMP ÎMPREUNĂ</span></div>
     </section>
     <section id="reviews" class="reviews-section section-pad">
       <div class="section-heading"><div><div class="eyebrow" data-i18n="reviewsBadge">✦ Experiențe Autentice</div><h2 data-copy="reviewsHeading">Vorbe <em>bune.</em></h2></div><div class="review-score"><strong id="reviews-avg-score">4.8</strong><div><span class="rating-stars" aria-label="4.8 out of 5 stars">★★★★★</span><span><span data-i18n="scoreBasedOn">Bazat pe</span> <span id="reviews-total-count">8</span> <span data-i18n="scoreReviewsWord">recenzii</span></span></div></div></div>
@@ -83,8 +100,8 @@
       <div class="reviews-bottom"><button id="reviews-more" type="button" class="button outline" data-i18n="loadMoreReviews">Vezi mai multe recenzii</button><button id="review-write" type="button" class="text-link"><span data-i18n="writeReviewBtn">Lasă o recenzie</span><span aria-hidden="true">↗</span></button></div>
     </section>
     <footer id="contact" class="footer">
-      <div class="footer-top"><div class="footer-invite"><div class="eyebrow" data-copy="contactEyebrow">UȘA E DESCHISĂ</div><h2 data-copy="contactHeading">Hai pe la <em>noi.</em></h2><p data-i18n="footerTagline"></p></div><div class="map-link"><iframe src="https://maps.google.com/maps?q=Strada%20Miron%20Costin%2013/7,%20Chisinau&t=&z=15&ie=UTF8&iwloc=&output=embed" title="Locația Crosta Kitchen & Bakery" width="600" height="300" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe><a class="map-action" href="https://maps.google.com/maps?q=Strada%20Miron%20Costin%2013/7,%20Chisinau" target="_blank" rel="noopener"><span data-copy="directions">Deschide harta</span> ↗</a></div></div>
-      <div class="footer-info"><div><h3 data-i18n="footerTitle">Locație & Adresă</h3><a href="https://maps.google.com/maps?q=Strada%20Miron%20Costin%2013/7,%20Chisinau" target="_blank" rel="noopener" data-i18n="footerAddress"></a><p data-i18n="footerAddressNote"></p></div><div><h3 data-copy="visitHours">TE AȘTEPTĂM</h3><p data-i18n="footerOpenStatus"></p><p data-i18n="footerBreakfastHours"></p><p data-i18n="footerMainHours"></p><p data-i18n="footerBakeryHours"></p></div><div><h3 data-i18n="navReservations">Rezervări</h3><a class="footer-phone" href="tel:+37360328232">060 328 232 ↗</a><a href="#reservations" class="footer-book" data-i18n="headerBookBtn"></a><p data-i18n="resPerk3"></p></div></div>
+      <div class="footer-top"><div class="footer-invite"><div class="eyebrow" data-copy="contactEyebrow">UȘA E DESCHISĂ</div><h2 data-copy="contactHeading">Hai pe la <em>noi.</em></h2><p data-i18n="footerTagline">Mic dejun, bucate calde, deserturi și cafea. Timp petrecut bine, împreună.</p></div><div class="map-link"><iframe src="https://maps.google.com/maps?q=Strada%20Miron%20Costin%2013/7,%20Chisinau&t=&z=15&ie=UTF8&iwloc=&output=embed" title="Locația Crosta Kitchen & Bakery" width="600" height="300" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe><a class="map-action" href="https://maps.google.com/maps?q=Strada%20Miron%20Costin%2013/7,%20Chisinau" target="_blank" rel="noopener"><span data-copy="directions">Deschide harta</span> ↗</a></div></div>
+      <div class="footer-info"><div><h3 data-i18n="footerTitle">Locație & Adresă</h3><a href="https://maps.google.com/maps?q=Strada%20Miron%20Costin%2013/7,%20Chisinau" target="_blank" rel="noopener" data-i18n="footerAddress"></a><p data-i18n="footerAddressNote"></p></div><div><h3 data-copy="visitHours">TE AȘTEPTĂM</h3><p data-i18n="footerOpenStatus"></p><p data-i18n="footerBreakfastHours"></p><p data-i18n="footerMainHours">🍽️ Meniu principal: de la 12:00</p><p data-i18n="footerBakeryHours">☕ Cafea: de la 08:00</p></div><div><h3 data-i18n="navReservations">Rezervări</h3><a class="footer-phone" href="tel:+37360328232">060 328 232 ↗</a><a href="#reservations" class="footer-book" data-i18n="headerBookBtn"></a><p data-i18n="resPerk3"></p><a class="footer-social" href="https://www.instagram.com/crostakitchenandbakery/" target="_blank" rel="noopener">@crostakitchenandbakery ↗</a></div></div>
       <div class="footer-wordmark" aria-hidden="true">crosta<span>.</span></div><div class="footer-bottom"><span>© <span id="year">2026</span> Crosta Kitchen Bakery</span><span data-i18n="footerRights">Toate drepturile rezervate.</span><a href="#home" class="back-top"><span data-copy="backTop">Înapoi sus</span> ↑</a></div>
     </footer>
   </main>

@@ -1,11 +1,12 @@
-# Crosta redesign imagery
+# Crosta website imagery
 
-All files are under `work/crosta-redesign/dist/assets/` and were downloaded and visually inspected.
+Images in `assets/` used by the current page are actual Crosta photographs. Public Instagram profile and grid inspected on 25 October 2026. Full captions were sign-in gated; no claims were inferred from inaccessible captions. The profile lists 08:00–22:00 and reservations at 060328232. Highlights include Breakfast, Deserts, Supe and Bucate calde. Existing menu items and prices are unchanged.
 
-- `interior.jpg`: Original restaurant image, https://crosta.kitchen/hero.jpg (1024 × 686). Use for actual restaurant interior.
-- `hero-pastry.jpg`: Lucas Mellec, https://unsplash.com/photos/four-croissant-bread-0UXMMXXupL0 . CDN: https://images.unsplash.com/photo-1544027026-31fbbad5ecee?auto=format&fit=crop&w=1600&q=85 . Free Unsplash License per source page. Warm portrait croissant plate, 1600 × 2400.
-- `breakfast.jpg`: Lex Sirikiat, https://unsplash.com/photos/croissant-bread-with-cappuccino-coffee-ymtPhYNK49A . CDN: https://images.unsplash.com/photo-1525596201491-f6eae338a205?auto=format&fit=crop&w=1200&q=85 . Free Unsplash License per source page. Overhead coffee/toast on rustic table, 1200 × 800.
-- `bread.jpg`: Source https://unsplash.com/photos/a-close-up-of-a-person-kneading-dough-on-a-table-zqg6ctfkYuo . CDN: https://images.unsplash.com/photo-1649675602947-81a41c1ba4af?auto=format&fit=crop&w=1200&q=85 . Free Unsplash License per source page. Close-up artisan hands kneading dough, 1200 × 800.
+- `crosta-berry.webp`: Crosta’s berry-topped dish, https://www.instagram.com/crostakitchenandbakery/p/DbsHk48Mb-y/ (5 August 2026). Original public image 545 × 640.
+- `crosta-terrace.webp`: Crosta’s terrace table with breakfast and coffee, https://www.instagram.com/crostakitchenandbakery/reel/Db2VPiWMpzP/ (9 August 2026). Original public cover 360 × 640.
+- `crosta-cake.webp`: Crosta’s layered cake, https://www.instagram.com/crostakitchenandbakery/p/DeLqRAijHl7/ (6 October 2026). Original public image 480 × 640.
+- `interior.webp`: Original Crosta restaurant photo, sourced from https://crosta.kitchen/hero.jpg (1024 × 686).
 
-Food images are representative editorial photography, not documented exact Crosta dishes. Original interior is sourced directly from crosta.kitchen.
-- Optional `croissant-alt.jpg`: Mae Mu, https://unsplash.com/photos/two-brown-croissants-m9pzwmxm2rk . CDN: https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=1600&q=85 . Free Unsplash License per source page. Very rich, flaky croissant still life against charcoal background, 1600 × 1280 landscape. This is stronger than hero-pastry.jpg for a dramatic editorial hero.
+Locally hosted WebP versions avoid expiring Instagram image links and third-party embed scripts. Photos link to their source posts in the Instagram section. Sizes are preserved, without artificial upscaling. Unused stock photos from the previous design remain in Git history; the current page does not load them.
+
+Editorial changes remove unsupported fermentation and farm-partnership claims. Breakfast service 09:00–21:00 and main-menu start 12:00 are retained from the original site. The old claim that the main menu ran until 23:00 conflicted with the restaurant’s published 22:00 closing time; the page now states the main-menu start time only.
