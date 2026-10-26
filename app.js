@@ -27,12 +27,21 @@
   const flatten = cat => cat.subcategories ? cat.subcategories.flatMap(sub => sub.items) : (cat.items || []);
   const dishes = data.menuData.flatMap(flatten);
   const dishById = new Map(dishes.map(dish => [dish.id, dish]));
+  const menuIntroductions = {
+    ro:['Ouă, syrniki și dimineți fără grabă.','Ceva proaspăt copt, alături de cafeaua ta.','De pus în mijlocul mesei. De savurat împreună.','Combinații proaspete, cu legume, brânzeturi și verdețuri.','Un bol cald, de la prima până la ultima lingură.','Preparate calde, cu garnitura potrivită.','Pentru finalul dulce al mesei.'],
+    en:['Eggs, syrniki, and unhurried mornings.','Something freshly baked, with your favourite coffee.','For the middle of the table. For sharing.','Fresh combinations of vegetables, cheese, and greens.','A warm bowl, from the first spoonful to the last.','Hot dishes, with just the right side.','For a sweet finish to your meal.'],
+    ru:['Яйца, сырники и неспешные утра.','Свежая выпечка к любимому кофе.','В центр стола. Чтобы разделить с близкими.','Свежие сочетания овощей, сыров и зелени.','Тёплый суп — от первой ложки до последней.','Горячие блюда с подходящим гарниром.','Для сладкого завершения обеда.']
+  };
+  const categoryPhotos = {0:'assets/crosta-terrace.webp',6:'assets/crosta-cake.webp'};
   const tagName = tag => ({signature:c('signature'), vegetarian:t('tagVegetarian'), fish:t('tagFish'), spicy:t('tagSpicy'), bakery:c('bakery')})[tag] || tag;
   const tagHTML = tags => (tags || []).map(tag => `<span class="tag tag-${escape(tag)}">${tag === 'signature' ? '<span aria-hidden="true">✦</span> ' : ''}${escape(tagName(tag))}</span>`).join('');
   function categories() {
     const el = $('#category-tabs');
     if (!el) return;
-    el.innerHTML = `<button class="category-tab ${category === -1 ? 'active' : ''}" type="button" data-category="-1" aria-pressed="${category === -1}">${escape(t('allFilter'))}<span class="tab-count">${dishes.length}</span></button>` + data.menuData.map((cat, index) => `<button class="category-tab ${category === index ? 'active' : ''}" type="button" data-category="${index}" aria-pressed="${category === index}">${escape(localized(cat.category))}<span class="tab-count">${flatten(cat).length}</span></button>`).join('');
+    el.innerHTML = `<button class="category-tab ${category === -1 ? 'active' : ''}" type="button" data-category="-1" aria-pressed="${category === -1}">${escape(t('allFilter'))}<span class="tab-count">${dishes.length}</span></button>` + data.menuData.map((cat, index) => {
+      const subnav = category === index && cat.subcategories ? `<div class="category-subnav">${cat.subcategories.map((group, groupIndex) => group.items.some(matches) ? `<button type="button" data-menu-jump="menu-group-${index}-${groupIndex}">${escape(localized(group.name))}</button>` : '').join('')}</div>` : '';
+      return `<button class="category-tab ${category === index ? 'active' : ''}" type="button" data-category="${index}" aria-pressed="${category === index}"><span>${escape(localized(cat.category))}</span><span class="tab-count">${flatten(cat).length}</span></button>${subnav}`;
+    }).join('');
   }
   function filters() {
     const el = $('#diet-filters');
@@ -45,7 +54,7 @@
     return (dietary === 'all' || (dish.tags || []).includes(dietary)) && (!search || search.split(/\s+/).every(term => text.includes(term)));
   }
   function menuItem(dish) {
-    return `<button type="button" class="menu-item" data-dish="${escape(dish.id)}" aria-label="${escape(localized(dish.name))} — ${dish.price} MDL. ${escape(c('details'))}"><span class="item-heading"><h4>${escape(localized(dish.name))}</h4><span class="item-price">${dish.price}<span class="currency"> MDL</span></span></span><p class="item-description">${escape(localized(dish.description))}</p><span class="item-meta"><span class="item-tags">${tagHTML(dish.tags)}</span><span class="item-weight">${escape(dish.weight)}</span></span><span class="item-detail-arrow icon-arrow" aria-hidden="true"></span></button>`;
+    return `<button type="button" class="menu-item" data-dish="${escape(dish.id)}" aria-label="${escape(localized(dish.name))} — ${dish.price} MDL. ${escape(c('details'))}"><span class="item-heading"><h4>${escape(localized(dish.name))}</h4><span class="item-price">${dish.price}<span class="currency">MDL</span></span></span><p class="item-description">${escape(localized(dish.description))}</p><span class="item-meta"><span class="item-tags">${tagHTML(dish.tags)}</span><span class="item-weight">${escape(dish.weight)}</span><span class="item-detail-link">${escape(c('details'))}<span class="icon-arrow" aria-hidden="true"></span></span></span></button>`;
   }
   function renderMenu() {
     const target = $('#menu-results');
@@ -55,12 +64,19 @@
     data.menuData.forEach((cat, index) => {
       if (category !== -1 && category !== index) return;
       const groups = cat.subcategories || [{name:cat.category, items:cat.items}];
-      groups.forEach(group => {
+      let categoryHTML = '';
+      let categoryCount = 0;
+      groups.forEach((group, groupIndex) => {
         const items = (group.items || []).filter(matches);
         if (!items.length) return;
         count += items.length;
-        html += `<section class="menu-group"><h3 class="menu-group-title">${escape(localized(group.name))}<span>${items.length} ${escape(c('dishes'))}</span></h3><div class="menu-items">${items.map(menuItem).join('')}</div></section>`;
+        categoryCount += items.length;
+        categoryHTML += `<section class="menu-group" id="menu-group-${index}-${groupIndex}"><div class="menu-group-head"><span class="group-number" aria-hidden="true">${String(groupIndex+1).padStart(2,'0')}</span><div><span class="group-category">${escape(localized(cat.category))}</span><h3 class="menu-group-title">${escape(localized(group.name))}</h3></div><span class="group-count">${items.length} ${escape(c('dishes'))}</span></div><div class="menu-items">${items.map(menuItem).join('')}</div></section>`;
       });
+      if (categoryCount) {
+        const photo = categoryPhotos[index];
+        html += `<div class="menu-category menu-tone-${index}"><div class="menu-category-intro"><div class="menu-category-copy"><span class="eyebrow">${escape(window.CROSTA_COPY?.[lang]?.menuEyebrow || '')}</span><h3>${escape(localized(cat.category))}</h3><p>${escape(menuIntroductions[lang][index])}</p><span class="category-total">${categoryCount} ${escape(c('dishes'))} <span aria-hidden="true">·</span> ${escape(window.CROSTA_COPY?.[lang]?.priceNote || 'MDL')}</span></div>${photo ? `<img src="${photo}" alt="" loading="lazy" decoding="async" width="${index === 0 ? 360 : 480}" height="640">` : `<span class="category-numeral" aria-hidden="true">${String(index+1).padStart(2,'0')}</span>`}</div>${categoryHTML}</div>`;
+      }
     });
     target.innerHTML = html || `<div class="menu-empty"><h3>${escape(c('empty'))}</h3><p>${escape(c('emptyHint'))}</p><button type="button" class="text-link" data-reset-menu>${escape(c('clear'))}<span class="icon-arrow" aria-hidden="true"></span></button></div>`;
     if ($('#menu-count')) $('#menu-count').textContent = `${count} ${c('dishes')}`;
@@ -149,6 +165,10 @@
   function restoreButtonFocus(attribute, value) {
     $$(`[${attribute}]`).find(element => element.getAttribute(attribute) === String(value))?.focus({preventScroll:true});
   }
+  function scrollMenuStart() {
+    const results = $('#menu-results');
+    if (results?.scrollIntoView) results.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',block:'start'});
+  }
   function updateNavigationLabel() {
     const toggle = $('#mobile-toggle');
     if (toggle) toggle.setAttribute('aria-label', c(toggle.getAttribute('aria-expanded') === 'true' ? 'navClose' : 'navOpen'));
@@ -202,10 +222,12 @@
       }
       return;
     }
+    const jump = event.target.closest('[data-menu-jump]');
+    if (jump) { $(`#${jump.dataset.menuJump}`)?.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',block:'start'}); return; }
     const cat = event.target.closest('[data-category]');
-    if (cat) { category = Number(cat.dataset.category); categories(); renderMenu(); restoreButtonFocus('data-category', category); return; }
+    if (cat) { category = Number(cat.dataset.category); categories(); renderMenu(); restoreButtonFocus('data-category', category); scrollMenuStart(); return; }
     const diet = event.target.closest('[data-diet]');
-    if (diet) { dietary = diet.dataset.diet; filters(); renderMenu(); restoreButtonFocus('data-diet', dietary); return; }
+    if (diet) { dietary = diet.dataset.diet; filters(); categories(); renderMenu(); restoreButtonFocus('data-diet', dietary); return; }
     const reset = event.target.closest('[data-reset-menu]');
     if (reset) { dietary = 'all'; category = -1; search = ''; if ($('#menu-search')) $('#menu-search').value = ''; categories(); filters(); renderMenu(); return; }
     const dish = event.target.closest('[data-dish]');
