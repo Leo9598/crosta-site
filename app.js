@@ -45,7 +45,7 @@
     return (dietary === 'all' || (dish.tags || []).includes(dietary)) && (!search || search.split(/\s+/).every(term => text.includes(term)));
   }
   function menuItem(dish) {
-    return `<button type="button" class="menu-item" data-dish="${escape(dish.id)}" aria-label="${escape(localized(dish.name))} — ${dish.price} MDL. ${escape(c('details'))}"><span class="item-heading"><h4>${escape(localized(dish.name))}</h4><span class="item-price">${dish.price}<span class="currency"> MDL</span></span></span><p class="item-description">${escape(localized(dish.description))}</p><span class="item-meta"><span class="item-tags">${tagHTML(dish.tags)}</span><span class="item-weight">${escape(dish.weight)}</span></span><span class="item-detail-arrow" aria-hidden="true">↗</span></button>`;
+    return `<button type="button" class="menu-item" data-dish="${escape(dish.id)}" aria-label="${escape(localized(dish.name))} — ${dish.price} MDL. ${escape(c('details'))}"><span class="item-heading"><h4>${escape(localized(dish.name))}</h4><span class="item-price">${dish.price}<span class="currency"> MDL</span></span></span><p class="item-description">${escape(localized(dish.description))}</p><span class="item-meta"><span class="item-tags">${tagHTML(dish.tags)}</span><span class="item-weight">${escape(dish.weight)}</span></span><span class="item-detail-arrow icon-arrow" aria-hidden="true"></span></button>`;
   }
   function renderMenu() {
     const target = $('#menu-results');
@@ -62,7 +62,7 @@
         html += `<section class="menu-group"><h3 class="menu-group-title">${escape(localized(group.name))}<span>${items.length} ${escape(c('dishes'))}</span></h3><div class="menu-items">${items.map(menuItem).join('')}</div></section>`;
       });
     });
-    target.innerHTML = html || `<div class="menu-empty"><h3>${escape(c('empty'))}</h3><p>${escape(c('emptyHint'))}</p><button type="button" class="text-link" data-reset-menu>${escape(c('clear'))} ↗</button></div>`;
+    target.innerHTML = html || `<div class="menu-empty"><h3>${escape(c('empty'))}</h3><p>${escape(c('emptyHint'))}</p><button type="button" class="text-link" data-reset-menu>${escape(c('clear'))}<span class="icon-arrow" aria-hidden="true"></span></button></div>`;
     if ($('#menu-count')) $('#menu-count').textContent = `${count} ${c('dishes')}`;
   }
   function renderDish(id, show = true) {
@@ -71,7 +71,7 @@
     const content = $('#dish-content');
     if (!dish || !dialog || !content) return;
     openDish = id;
-    content.innerHTML = `<button type="button" class="dialog-close" data-close-dialog aria-label="${escape(c('close'))}">×</button><div class="dish-meta">${tagHTML(dish.tags)}</div><h2 id="dish-title">${escape(localized(dish.name))}</h2><div class="dish-price">${dish.price} <span>MDL</span><span class="dish-weight">${escape(dish.weight)}</span></div><p class="dish-description">${escape(localized(dish.description))}</p>${dish.allergens ? `<div class="dish-allergens"><h3>${escape(c('allergens'))}</h3><p>${escape(localized(dish.allergens))}</p></div>` : ''}<p class="dish-note">${escape(t('note7').replace(/^\S+\s/, ''))}</p><button type="button" class="button button-dark" data-booking data-reserve-dish>${escape(t('reserveThisDish'))} <span aria-hidden="true">↗</span></button>`;
+    content.innerHTML = `<button type="button" class="dialog-close" data-close-dialog aria-label="${escape(c('close'))}">×</button><div class="dish-meta">${tagHTML(dish.tags)}</div><h2 id="dish-title">${escape(localized(dish.name))}</h2><div class="dish-price">${dish.price} <span>MDL</span><span class="dish-weight">${escape(dish.weight)}</span></div><p class="dish-description">${escape(localized(dish.description))}</p>${dish.allergens ? `<div class="dish-allergens"><h3>${escape(c('allergens'))}</h3><p>${escape(localized(dish.allergens))}</p></div>` : ''}<p class="dish-note">${escape(t('note7'))}</p><button type="button" class="button button-dark" data-booking data-reserve-dish>${escape(t('reserveThisDish'))} <span class="icon-arrow" aria-hidden="true"></span></button>`;
     dialog.setAttribute('aria-labelledby', 'dish-title');
     if (show && !dialog.open) { dialog.showModal(); document.body.classList.add('dialog-open'); }
   }

@@ -72,3 +72,132 @@ html[lang=ru] .hero h1{font-size:5.5vw}html[lang=ru] .hero h1 em{font-size:.94em
   .language-switch {gap:5px}.header-actions {gap:16px}
   .mobile-toggle {width:44px;height:44px;align-items:center}
 }
+
+/* Shape-based accents stay monochrome in Safari, including on iOS. */
+.icon-arrow{position:relative;display:inline-block;width:16px;height:16px;flex:none;font-size:0!important;vertical-align:middle}
+.icon-arrow::before{content:"";position:absolute;top:1px;right:1px;width:8px;height:8px;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor}
+.icon-arrow::after{content:"";position:absolute;bottom:2px;left:1px;width:14px;height:1.6px;background:currentColor;transform:rotate(-45deg);transform-origin:left center}
+.item-detail-arrow.icon-arrow{position:absolute}
+.little-star,.strip-star{display:inline-block;width:19px;height:19px;flex:none;font-size:0;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 1v18M1 10h18M3.6 3.6l12.8 12.8M16.4 3.6L3.6 16.4' fill='none' stroke='%23a65b3c' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E")}
+.strip-star{width:14px;height:14px}
+.daily-strip>a .icon-arrow{width:13px;height:13px}
+
+/* Readable, compact phone layout from the first screen through the forms. */
+@media(max-width:760px){
+  html{scroll-padding-top:16px}
+  body{font-size:16px;overflow-x:hidden}
+  .header{height:76px;padding:0 5%;gap:8px}
+  .wordmark>span{font-size:39px;letter-spacing:-3px}
+  .wordmark small{font-size:8px;letter-spacing:1.4px;margin-top:6px}
+  .site-nav{top:76px;padding:17px 5% 24px}
+  .site-nav a{min-height:48px;display:flex;align-items:center;font-size:26px}
+  .header-actions{gap:7px}
+  .language-switch{gap:1px}
+  .language-switch button{font-size:13px;min-width:35px;min-height:44px;padding:0}
+  .hero-copy{padding:25px 5% 19px}
+  .eyebrow{font-size:11px;letter-spacing:1.2px;line-height:1.5}
+  .little-star{width:17px;height:17px}
+  .hero h1{font-size:clamp(40px,10.7vw,58px);line-height:1.08;margin:20px 0 16px;letter-spacing:-.055em}
+  .hero h1 em{font-size:.94em}
+  .hero-description{font-size:15px;line-height:1.6;max-width:34ch}
+  .hero-actions{gap:12px;margin-top:23px;align-items:stretch}
+  .hero-actions .hero-button{min-width:0;min-height:50px;padding:14px 17px;font-size:14px;gap:15px}
+  .hero-actions .text-link{min-height:50px;padding:12px 0;font-size:14px;gap:12px}
+  .hero-bottom{padding-top:20px;gap:12px}
+  .hero-rating{font-size:12px;gap:10px;line-height:1.4}
+  .hero-rating .rating-stars{font-size:11px;letter-spacing:1px;white-space:nowrap}
+  .scroll-link{width:42px;height:42px;flex:none}
+  .hero-visual{min-height:350px;margin:0 5% 20px}
+  .photo-label{font-size:10px;bottom:16px;left:16px;letter-spacing:1px}
+  .hours-seal{width:94px;height:94px;bottom:23px;right:17px}
+  .hours-seal strong{font-size:25px;line-height:1.6}
+  .hours-seal>span{font-size:6px;letter-spacing:.5px}
+  .daily-strip{padding:10px 5%;gap:3px;overflow:visible}
+  .daily-strip>a{font-size:13px;line-height:1.3;min-height:53px;gap:3px;padding:4px;flex:1}
+  .daily-strip>a .icon-arrow{display:none}
+  .section-pad{padding:66px 5%}
+  .section-heading{gap:15px}
+  .section-heading h2{font-size:clamp(37px,10vw,49px);line-height:1.13}
+  .section-heading>p,.about-intro{font-size:15px;line-height:1.65}
+  .menu-layout{margin-top:27px}
+  #category-tabs{margin:0 -5.55% 13px;padding:0 5.55% 14px;gap:8px}
+  .category-tab{font-size:14px;line-height:1.3;min-height:48px;padding:10px 14px}
+  .tab-count{font-size:12px}
+  .menu-toolbar{flex-wrap:wrap;gap:8px}
+  .search-field{min-width:100%;padding:5px 0}
+  .search-field input{font-size:16px;min-height:37px}
+  .menu-count{font-size:12px}
+  .diet-filters,.review-filters{gap:8px}
+  .filter-chip{font-size:13px;min-height:44px;padding:9px 13px}
+  .menu-group-title{font-size:27px;align-items:baseline}
+  .menu-group-title>span{font-size:12px;white-space:nowrap}
+  .menu-item{padding:22px 0 24px}
+  .item-heading h4{font-size:16px;line-height:1.4;max-width:72%}
+  .item-price{font-size:22px}
+  .currency{font-size:10px}
+  .item-description{font-size:14px;line-height:1.55;margin-top:10px}
+  .tag,.item-weight{font-size:12px}
+  .item-detail-arrow{right:3px;bottom:25px}
+  .menu-notes summary{font-size:14px;min-height:48px}
+  .notes-grid p{font-size:14px;line-height:1.6}
+  .social-grid{gap:14px}
+  .social-card>span{font-size:14px;line-height:1.4}
+  .social-profile{font-size:14px;min-height:44px}
+  .image-caption{font-size:11px;line-height:1.5}
+  .about-copy h2{font-size:clamp(45px,12vw,58px)}
+  .pillars h3{font-size:16px}.pillars p{font-size:14px;line-height:1.6}
+  .reservation-copy{padding:48px 6% 32px}
+  .reservation-copy h2{font-size:clamp(39px,10vw,50px)}
+  .reservation-copy>p:not(.booking-note){font-size:15px;line-height:1.6}
+  .reservation-actions{gap:18px}
+  .button.pale{min-height:50px;font-size:14px}
+  .phone-link{font-size:18px;min-height:44px;display:inline-flex;align-items:center;gap:8px}
+  .booking-note{font-size:13px;line-height:1.5}
+  .reservation-meta{font-size:12px;line-height:1.5;flex-wrap:wrap}
+  .reservation-image-caption{font-size:11px}
+  .reviews-section .section-heading{flex-wrap:wrap}
+  .reviews-section .section-heading h2{font-size:clamp(36px,9vw,45px)}
+  .reviews-section .section-heading .eyebrow{font-size:10px}
+  .review-score>div>span:last-child{font-size:11px}
+  .review-score .rating-stars{font-size:11px}
+  .reviews-intro{font-size:15px;line-height:1.6}
+  .rating-metric{font-size:13px}.rating-metric strong{font-size:15px}
+  .review-category,.review-author strong{font-size:13px}
+  .review-stars,.review-highlight,.review-helpful>span{font-size:12px}
+  .review-card blockquote{font-size:20px;line-height:1.5}
+  .review-aspects,.review-author time{font-size:12px}
+  .reviews-bottom{flex-wrap:wrap}
+  .reviews-bottom .button,.reviews-bottom .text-link{font-size:14px;min-height:48px}
+  .footer{padding:60px 5% 100px}
+  .footer-invite p{font-size:15px}
+  .footer-info{grid-template-columns:1fr;gap:27px}
+  .footer-info>div:last-child{grid-column:auto}
+  .footer-info h3{font-size:12px;letter-spacing:1.1px}
+  .footer-info p,.footer-info a{font-size:14px;line-height:1.6}
+  .footer-info .footer-phone{font-size:27px}
+  .footer-info>div:last-child>p{font-size:13px}
+  .footer-bottom,.back-top{font-size:11px;line-height:1.5}
+  .mobile-quick{height:calc(63px + env(safe-area-inset-bottom));padding:7px 5% calc(7px + env(safe-area-inset-bottom));gap:8px}
+  .mobile-quick a{font-size:14px;min-height:48px}
+  dialog{max-height:92dvh;overflow-y:auto;width:calc(100% - 24px)}
+  .form-dialog{padding:42px 21px 25px}
+  .form-dialog h2{font-size:31px}
+  .form-intro,.form-status{font-size:14px;line-height:1.6}
+  .guest-form,.aspect-fields{grid-template-columns:1fr;gap:16px}
+  .form-field>span,.form-aspects summary{font-size:14px}
+  .form-dialog .dialog-close{width:44px;height:44px}
+  .form-dialog .button-dark{min-height:50px;font-size:14px}
+  .form-alternative{font-size:13px}
+  .dish-description,.dish-note{font-size:14px}
+  .button-dark{font-size:14px;min-height:48px}
+}
+@media(max-width:360px){
+  .header{padding:0 4%}
+  .wordmark>span{font-size:36px}
+  .language-switch button{min-width:32px;font-size:12px}
+  .header-actions{gap:3px}
+  .hero h1{font-size:39px}
+  .hero-actions .hero-button,.hero-actions .text-link{font-size:13px}
+  .hero-rating{font-size:11px}
+  .daily-strip>a{font-size:12px}
+}
