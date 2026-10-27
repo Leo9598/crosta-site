@@ -10,7 +10,7 @@
   const persist = (key, value) => { try { localStorage.setItem(key, value); } catch {} };
   let lang = readStored('crosta_language', readStored('preferredLang', 'ro'));
   if (!['ro', 'en', 'ru'].includes(lang)) lang = 'ro';
-  let category = 0;
+  let category = -2;
   let dietary = 'all';
   let search = '';
   let reviewCategory = 'all';
@@ -33,12 +33,27 @@
     ru:['Яйца, сырники и неспешные утра.','Свежая выпечка к любимому кофе.','В центр стола. Чтобы разделить с близкими.','Свежие сочетания овощей, сыров и зелени.','Тёплый суп — от первой ложки до последней.','Горячие блюда с подходящим гарниром.','Для сладкого завершения обеда.']
   };
   const categoryPhotos = {0:'assets/crosta-terrace.webp',6:'assets/crosta-cake.webp'};
+  const mealCopy = {
+    ro:{morning:'Mic dejun',later:'Bucate calde & supe',recommended:'Recomandat acum',morningHeading:'O dimineață pe gustul tău.',laterHeading:'Poftă de prânz sau cină?',note:'Sugestii după ora din Chișinău. Poți alege oricând orice categorie.'},
+    en:{morning:'Breakfast',later:'Main dishes & soups',recommended:'Suggested now',morningHeading:'A good start to your day.',laterHeading:'In the mood for lunch or dinner?',note:'Suggestions based on the time in Chișinău. Every category is always available to browse.'},
+    ru:{morning:'Завтраки',later:'Горячие блюда и супы',recommended:'Рекомендуем сейчас',morningHeading:'Вкусное начало дня.',laterHeading:'Что-нибудь на обед или ужин?',note:'Рекомендации по времени в Кишинёве. Все разделы меню всегда доступны для просмотра.'}
+  };
+  function mealSuggestion(date = new Date()) {
+    const parts = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Chisinau',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date);
+    const hour = parts.find(part => part.type === 'hour').value;
+    const minute = parts.find(part => part.type === 'minute').value;
+    const morning = Number(hour) < 12;
+    return {morning,time:`${hour}:${minute}`,indices:morning ? [0] : [5,4]};
+  }
   const tagName = tag => ({signature:c('signature'), vegetarian:t('tagVegetarian'), fish:t('tagFish'), spicy:t('tagSpicy'), bakery:c('bakery')})[tag] || tag;
   const tagHTML = tags => (tags || []).map(tag => `<span class="tag tag-${escape(tag)}">${tag === 'signature' ? '<span aria-hidden="true">✦</span> ' : ''}${escape(tagName(tag))}</span>`).join('');
   function categories() {
     const el = $('#category-tabs');
     if (!el) return;
-    el.innerHTML = `<button class="category-tab ${category === -1 ? 'active' : ''}" type="button" data-category="-1" aria-pressed="${category === -1}">${escape(t('allFilter'))}<span class="tab-count">${dishes.length}</span></button>` + data.menuData.map((cat, index) => {
+    const suggestion = mealSuggestion();
+    const suggestedCount = suggestion.indices.reduce((count,index) => count + flatten(data.menuData[index]).length,0);
+    const suggestedLabel = mealCopy[lang][suggestion.morning ? 'morning' : 'later'];
+    el.innerHTML = `<button class="category-tab category-suggestion ${category === -2 ? 'active' : ''}" type="button" data-category="-2" aria-pressed="${category === -2}"><span><small>${escape(mealCopy[lang].recommended)}</small>${escape(suggestedLabel)}</span><span class="tab-count">${suggestedCount}</span></button><button class="category-tab ${category === -1 ? 'active' : ''}" type="button" data-category="-1" aria-pressed="${category === -1}">${escape(t('allFilter'))}<span class="tab-count">${dishes.length}</span></button>` + data.menuData.map((cat, index) => {
       const subnav = category === index && cat.subcategories ? `<div class="category-subnav">${cat.subcategories.map((group, groupIndex) => group.items.some(matches) ? `<button type="button" data-menu-jump="menu-group-${index}-${groupIndex}">${escape(localized(group.name))}</button>` : '').join('')}</div>` : '';
       return `<button class="category-tab ${category === index ? 'active' : ''}" type="button" data-category="${index}" aria-pressed="${category === index}"><span>${escape(localized(cat.category))}</span><span class="tab-count">${flatten(cat).length}</span></button>${subnav}`;
     }).join('');
@@ -61,8 +76,11 @@
     if (!target) return;
     let count = 0;
     let html = '';
-    data.menuData.forEach((cat, index) => {
-      if (category !== -1 && category !== index) return;
+    const suggestion = mealSuggestion();
+    if (category === -2) html = `<div class="menu-time-note"><div><span class="eyebrow">${escape(mealCopy[lang].recommended)} <span aria-hidden="true">·</span> ${suggestion.time} · Chișinău</span><h3>${escape(mealCopy[lang][suggestion.morning ? 'morningHeading' : 'laterHeading'])}</h3><p>${escape(mealCopy[lang].note)}</p></div></div>`;
+    const menuCategories = category === -2 ? suggestion.indices.map(index => ({cat:data.menuData[index],index})) : data.menuData.map((cat,index) => ({cat,index}));
+    menuCategories.forEach(({cat,index}) => {
+      if (category !== -2 && category !== -1 && category !== index) return;
       const groups = cat.subcategories || [{name:cat.category, items:cat.items}];
       let categoryHTML = '';
       let categoryCount = 0;
@@ -78,7 +96,8 @@
         html += `<div class="menu-category menu-tone-${index}"><div class="menu-category-intro"><div class="menu-category-copy"><span class="eyebrow">${escape(window.CROSTA_COPY?.[lang]?.menuEyebrow || '')}</span><h3>${escape(localized(cat.category))}</h3><p>${escape(menuIntroductions[lang][index])}</p><span class="category-total">${categoryCount} ${escape(c('dishes'))} <span aria-hidden="true">·</span> ${escape(window.CROSTA_COPY?.[lang]?.priceNote || 'MDL')}</span></div>${photo ? `<img src="${photo}" alt="" loading="lazy" decoding="async" width="${index === 0 ? 360 : 480}" height="640">` : `<span class="category-numeral" aria-hidden="true">${String(index+1).padStart(2,'0')}</span>`}</div>${categoryHTML}</div>`;
       }
     });
-    target.innerHTML = html || `<div class="menu-empty"><h3>${escape(c('empty'))}</h3><p>${escape(c('emptyHint'))}</p><button type="button" class="text-link" data-reset-menu>${escape(c('clear'))}<span class="icon-arrow" aria-hidden="true"></span></button></div>`;
+    const emptyHTML = `<div class="menu-empty"><h3>${escape(c('empty'))}</h3><p>${escape(c('emptyHint'))}</p><button type="button" class="text-link" data-reset-menu>${escape(c('clear'))}<span class="icon-arrow" aria-hidden="true"></span></button></div>`;
+    target.innerHTML = count ? html : html + emptyHTML;
     if ($('#menu-count')) $('#menu-count').textContent = `${count} ${c('dishes')}`;
   }
   function renderDish(id, show = true) {
@@ -212,6 +231,7 @@
   document.addEventListener('click', event => {
     const language = event.target.closest('[data-lang]');
     if (language) { setLanguage(language.dataset.lang); return; }
+    if (event.target.closest('a[href="#menu"]:not([data-menu-category])') && category === -2) { categories(); renderMenu(); }
     const shortcut = event.target.closest('[data-menu-category]');
     if (shortcut) {
       const next = Number(shortcut.dataset.menuCategory);
@@ -225,7 +245,7 @@
     const jump = event.target.closest('[data-menu-jump]');
     if (jump) { $(`#${jump.dataset.menuJump}`)?.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',block:'start'}); return; }
     const cat = event.target.closest('[data-category]');
-    if (cat) { category = Number(cat.dataset.category); categories(); renderMenu(); restoreButtonFocus('data-category', category); scrollMenuStart(); return; }
+    if (cat) { category = Number(cat.dataset.category); if (category === -2) { dietary = 'all'; search = ''; if ($('#menu-search')) $('#menu-search').value = ''; filters(); } categories(); renderMenu(); restoreButtonFocus('data-category', category); scrollMenuStart(); return; }
     const diet = event.target.closest('[data-diet]');
     if (diet) { dietary = diet.dataset.diet; filters(); categories(); renderMenu(); restoreButtonFocus('data-diet', dietary); return; }
     const reset = event.target.closest('[data-reset-menu]');

@@ -204,6 +204,12 @@ html[lang=ru] .hero h1{font-size:5.5vw}html[lang=ru] .hero h1 em{font-size:.94em
 }
 
 /* A menu with visible chapters and navigation that follows the scroll. */
+.category-suggestion>span:first-child{display:flex;flex-direction:column;gap:4px}
+.category-suggestion small{font-size:9px;letter-spacing:.5px;font-weight:400;opacity:.78}
+.menu-time-note{padding:0 0 23px;margin-bottom:23px;border-bottom:1px solid var(--line)}
+.menu-time-note .eyebrow{color:var(--accent);font-size:10px;letter-spacing:1px}
+.menu-time-note h3{font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.25;margin:10px 0}
+.menu-time-note p{font-size:13px;color:var(--muted);line-height:1.6}
 .menu-section{overflow:visible}
 .menu-layout{grid-template-columns:225px minmax(0,1fr);gap:36px;align-items:start}
 .menu-sidebar{position:sticky;top:24px;max-height:calc(100dvh - 48px);overflow-y:auto;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:23px 14px}
@@ -282,12 +288,15 @@ html[lang=ru] .hero h1{font-size:5.5vw}html[lang=ru] .hero h1 em{font-size:.94em
   #category-tabs{margin:0;padding:0 5% 11px;gap:8px}
   .category-subnav{display:none}
   .category-tab{font-size:14px;min-height:47px;max-width:none;border-radius:6px;line-height:1.3}
+  .category-suggestion small{font-size:10px;letter-spacing:0}
+  .menu-time-note h3{font-size:27px}
+  .menu-time-note p{font-size:14px}
   .menu-toolbar{padding:10px 13px;gap:4px}
   .search-field{padding:0}
   .search-field input{font-size:16px}
   .menu-count{font-size:12px;padding-left:25px}
   .diet-filters{margin:15px 0 22px}
-  .menu-results,.menu-group{scroll-margin-top:88px}
+  .menu-results,.menu-group{scroll-margin-top:98px}
   .menu-category+.menu-category{margin-top:38px}
   .menu-category-intro{grid-template-columns:minmax(0,1fr) 95px;min-height:190px;margin-bottom:18px;border-radius:9px}
   .menu-category-copy{padding:23px 19px}
@@ -300,7 +309,7 @@ html[lang=ru] .hero h1{font-size:5.5vw}html[lang=ru] .hero h1 em{font-size:.94em
   .category-numeral{font-size:67px;padding-right:12px;letter-spacing:-4px}
   .menu-group{border-radius:9px}
   .menu-group+.menu-group{margin-top:23px}
-  .menu-group-head{top:68px;gap:12px;padding:16px;border-radius:8px 8px 0 0;align-items:flex-start}
+  .menu-group-head{top:78px;gap:12px;padding:16px;border-radius:8px 8px 0 0;align-items:flex-start}
   .group-number{font-size:26px;padding-top:2px}
   .group-category{font-size:10px;line-height:1.4;letter-spacing:.6px}
   .menu-group-title{font-size:24px;line-height:1.2}
