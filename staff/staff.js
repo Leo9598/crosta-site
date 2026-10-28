@@ -47,7 +47,7 @@
         result={requests:filtered.slice(offset,offset+50),total:filtered.length,counts:{new:rows.filter(row=>row.status==='new').length,active:rows.filter(row=>!terminal.includes(row.status)).length,completed_today:rows.filter(row=>['completed','reviewed','archived'].includes(row.status)).length}};
       }else result=await api(`requests?kind=${kind}&status=${encodeURIComponent($('statusFilter').value)}&search=${encodeURIComponent($('search').value.trim())}&offset=${offset}`);
       if(current!==revision)return;
-      requests=result.requests;total=result.total;$('listSummary').textContent=kind==='booking'?`${result.counts.new} noi · ${result.counts.active} rezervări în curs`:`${result.counts.new} recenzii noi`;renderList();
+      requests=result.requests;total=result.total;$('listSummary').textContent=kind==='booking'?`Rezervări noi: ${result.counts.new} · În curs: ${result.counts.active}`:`Recenzii noi: ${result.counts.new}`;renderList();
       const updated=requests.find(row=>row.id===selected?.id);
       if(updated&&!document.activeElement?.closest('#cancelForm')){selected=updated;renderDetail();}else if(selected&&!updated){selected=null;renderEmpty();}
       $('syncState').textContent=demo?'Date fictive':`Actualizat ${new Intl.DateTimeFormat('ro-MD',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Chisinau'}).format(new Date())}`;showError('');
