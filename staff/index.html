@@ -7,8 +7,8 @@
   <meta name="theme-color" content="#f5f0e8">
   <title>Crosta — Panou personal</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/staff/staff.css?v=20261028">
-  <script defer src="/staff/staff.js?v=20261028"></script>
+  <link rel="stylesheet" href="/staff/staff.css?v=20261028-2">
+  <script defer src="/staff/staff.js?v=20261028-2"></script>
 </head>
 <body>
   <header class="topbar">
@@ -29,7 +29,7 @@
         <span class="eyebrow">ACCES PERSONAL</span><h2>Intră în panou</h2>
         <p>Un spațiu privat pentru membrii aprobați ai echipei.</p>
         <div id="setup" class="notice" hidden>Panoul este pregătit. Conturile de proprietar și personal urmează să fie activate. Datele reale nu sunt accesibile în demonstrație.</div>
-        <form id="loginForm">
+        <form id="loginForm" hidden>
           <label for="email">Email de serviciu</label><input id="email" type="email" autocomplete="username" maxlength="254" required>
           <label for="password">Parolă</label><input id="password" type="password" autocomplete="current-password" minlength="12" maxlength="200" required>
           <button id="signIn" class="primary" type="submit">Intră în panou <span aria-hidden="true">→</span></button>

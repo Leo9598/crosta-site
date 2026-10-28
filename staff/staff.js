@@ -11,7 +11,7 @@
   const badge=status=>`<span class="badge ${esc(status)}">${esc(labels[status]||status)}</span>`;
   let demo=false,kind='booking',requests=[],demoRequests=[],selected=null,offset=0,total=0,busy=false,loading=false,pendingLoad=false,revision=0,searchTimer;
   function showError(message){$('error').hidden=!message;$('error').textContent=message;}
-  function showLogin(){revision++;demo=false;requests=[];demoRequests=[];selected=null;$('dashboard').hidden=true;$('login').hidden=false;$('logout').hidden=true;$('requestList').replaceChildren();$('detail').replaceChildren();$('password').value='';showError('');}
+  function showLogin(){revision++;demo=false;requests=[];demoRequests=[];selected=null;$('dashboard').hidden=true;$('login').hidden=false;$('logout').hidden=true;$('requestList').replaceChildren();$('detail').replaceChildren();$('password').value='';showError('');window.scrollTo({top:0,behavior:'auto'});}
   async function api(path,options={}){
     const response=await fetch(`/api/staff/${path}`,{credentials:'same-origin',cache:'no-store',...options,headers:{'Content-Type':'application/json',...options.headers}});
     const data=await response.json().catch(()=>({code:'SERVICE_UNAVAILABLE'}));
@@ -24,7 +24,7 @@
     document.querySelectorAll('[data-kind]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.kind===kind)));
     $('doneLabel').textContent=kind==='booking'?'Încheiate astăzi':'Procesate astăzi';
   }
-  function enter(user){revision++;$('login').hidden=true;$('dashboard').hidden=false;$('logout').hidden=demo;$('demoBanner').hidden=!demo;$('staffName').textContent=demo?'O privire asupra zilei tale. Date demonstrative.':`Bun venit, ${user.display_name}.`;kind='booking';offset=0;selected=null;$('search').value='';filterOptions();renderEmpty();load();}
+  function enter(user){revision++;$('login').hidden=true;$('dashboard').hidden=false;$('logout').hidden=demo;$('demoBanner').hidden=!demo;$('staffName').textContent=demo?'O privire asupra zilei tale. Date demonstrative.':`Bun venit, ${user.display_name}.`;kind='booking';offset=0;selected=null;$('search').value='';filterOptions();renderEmpty();load();window.scrollTo({top:0,behavior:'auto'});}
   function makeDemo(){
     const now=new Date(),today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Chisinau',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
     const samples=[
@@ -92,5 +92,5 @@
   setInterval(()=>{if(!document.hidden&&!demo&&!document.activeElement?.closest('#cancelForm'))load();},15000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!demo)load();});
   $('signIn').disabled=true;
-  api('session').then(result=>{$('setup').hidden=result.ready;$('signIn').disabled=!result.ready;$('email').disabled=!result.ready;$('password').disabled=!result.ready;if(result.staff&&!demo)enter(result.staff);}).catch(()=>{$('loginMessage').textContent='Conectare indisponibilă momentan. Reîncarcă pagina.';});
+  api('session').then(result=>{$('setup').hidden=result.ready;$('loginForm').hidden=!result.ready;$('signIn').disabled=!result.ready;$('email').disabled=!result.ready;$('password').disabled=!result.ready;if(result.staff&&!demo)enter(result.staff);}).catch(()=>{$('loginMessage').textContent='Conectare indisponibilă momentan. Reîncarcă pagina.';});
 })();
