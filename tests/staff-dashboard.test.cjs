@@ -42,6 +42,7 @@ test('staff login uses secure cookies, protected storage and approved accounts',
   const cookie=result.headers.get('set-cookie').split(';')[0];assert.equal((await request('/api/staff/session',{cookie})).data.staff.role,'owner');
   const raw=cookie.split('=')[1],stored=store.db.prepare('SELECT * FROM staff_sessions').get();assert.notEqual(stored.token_hash,raw);
   store.disableUser(email);assert.equal((await request('/api/staff/requests',{cookie})).status,401);
+  assert.equal(store.ready(),true,'revoking a login must not stop durable request capture after activation');
 }));
 test('reservations persist before mail; retry UUIDs are idempotent and conflicts are rejected',()=>fixture(async({store,request,signIn,emailFailure,emails})=>{
   await store.createUser(email,'Test Owner','owner',password);emailFailure();

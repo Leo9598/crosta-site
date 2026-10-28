@@ -34,6 +34,8 @@ function createStore(options={}){
   fs.chmodSync(filename,0o600);
   db.exec(`PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
     CREATE TABLE IF NOT EXISTS staff_users(id TEXT PRIMARY KEY,email TEXT UNIQUE NOT NULL,display_name TEXT NOT NULL,role TEXT NOT NULL CHECK(role IN ('owner','staff')),password_hash TEXT NOT NULL,active INTEGER NOT NULL DEFAULT 1);
+    CREATE TABLE IF NOT EXISTS staff_settings(key TEXT PRIMARY KEY,value TEXT NOT NULL);
+    INSERT OR IGNORE INTO staff_settings(key,value) SELECT 'activated','1' FROM staff_users WHERE role='owner' LIMIT 1;
     CREATE TABLE IF NOT EXISTS staff_sessions(token_hash TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES staff_users(id),expires_at INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS requests(id TEXT PRIMARY KEY,number INTEGER UNIQUE NOT NULL,kind TEXT NOT NULL CHECK(kind IN ('booking','review')),request_key TEXT UNIQUE NOT NULL,request_digest TEXT NOT NULL,payload TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'new',version INTEGER NOT NULL DEFAULT 0,notification_status TEXT NOT NULL DEFAULT 'pending',created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS request_events(id INTEGER PRIMARY KEY,request_id TEXT NOT NULL REFERENCES requests(id),actor_id TEXT REFERENCES staff_users(id),from_status TEXT,to_status TEXT NOT NULL,note TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL);
@@ -42,7 +44,7 @@ function createStore(options={}){
   const now=options.now||(()=>new Date());
   const safeUser=user=>user?{id:user.id,email:user.email,display_name:user.display_name,role:user.role}:null;
   const unpack=row=>row?{id:row.id,number:row.number,kind:row.kind,payload:JSON.parse(row.payload),status:row.status,version:row.version,notification_status:row.notification_status,created_at:row.created_at,updated_at:row.updated_at}:null;
-  function ready(){return Boolean(db.prepare("SELECT 1 FROM staff_users WHERE active=1 AND role='owner' LIMIT 1").get());}
+  function ready(){return db.prepare("SELECT value FROM staff_settings WHERE key='activated'").get()?.value==='1';}
   function save(kind,payload,key){
     const requestKey=key||randomUUID(),fingerprint=digest(JSON.stringify({kind,payload})),at=now().toISOString();
     db.exec('BEGIN IMMEDIATE');
@@ -83,6 +85,7 @@ function createStore(options={}){
       const hash=await passwordHash(password),id=randomUUID();
       db.prepare('INSERT INTO staff_users(id,email,display_name,role,password_hash) VALUES(?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET display_name=excluded.display_name,role=excluded.role,password_hash=excluded.password_hash,active=1').run(id,email.toLowerCase(),name,role,hash);
       const user=db.prepare('SELECT * FROM staff_users WHERE email=?').get(email.toLowerCase());
+      if(role==='owner')db.prepare("INSERT INTO staff_settings(key,value) VALUES('activated','1') ON CONFLICT(key) DO UPDATE SET value='1'").run();
       db.prepare('DELETE FROM staff_sessions WHERE user_id=?').run(user.id);return safeUser(user);
     },
     async login(email,password){
