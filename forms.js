@@ -15,6 +15,9 @@
     }
   };
   window.CROSTA_FORM_COPY = formCopy;
+  Object.assign(formCopy.ro,{phone:'Telefon de contact (opțional)',invalidPhone:'Verifică numărul de telefon.'});
+  Object.assign(formCopy.en,{phone:'Contact phone (optional)',invalidPhone:'Check the phone number.'});
+  Object.assign(formCopy.ru,{phone:'Контактный телефон (необязательно)',invalidPhone:'Проверьте номер телефона.'});
   const language = () => window.CrostaUI?.language || (['ro','en','ru'].includes(document.documentElement.lang) ? document.documentElement.lang : 'ro');
   const text = key => formCopy[language()][key] || key;
   const field = (form, name) => form.elements.namedItem(name);
@@ -22,12 +25,14 @@
   const openers = new WeakMap();
   const busy = new Set();
   const statuses = new Map();
+  const submissionIDs = new Map();
   function syncScrollLock() { document.body.classList.toggle('dialog-open', Boolean($('dialog[open]'))); }
-  function showStatus(kind, key, state) {
-    statuses.set(kind, {key,state});
+  function showStatus(kind, key, state, reference='') {
+    reference=/^CR-\d+$/.test(reference)?reference:'';
+    statuses.set(kind, {key,state,reference});
     const status = $(`#${kind}-status`);
     if (!status) return;
-    status.textContent = text(key);
+    status.textContent = text(key)+(reference ? ` · ${reference}` : '');
     status.dataset.state = state;
     status.classList.toggle('is-error', state === 'error');
     status.classList.toggle('is-success', state === 'success');
@@ -42,7 +47,7 @@
       const submit = $(`#${kind}-form [type="submit"]`);
       if (submit) { const label = submit.querySelector('[data-form-copy], [data-i18n]'); (label || submit).textContent = text(`${kind}${busy.has(kind) ? 'Sending' : 'Submit'}`); }
       const status = statuses.get(kind);
-      if (status) showStatus(kind, status.key, status.state);
+      if (status) showStatus(kind, status.key, status.state, status.reference);
     });
   }
   function clearStatus(kind) { statuses.delete(kind); const status = $(`#${kind}-status`); if (status) { status.textContent=''; delete status.dataset.state; status.classList.remove('is-error','is-success'); } }
@@ -84,6 +89,10 @@
   });
   async function send(kind, endpoint, payload, onSuccess) {
     if (busy.has(kind)) return;
+    const fingerprint=JSON.stringify(payload);
+    const previous=submissionIDs.get(kind);
+    const requestId=previous?.fingerprint===fingerprint?previous.requestId:window.crypto?.randomUUID?.();
+    if(requestId){submissionIDs.set(kind,{fingerprint,requestId});payload={...payload,requestId};}
     busy.add(kind);
     const form = $(`#${kind}-form`);
     const submit = form.querySelector('[type="submit"]');
@@ -99,7 +108,8 @@
       if (!response.ok || !result || typeof result !== 'object' || result.success === false || result.error) throw new Error('Submission failed');
       if (onSuccess) onSuccess();
       form.reset();
-      showStatus(kind, `${kind}Success`, 'success');
+      submissionIDs.delete(kind);
+      showStatus(kind, `${kind}Success`, 'success', result.reference);
     } catch {
       showStatus(kind, `${kind}Error`, 'error');
     } finally {
@@ -118,6 +128,9 @@
       event.preventDefault();
       if (busy.has('booking') || !booking.reportValidity()) return;
       const payload={name:String(field(booking,'name')?.value || '').trim().slice(0,120), date:String(field(booking,'date')?.value || ''), time:String(field(booking,'time')?.value || ''), guests:Number(field(booking,'guests')?.value)};
+      const phone=String(field(booking,'phone')?.value||'').replace(/[\s()-]/g,'');
+      if(phone&&!/^\+?\d{8,15}$/.test(phone)){showStatus('booking','invalidPhone','error');return;}
+      if(phone)payload.phone=phone;
       const dateValid=/^\d{4}-\d{2}-\d{2}$/.test(payload.date) && Number.isFinite(new Date(payload.date+'T12:00:00').getTime()) && payload.date>=localDate();
       const timeValid=Array.from({length:15},(_,index)=>`${String(index+8).padStart(2,'0')}:00`).includes(payload.time);
       if (!payload.name || !dateValid || !timeValid || !Number.isInteger(payload.guests) || payload.guests<1 || payload.guests>20) { showStatus('booking','invalidBooking','error'); return; }

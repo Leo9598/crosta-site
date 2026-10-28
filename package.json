@@ -1,11 +1,12 @@
 {
   "name": "crosta-site",
   "version": "1.0.0",
-  "description": "Crosta Site with Vercel API",
-  "main": "index.html",
+  "description": "Crosta Kitchen & Bakery website and staff dashboard",
+  "main": "server.js",
+  "engines": {"node": ">=22.13"},
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test tests/*.test.cjs"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

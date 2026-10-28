@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#f5f0e8">
+  <title>Crosta — Panou personal</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/staff/staff.css?v=20261028">
+  <script defer src="/staff/staff.js?v=20261028"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Crosta — site principal">crosta<span>.</span><small>KITCHEN & BAKERY</small></a>
+    <span class="workspace">SPAȚIU PENTRU ECHIPĂ</span>
+    <a class="site-link" href="/" target="_blank" rel="noopener">Vezi site-ul <span aria-hidden="true">↗︎</span></a>
+    <button id="logout" class="quiet" hidden>Ieșire</button>
+  </header>
+  <main>
+    <section id="login" class="login">
+      <div class="intro">
+        <span class="eyebrow">BINE AI VENIT LA CROSTA</span>
+        <h1>Grijă pentru oaspeți.<br><em>Loc pentru echipă.</em></h1>
+        <p>Rezervările și părerile oaspeților, într-un singur loc. O zi mai simplă, de la prima cafea până la ultima masă.</p>
+        <div class="intro-footer">CHIȘINĂU <span>MIRON COSTIN 13/7</span></div>
+      </div>
+      <div class="login-panel">
+        <span class="eyebrow">ACCES PERSONAL</span><h2>Intră în panou</h2>
+        <p>Un spațiu privat pentru membrii aprobați ai echipei.</p>
+        <div id="setup" class="notice" hidden>Panoul este pregătit. Conturile de proprietar și personal urmează să fie activate. Datele reale nu sunt accesibile în demonstrație.</div>
+        <form id="loginForm">
+          <label for="email">Email de serviciu</label><input id="email" type="email" autocomplete="username" maxlength="254" required>
+          <label for="password">Parolă</label><input id="password" type="password" autocomplete="current-password" minlength="12" maxlength="200" required>
+          <button id="signIn" class="primary" type="submit">Intră în panou <span aria-hidden="true">→</span></button>
+        </form>
+        <p id="loginMessage" role="status" aria-live="polite"></p>
+        <button id="demo" class="demo-button">Explorează o demonstrație <span aria-hidden="true">↗︎</span></button>
+        <small>Date fictive, pentru a descoperi panoul.</small>
+      </div>
+    </section>
+    <section id="dashboard" hidden>
+      <div id="demoBanner" class="demo-banner" hidden><span>DEMONSTRAȚIE · Date fictive. Modificările rămân doar în această pagină.</span><button id="exitDemo">Închide demonstrația</button></div>
+      <div class="page-heading"><div><span class="eyebrow">ÎN RITMUL ZILEI</span><h1>Oaspeții noștri.</h1><p id="staffName"></p></div><div class="sync"><span id="syncState" role="status">Se încarcă…</span><button id="refresh" class="quiet">Actualizează</button></div></div>
+      <div class="workspace-tabs" role="group" aria-label="Tip de solicitare"><button type="button" data-kind="booking" aria-pressed="true">Rezervări</button><button type="button" data-kind="review" aria-pressed="false">Recenzii</button></div>
+      <div class="stats"><div><span>Noi</span><strong id="newCount">0</strong></div><div><span>În lucru</span><strong id="activeCount">0</strong></div><div><span id="doneLabel">Încheiate astăzi</span><strong id="doneCount">0</strong></div></div>
+      <div class="toolbar"><div class="filter"><label for="statusFilter">Afișează</label><select id="statusFilter"></select></div><label class="search"><span class="sr-only">Caută număr, nume sau contact</span><input id="search" type="search" placeholder="Caută număr, nume sau contact…" maxlength="100"></label></div>
+      <p id="error" class="error" role="alert" hidden></p>
+      <div class="request-layout"><section class="queue" aria-label="Lista solicitărilor"><div id="requestList"></div><div class="pagination"><button id="previous" class="quiet">← Înapoi</button><span id="pageInfo"></span><button id="next" class="quiet">Înainte →</button></div></section><section id="detail" class="detail" aria-label="Detalii solicitare"></section></div>
+    </section>
+  </main>
+  <footer><span>CROSTA KITCHEN & BAKERY</span><span>CU GRIJĂ, PENTRU FIECARE OASPETE.</span></footer>
+</body>
+</html>
