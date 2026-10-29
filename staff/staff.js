@@ -21,8 +21,8 @@
     return data;
   }
   function filterOptions(){
-    const values=['active','new','all'];
-    $('statusFilter').innerHTML=values.map(value=>`<option value="${value}">${value==='active'?(kind==='booking'?t("Rezervări în curs"):t("Recenzii de gestionat")):value==='all'?t("Toate, inclusiv încheiate"):t("Doar cele noi")}</option>`).join('');
+    const values=kind==='booking'?['today','active','new','all']:['active','new','all'];
+    $('statusFilter').innerHTML=values.map(value=>`<option value="${value}">${value==='today'?t('Astăzi'):value==='active'?(kind==='booking'?t("Rezervări în curs"):t("Recenzii de gestionat")):value==='all'?t("Toate, inclusiv încheiate"):t("Doar cele noi")}</option>`).join('');
     document.querySelectorAll('[data-kind]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.kind===kind)));
   }
   function enter(user){currentUser=user;revision++;$('login').hidden=true;$('dashboard').hidden=false;$('logout').hidden=demo;$('demoBanner').hidden=!demo;$('staffName').textContent=demo?t("Încearcă panoul cu date fictive."):`${t("Bun venit,")} ${user.display_name}.`;kind='booking';offset=0;selected=null;$('search').value='';filterOptions();renderEmpty();load();window.scrollTo({top:0,behavior:'auto'});}
@@ -45,11 +45,13 @@
       let result;
       if(demo){
         const status=$('statusFilter').value,search=$('search').value.trim().toLowerCase(),rows=demoRequests.filter(row=>row.kind===kind);
-        const filtered=rows.filter(row=>(status==='all'||(status==='active'&&!terminal.includes(row.status))||row.status===status)&&`${row.payload.name} CR-${row.number}`.toLowerCase().includes(search));
-        result={requests:filtered.slice(offset,offset+50),total:filtered.length,counts:{new:rows.filter(row=>row.status==='new').length,active:rows.filter(row=>!terminal.includes(row.status)).length,completed_today:rows.filter(row=>['completed','reviewed','archived'].includes(row.status)).length}};
+        const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Chisinau',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+        const filtered=rows.filter(row=>((status==='today'&&row.payload.date===today)||status==='all'||(status==='active'&&!terminal.includes(row.status))||row.status===status)&&`${row.payload.name} CR-${row.number}`.toLowerCase().includes(search));
+        if(status==='today')filtered.sort((a,b)=>a.payload.time.localeCompare(b.payload.time)||a.number-b.number);
+        result={today,guests:filtered.filter(row=>row.kind==='booking'&&row.status!=='cancelled').reduce((sum,row)=>sum+row.payload.guests,0),requests:filtered.slice(offset,offset+50),total:filtered.length,counts:{new:rows.filter(row=>row.status==='new').length,active:rows.filter(row=>!terminal.includes(row.status)).length,completed_today:rows.filter(row=>['completed','reviewed','archived'].includes(row.status)).length}};
       }else result=await api(`requests?kind=${kind}&status=${encodeURIComponent($('statusFilter').value)}&search=${encodeURIComponent($('search').value.trim())}&offset=${offset}`);
       if(current!==revision)return;
-      requests=result.requests;total=result.total;$('listSummary').textContent=kind==='booking'?`${t("Rezervări noi:")} ${result.counts.new} · ${t("În curs:")} ${result.counts.active}`:`${t("Recenzii noi:")} ${result.counts.new}`;renderList();
+      requests=result.requests;total=result.total;$('listSummary').textContent=$('statusFilter').value==='today'?`${t('Astăzi')} · ${day(result.today)} · ${t('Oaspeți')}: ${result.guests} (${t('fără anulări')})`:kind==='booking'?`${t("Rezervări noi:")} ${result.counts.new} · ${t("În curs:")} ${result.counts.active}`:`${t("Recenzii noi:")} ${result.counts.new}`;renderList();
       const updated=requests.find(row=>row.id===selected?.id);
       if(updated&&!document.activeElement?.closest('#cancelForm')){selected=updated;renderDetail();}else if(selected&&!updated){selected=null;renderEmpty();}
       $('syncState').textContent=demo?t("Date fictive"):`${t("Actualizat")} ${new Intl.DateTimeFormat(locale(),{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Chisinau'}).format(new Date())}`;showError('');
@@ -57,7 +59,7 @@
     finally{loading=false;$('refresh').disabled=false;if(pendingLoad){pendingLoad=false;load();}}
   }
   function renderList(){
-    $('requestList').innerHTML=requests.length?requests.map(row=>`<button type="button" class="request-row ${selected?.id===row.id?'selected':''}" data-request="${esc(row.id)}" aria-pressed="${selected?.id===row.id}"><span class="row-top"><span class="customer">${esc(row.payload.name)}</span>${badge(row.status)}</span><span class="row-bottom">${row.kind==='booking'?`<span>${esc(day(row.payload.date))} · ${esc(row.payload.time)}</span><strong>${row.payload.guests} ${t("persoane")}</strong>`:`<span>${esc(categories()[row.payload.category])}</span><strong>${row.payload.rating} / 5</strong>`}</span></button>`).join(''):`<div class="empty"><h2>${t("Totul este la zi.")}</h2><p>${t("Nicio solicitare pentru această selecție.")}</p></div>`;
+    $('requestList').innerHTML=requests.length?requests.map(row=>`<button type="button" class="request-row ${selected?.id===row.id?'selected':''}" data-request="${esc(row.id)}" aria-pressed="${selected?.id===row.id}"><span class="row-top">${$('statusFilter').value==='today'?`<strong class="arrival-time">${esc(row.payload.time)}</strong>`:''}<span class="customer">${esc(row.payload.name)}</span>${badge(row.status)}</span><span class="row-bottom">${row.kind==='booking'?`<span>${esc(day(row.payload.date))} · ${esc(row.payload.time)}</span><strong>${row.payload.guests} ${t("persoane")}</strong>`:`<span>${esc(categories()[row.payload.category])}</span><strong>${row.payload.rating} / 5</strong>`}</span></button>`).join(''):`<div class="empty"><h2>${t($('statusFilter').value==='today'?"Nicio rezervare pentru astăzi.":"Totul este la zi.")}</h2><p>${t("Nicio solicitare pentru această selecție.")}</p></div>`;
     document.querySelector('.pagination').hidden=total<=50;
     $('pageInfo').textContent=total?`${offset+1}–${Math.min(offset+50,total)} ${t("din")} ${total}`:t("0 solicitări");$('previous').disabled=offset===0;$('next').disabled=offset+50>=total;
   }

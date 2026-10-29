@@ -75,9 +75,10 @@ function createStore(options={}){
   function snapshot({kind='booking',status='active',search='',offset=0}){
     const rows=db.prepare('SELECT * FROM requests WHERE kind=? ORDER BY created_at DESC,number DESC').all(kind);
     const terminal=['completed','cancelled','archived'];
-    const filtered=rows.filter(row=>(status==='all'||(status==='active'&&!terminal.includes(row.status))||status===row.status)&&(!search||normalize(`${JSON.parse(row.payload).name} ${JSON.parse(row.payload).phone||''} ${JSON.parse(row.payload).email||''} CR-${row.number}`).includes(normalize(search))));
     const today=localDay(now());
-    return {requests:filtered.slice(offset,offset+50).map(unpack),total:filtered.length,counts:{new:rows.filter(row=>row.status==='new').length,active:rows.filter(row=>!terminal.includes(row.status)).length,completed_today:rows.filter(row=>['completed','reviewed','archived'].includes(row.status)&&localDay(new Date(row.updated_at))===today).length}};
+    const filtered=rows.filter(row=>((status==='today'&&kind==='booking'&&JSON.parse(row.payload).date===today)||status==='all'||(status==='active'&&!terminal.includes(row.status))||status===row.status)&&(!search||normalize(`${JSON.parse(row.payload).name} ${JSON.parse(row.payload).phone||''} ${JSON.parse(row.payload).email||''} CR-${row.number}`).includes(normalize(search))));
+    if(status==='today')filtered.sort((a,b)=>JSON.parse(a.payload).time.localeCompare(JSON.parse(b.payload).time)||a.number-b.number);
+    return {today,guests:filtered.filter(row=>row.kind==='booking'&&row.status!=='cancelled').reduce((sum,row)=>sum+JSON.parse(row.payload).guests,0),requests:filtered.slice(offset,offset+50).map(unpack),total:filtered.length,counts:{new:rows.filter(row=>row.status==='new').length,active:rows.filter(row=>!terminal.includes(row.status)).length,completed_today:rows.filter(row=>['completed','reviewed','archived'].includes(row.status)&&localDay(new Date(row.updated_at))===today).length}};
   }
   const normalize=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
   return {db,directory,ready,save,change,snapshot,

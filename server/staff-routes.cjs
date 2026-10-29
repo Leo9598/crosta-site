@@ -1,6 +1,6 @@
 'use strict';
 const {StaffError}=require('./staff-store.cjs');
-const statuses=['all','active','new','confirmed','seated','completed','cancelled','reviewed','archived'];
+const statuses=['today','all','active','new','confirmed','seated','completed','cancelled','reviewed','archived'];
 const uuid=/^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$/i;
 const cookie='crosta_staff';
 function secureResponse(req,res,next){res.set({'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Robots-Tag':'noindex, nofollow'});next();}
@@ -34,7 +34,7 @@ function installStaffRoutes(app,store,{origin=process.env.STAFF_APP_ORIGIN||'htt
       const staff=store.session(token(req));if(!staff)throw new StaffError(401,'SIGN_IN_REQUIRED');
       if(req.method==='GET'){
         const {kind='booking',status='active',search='',offset='0'}=req.query;
-        if(!['booking','review'].includes(kind)||!statuses.includes(status)||typeof search!=='string'||search.length>100||!/^\d{1,5}$/.test(String(offset))||Number(offset)>10000)throw new StaffError(400,'INVALID_FILTER');
+        if((status==='today'&&kind!=='booking')||!['booking','review'].includes(kind)||!statuses.includes(status)||typeof search!=='string'||search.length>100||!/^\d{1,5}$/.test(String(offset))||Number(offset)>10000)throw new StaffError(400,'INVALID_FILTER');
         return res.json(store.snapshot({kind,status,search,offset:Number(offset)}));
       }
       const {id,version,status,note=''}=req.body||{};

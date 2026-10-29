@@ -98,3 +98,19 @@ test('SQLite requests and staff sessions survive process restarts',async()=>{
     assert.equal(store.snapshot({kind:'booking'}).requests[0].id,saved.id);assert.equal(store.session(session.token).email,email);assert.equal(store.history(saved.id).length,1);
   }finally{store.close();rmSync(directory,{recursive:true,force:true});}
 });
+test('today uses Chisinau date, sorts before pagination, and excludes cancelled guests',()=>{
+  const directory=mkdtempSync(path.join(tmpdir(),'crosta-today-'));
+  const store=createStore({directory,now:()=>new Date('2026-10-28T23:30:00Z')});
+  try{
+    for(let i=0;i<52;i++)store.save('booking',{name:`Guest ${i}`,date:'2026-10-29',time:i===51?'08:00':'18:00',guests:2});
+    store.save('booking',{name:'Yesterday',date:'2026-10-28',time:'09:00',guests:9});
+    store.save('booking',{name:'Tomorrow',date:'2026-10-30',time:'09:00',guests:9});
+    const cancelled=store.save('booking',{name:'Cancelled',date:'2026-10-29',time:'10:00',guests:8}).request;
+    store.db.prepare("UPDATE requests SET status='cancelled' WHERE id=?").run(cancelled.id);
+    const result=store.snapshot({status:'today'});
+    assert.equal(result.today,'2026-10-29');assert.equal(result.total,53);assert.equal(result.guests,104);
+    assert.equal(result.requests[0].payload.time,'08:00');assert.equal(result.requests[1].status,'cancelled');
+    assert.equal(result.requests.length,50);assert.equal(store.snapshot({status:'today',offset:50}).requests.length,3);
+    assert.equal(store.snapshot({status:'today',search:'Tomorrow'}).total,0);
+  }finally{store.close();rmSync(directory,{recursive:true,force:true});}
+});
