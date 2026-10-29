@@ -7,49 +7,51 @@
   <meta name="theme-color" content="#f5f0e8">
   <title>Crosta — Panou personal</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/staff/staff.css?v=20261028-4">
-  <script defer src="/staff/staff.js?v=20261028-4"></script>
+  <link rel="stylesheet" href="/staff/staff.css?v=20261029-language">
+  <script defer src="/staff/i18n.js?v=20261029-language"></script>
+  <script defer src="/staff/staff.js?v=20261029-language"></script>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="/" aria-label="Crosta — site principal">crosta<span>.</span><small>KITCHEN & BAKERY</small></a>
-    <span class="workspace">PANOU CROSTA</span>
-    <a class="site-link" href="/" target="_blank" rel="noopener">Vezi site-ul <span aria-hidden="true">↗︎</span></a>
-    <button id="logout" class="quiet" hidden>Ieșire</button>
+    <a class="brand" href="/" aria-label="Crosta — site principal" data-i18n-aria-label="Crosta — site principal">crosta<span>.</span><small>KITCHEN & BAKERY</small></a>
+    <span class="workspace"><span data-i18n="PANOU CROSTA">PANOU CROSTA</span></span>
+    <a class="site-link" href="/" target="_blank" rel="noopener"><span data-i18n="Vezi site-ul">Vezi site-ul</span><span aria-hidden="true">↗︎</span></a>
+    <div class="language-switch" role="group" aria-label="Limba / Язык"><button type="button" data-lang="ro" aria-pressed="true">RO</button><button type="button" data-lang="ru" aria-pressed="false">RU</button></div>
+    <button id="logout" class="quiet" hidden><span data-i18n="Ieșire">Ieșire</span></button>
   </header>
   <main>
     <section id="login" class="login">
       <div class="intro">
-        <span class="eyebrow">BINE AI VENIT LA CROSTA</span>
-        <h1>Bine ai venit<br><em>în echipă.</em></h1>
-        <p>Vezi rezervările, confirmă mesele și citește părerile oaspeților.</p>
-        <div class="intro-footer">CHIȘINĂU <span>MIRON COSTIN 13/7</span></div>
+        <span class="eyebrow"><span data-i18n="BINE AI VENIT LA CROSTA">BINE AI VENIT LA CROSTA</span></span>
+        <h1><span data-i18n="Bine ai venit">Bine ai venit</span><br><em><span data-i18n="în echipă.">în echipă.</span></em></h1>
+        <p><span data-i18n="Vezi rezervările, confirmă mesele și citește părerile oaspeților.">Vezi rezervările, confirmă mesele și citește părerile oaspeților.</span></p>
+        <div class="intro-footer"><span data-i18n="CHIȘINĂU">CHIȘINĂU</span><span><span data-i18n="MIRON COSTIN 13/7">MIRON COSTIN 13/7</span></span></div>
       </div>
       <div class="login-panel">
-        <span class="eyebrow">ACCES PERSONAL</span><h2>Intră în panou</h2>
-        <p>Un spațiu privat pentru membrii aprobați ai echipei.</p>
-        <div id="setup" class="notice" hidden>Panoul este pregătit. Conturile de proprietar și personal urmează să fie activate. Datele reale nu sunt accesibile în demonstrație.</div>
+        <span class="eyebrow"><span data-i18n="ACCES PERSONAL">ACCES PERSONAL</span></span><h2><span data-i18n="Intră în panou">Intră în panou</span></h2>
+        <p><span data-i18n="Un spațiu privat pentru membrii aprobați ai echipei.">Un spațiu privat pentru membrii aprobați ai echipei.</span></p>
+        <div id="setup" class="notice" hidden><span data-i18n="Panoul este pregătit. Conturile de proprietar și personal urmează să fie activate. Datele reale nu sunt accesibile în demonstrație.">Panoul este pregătit. Conturile de proprietar și personal urmează să fie activate. Datele reale nu sunt accesibile în demonstrație.</span></div>
         <form id="loginForm" hidden>
-          <label for="email">Email de serviciu</label><input id="email" type="email" autocomplete="username" maxlength="254" required>
-          <label for="password">Parolă</label><input id="password" type="password" autocomplete="current-password" minlength="12" maxlength="200" required>
-          <button id="signIn" class="primary" type="submit">Intră în panou <span aria-hidden="true">→</span></button>
+          <label for="email"><span data-i18n="Email de serviciu">Email de serviciu</span></label><input id="email" type="email" autocomplete="username" maxlength="254" required>
+          <label for="password"><span data-i18n="Parolă">Parolă</span></label><input id="password" type="password" autocomplete="current-password" minlength="12" maxlength="200" required>
+          <button id="signIn" class="primary" type="submit"><span data-i18n="Intră în panou">Intră în panou</span><span aria-hidden="true">→</span></button>
         </form>
         <p id="loginMessage" role="status" aria-live="polite"></p>
-        <button id="demo" class="demo-button">Explorează o demonstrație <span aria-hidden="true">↗︎</span></button>
-        <small>Date fictive, pentru a descoperi panoul.</small>
+        <button id="demo" class="demo-button"><span data-i18n="Explorează o demonstrație">Explorează o demonstrație</span><span aria-hidden="true">↗︎</span></button>
+        <small><span data-i18n="Date fictive, pentru a descoperi panoul.">Date fictive, pentru a descoperi panoul.</span></small>
       </div>
     </section>
     <section id="dashboard" hidden>
-      <div id="demoBanner" class="demo-banner" hidden><span>Demonstrație · Date fictive, fără modificări reale.</span><button id="exitDemo">Închide demonstrația</button></div>
-      <div class="page-heading"><div><h1>Panoul Crosta</h1><p id="staffName"></p></div></div>
-      <div class="workspace-tabs" role="group" aria-label="Tip de solicitare"><button type="button" data-kind="booking" aria-pressed="true">Rezervări</button><button type="button" data-kind="review" aria-pressed="false">Recenzii</button></div>
-      <div class="toolbar"><div class="filter"><label class="sr-only" for="statusFilter">Afișează</label><select id="statusFilter"></select></div><label class="search"><span class="sr-only">Caută după nume</span><input id="search" type="search" placeholder="Caută după nume…" maxlength="100"></label></div>
+      <div id="demoBanner" class="demo-banner" hidden><span><span data-i18n="Demonstrație · Date fictive, fără modificări reale.">Demonstrație · Date fictive, fără modificări reale.</span></span><button id="exitDemo"><span data-i18n="Închide demonstrația">Închide demonstrația</span></button></div>
+      <div class="page-heading"><div><h1><span data-i18n="Panoul Crosta">Panoul Crosta</span></h1><p id="staffName"></p></div></div>
+      <div class="workspace-tabs" role="group" aria-label="Tip de solicitare" data-i18n-aria-label="Tip de solicitare"><button type="button" data-kind="booking" aria-pressed="true"><span data-i18n="Rezervări">Rezervări</span></button><button type="button" data-kind="review" aria-pressed="false"><span data-i18n="Recenzii">Recenzii</span></button></div>
+      <div class="toolbar"><div class="filter"><label class="sr-only" for="statusFilter"><span data-i18n="Afișează">Afișează</span></label><select id="statusFilter"></select></div><label class="search"><span class="sr-only"><span data-i18n="Caută după nume">Caută după nume</span></span><input id="search" type="search" placeholder="Caută după nume…" data-i18n-placeholder="Caută după nume…" maxlength="100"></label></div>
       <p id="listSummary" class="list-summary" aria-live="polite"></p>
       <p id="error" class="error" role="alert" hidden></p>
-      <div class="request-layout"><section class="queue" aria-label="Lista solicitărilor"><div id="requestList"></div><div class="pagination"><button id="previous" class="quiet">← Înapoi</button><span id="pageInfo"></span><button id="next" class="quiet">Înainte →</button></div></section><section id="detail" class="detail" aria-label="Detalii solicitare" hidden></section></div>
-      <div class="sync"><span id="syncState" role="status">Se încarcă…</span><button id="refresh" class="quiet">Actualizează</button></div>
+      <div class="request-layout"><section class="queue" aria-label="Lista solicitărilor" data-i18n-aria-label="Lista solicitărilor"><div id="requestList"></div><div class="pagination"><button id="previous" class="quiet"><span data-i18n="← Înapoi">← Înapoi</span></button><span id="pageInfo"></span><button id="next" class="quiet"><span data-i18n="Înainte →">Înainte →</span></button></div></section><section id="detail" class="detail" aria-label="Detalii solicitare" data-i18n-aria-label="Detalii solicitare" hidden></section></div>
+      <div class="sync"><span id="syncState" role="status"><span data-i18n="Se încarcă…">Se încarcă…</span></span><button id="refresh" class="quiet"><span data-i18n="Actualizează">Actualizează</span></button></div>
     </section>
   </main>
-  <footer><span>CROSTA KITCHEN & BAKERY</span><span>CU GRIJĂ, PENTRU FIECARE OASPETE.</span></footer>
+  <footer><span>CROSTA KITCHEN & BAKERY</span><span><span data-i18n="CU GRIJĂ, PENTRU FIECARE OASPETE.">CU GRIJĂ, PENTRU FIECARE OASPETE.</span></span></footer>
 </body>
 </html>
